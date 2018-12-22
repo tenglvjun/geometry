@@ -1,6 +1,7 @@
 #include "window.h"
 #include "log.h"
 #include <assert.h>
+#include "mesh.h"
 
 #if !defined(DEFAULT_WINDOW_HEIGHT)
 #define DEFAULT_WINDOW_HEIGHT 480
@@ -139,9 +140,41 @@ void GeoWindow::ShowWindow()
     assert(m_window);
 
     glViewport(0, 0, m_width, m_height);
+    glEnable(GL_DEPTH_TEST);
+
+    std::vector<GeoVertex> vertices;
+    std::vector<unsigned int> indices;
+
+    GeoVertex v1, v2, v3;
+    v1.GetPos()[0] = -0.5f;
+    v1.GetPos()[1] = -0.5f;
+    v1.GetPos()[2] = 0.0f;
+
+    v2.GetPos()[0] = 0.5f;
+    v2.GetPos()[1] = -0.5f;
+    v2.GetPos()[2] = 0.0f;
+
+    v3.GetPos()[0] = 0.0f;
+    v3.GetPos()[1] = 0.5f;
+    v3.GetPos()[2] = 0.0f;
+
+    vertices.push_back(v1);
+    vertices.push_back(v2);
+    vertices.push_back(v3);
+
+    indices.push_back(0);
+    indices.push_back(1);
+    indices.push_back(2);
+
+    GeoMesh mesh(vertices, indices);
 
     while (!glfwWindowShouldClose(m_window))
     {
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        mesh.Draw();
+
         glfwSwapBuffers(m_window);
         glfwPollEvents();
     }

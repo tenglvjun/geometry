@@ -45,13 +45,13 @@ void GeoMesh::Setup()
 
     // vertex positions
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GeoVertex), (void *)0);
+    glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, sizeof(GeoVertex), (void *)0);
     // vertex normals
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GeoVertex), (void *)(3 * sizeof(double)));
+    glVertexAttribPointer(1, 3, GL_DOUBLE, GL_FALSE, sizeof(GeoVertex), (void *)(3 * sizeof(double)));
     // vertex texture coords
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(GeoVertex), (void *)(6 * sizeof(double)));
+    glVertexAttribPointer(2, 2, GL_DOUBLE, GL_FALSE, sizeof(GeoVertex), (void *)(6 * sizeof(double)));
 
     glBindVertexArray(0);
 }

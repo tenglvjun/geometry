@@ -2,6 +2,7 @@
 #define __VERTEX_HEAD_FILE__
 
 #include "vector.h"
+#include "color.h"
 
 class GeoVertex
 {
@@ -13,10 +14,15 @@ public:
 public:
   GeoVertex &operator=(const GeoVertex &v);
 
+public:
+  GeoVector3D &GetPos();
+  GeoVector3D &GetNormal();
+  GeoColor &GetColor();
+
 protected:
   GeoVector3D m_pos;
   GeoVector3D m_normal;
-  GeoVector2D m_texCoords;
+  GeoColor m_color;
 };
 
 #endif // __VERTEX_HEAD_FILE__

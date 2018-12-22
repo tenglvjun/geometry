@@ -1,7 +1,12 @@
-#include <iostream>
+
+#include "window.h"
 
 int main(int argc, char const *argv[])
 {
-    std::cout << "hello world" << std::endl;
+    GeoWindow window("geometry");
+
+    window.CreateWindow();
+    window.ShowWindow();
+
     return 0;
 }
