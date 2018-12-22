@@ -7,7 +7,6 @@
 
 class GeoWindow
 {
-
 public:
   GeoWindow(const std::string &title);
   virtual ~GeoWindow();
