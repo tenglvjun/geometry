@@ -30,3 +30,18 @@
 *.exe
 *.out
 *.app
+
+# glfw
+glfw
+
+# glad
+glad
+
+# build
+build
+
+# vscode
+.vscode
+
+# bin
+bin/geometry
