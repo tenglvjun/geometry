@@ -19,6 +19,11 @@ public:
   GeoVector3D &GetNormal();
   GeoColor &GetColor();
 
+  bool Flatten(double *&buf, unsigned int length);
+
+public:
+  static unsigned int Size();
+
 protected:
   GeoVector3D m_pos;
   GeoVector3D m_normal;

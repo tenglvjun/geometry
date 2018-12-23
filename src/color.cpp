@@ -53,7 +53,12 @@ double GeoColor::operator[](const unsigned int idx) const
 
 double &GeoColor::operator[](const unsigned int idx)
 {
-    assert(idx < 3);
+    assert(idx < 4);
 
     return m_rgba[idx];
+}
+
+unsigned int GeoColor::Size()
+{
+    return 4;
 }

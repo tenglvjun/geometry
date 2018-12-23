@@ -50,6 +50,11 @@ double &GeoVector2D::operator[](const unsigned int idx)
     return m_coord[idx];
 }
 
+unsigned int GeoVector2D::Size()
+{
+    return 2;
+}
+
 GeoVector3D::GeoVector3D()
 {
     m_coord[0] = 0.0f;
@@ -94,6 +99,11 @@ double GeoVector3D::operator[](const unsigned int idx) const
     assert(idx < 3);
 
     return m_coord[idx];
+}
+
+unsigned int GeoVector3D::Size()
+{
+    return 3;
 }
 
 double &GeoVector3D::operator[](const unsigned int idx)

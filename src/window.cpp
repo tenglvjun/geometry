@@ -167,6 +167,8 @@ void GeoWindow::ShowWindow()
     indices.push_back(2);
 
     GeoMesh mesh(vertices, indices);
+    
+    int a = sizeof(GeoVertex);
 
     while (!glfwWindowShouldClose(m_window))
     {
