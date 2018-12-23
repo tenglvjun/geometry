@@ -6,7 +6,7 @@ GeoColor::GeoColor()
     m_rgba[0] = 0.0f;
     m_rgba[1] = 0.0f;
     m_rgba[2] = 0.0f;
-    m_rgba[3] = 0.0f;
+    m_rgba[3] = 1.0f;
 }
 
 GeoColor::GeoColor(const double r, const double g, const double b, const double a)
