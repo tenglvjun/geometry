@@ -81,7 +81,7 @@ static void glfw_framebuffer_size_callback(GLFWwindow *window, int width, int he
 }
 
 GeoWindow::GeoWindow(const std::string &title)
-    : m_window(nullptr), m_title(title)
+    : m_window(nullptr), m_title(title), m_mouseLBtnDown(false), m_mouseRBtnDown(false)
 {
     m_width = DEFAULT_WINDOW_WIDTH;
     m_height = DEFAULT_WINDOW_HEIGHT;
@@ -94,6 +94,9 @@ GeoWindow::~GeoWindow()
         glfwDestroyWindow(m_window);
         m_window = nullptr;
     }
+
+    m_mouseLBtnDown = false;
+    m_mouseRBtnDown = false;
 
     glfwTerminate();
 }
@@ -149,6 +152,7 @@ void GeoWindow::ShowWindow()
     v1.GetPos()[0] = -0.5f;
     v1.GetPos()[1] = -0.5f;
     v1.GetPos()[2] = 0.0f;
+    v1.GetColor()[0] = 1.0f;
 
     v2.GetPos()[0] = 0.5f;
     v2.GetPos()[1] = -0.5f;
@@ -167,7 +171,7 @@ void GeoWindow::ShowWindow()
     indices.push_back(2);
 
     GeoMesh mesh(vertices, indices);
-    
+
     int a = sizeof(GeoVertex);
 
     while (!glfwWindowShouldClose(m_window))
@@ -228,18 +232,22 @@ void GeoWindow::OnMouseButtonCallback(int button, int action, int mods)
 
 void GeoWindow::OnLButtonDown(double xpos, double ypos)
 {
+    m_mouseLBtnDown = true;
 }
 
 void GeoWindow::OnLButtonUp(double xpos, double ypos)
 {
+    m_mouseLBtnDown = false;
 }
 
 void GeoWindow::OnRButtonDown(double xpos, double ypos)
 {
+    m_mouseRBtnDown = true;
 }
 
 void GeoWindow::OnRButtonUp(double xpos, double ypos)
 {
+    m_mouseRBtnDown = false;
 }
 
 void GeoWindow::OnMButtonDown(double xpos, double ypos)

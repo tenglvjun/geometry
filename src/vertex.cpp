@@ -80,3 +80,10 @@ unsigned int GeoVertex::Size()
 {
     return (GeoVector3D::Size() + GeoVector3D::Size() + GeoColor::Size());
 }
+
+void GeoVertex::Offset(std::vector<int> &offset)
+{
+    offset.push_back(0);
+    offset.push_back(3);
+    offset.push_back(6);
+}

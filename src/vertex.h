@@ -3,6 +3,7 @@
 
 #include "vector.h"
 #include "color.h"
+#include <vector>
 
 class GeoVertex
 {
@@ -23,6 +24,7 @@ public:
 
 public:
   static unsigned int Size();
+  static void Offset(std::vector<int> &offset);
 
 protected:
   GeoVector3D m_pos;
