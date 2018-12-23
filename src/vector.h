@@ -41,4 +41,9 @@ protected:
   double m_coord[3];
 };
 
+double operator%(const GeoVector3D &v1, const GeoVector3D &v2)
+{
+  return v1[0] * v2[0] + v1[1] * v2[1] + v1[1] * v2[1];
+}
+
 #endif // __VECTOR_HEAD_FILE__

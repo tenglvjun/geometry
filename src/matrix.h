@@ -13,6 +13,9 @@ class GeoMatrix
     double *operator[](const unsigned int idx) const;
     double *operator[](const unsigned int idx);
 
+  public:
+    bool SetIdentity();
+
   protected:
     void Clear();
     void Init(const unsigned int row, const unsigned int col);

@@ -45,6 +45,8 @@ GeoMatrix &GeoMatrix::operator=(const GeoMatrix &m)
             m_data[row][col] = m[row][col];
         }
     }
+
+    return *this;
 }
 
 double *GeoMatrix::operator[](const unsigned int idx) const
@@ -59,6 +61,26 @@ double *GeoMatrix::operator[](const unsigned int idx)
     assert(m_data && (idx < m_row));
 
     return m_data[idx];
+}
+
+bool GeoMatrix::SetIdentity()
+{
+    assert((m_row == m_col) && (m_row > 0));
+
+    for (unsigned int row = 0; row < m_row; row++)
+    {
+        for (unsigned int col = 0; col < m_col; col++)
+        {
+            if (row == col)
+            {
+                m_data[row][col] = 1.0f;
+            }
+            else
+            {
+                m_data[row][col] = 0.0f;
+            }
+        }
+    }
 }
 
 void GeoMatrix::Clear()
