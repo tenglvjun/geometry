@@ -41,9 +41,24 @@ protected:
   double m_coord[3];
 };
 
-double operator%(const GeoVector3D &v1, const GeoVector3D &v2)
+class GeoVector4D
 {
-  return v1[0] * v2[0] + v1[1] * v2[1] + v1[1] * v2[1];
-}
+public:
+  GeoVector4D();
+  GeoVector4D(const double x, const double y, const double z, const double w);
+  GeoVector4D(const GeoVector4D &v);
+  virtual ~GeoVector4D();
+
+public:
+  GeoVector4D &operator=(const GeoVector4D &v);
+  double operator[](const unsigned int idx) const;
+  double &operator[](const unsigned int idx);
+
+public:
+  static unsigned int Size();
+
+protected:
+  double m_coord[4];
+};
 
 #endif // __VECTOR_HEAD_FILE__

@@ -38,14 +38,14 @@ GeoVector2D &GeoVector2D::operator=(const GeoVector2D &v)
 
 double GeoVector2D::operator[](const unsigned int idx) const
 {
-    assert(idx < 2);
+    assert(idx < GeoVector2D::Size());
 
     return m_coord[idx];
 }
 
 double &GeoVector2D::operator[](const unsigned int idx)
 {
-    assert(idx < 2);
+    assert(idx < GeoVector2D::Size());
 
     return m_coord[idx];
 }
@@ -96,7 +96,7 @@ GeoVector3D &GeoVector3D::operator=(const GeoVector3D &v)
 
 double GeoVector3D::operator[](const unsigned int idx) const
 {
-    assert(idx < 3);
+    assert(idx < GeoVector3D::Size());
 
     return m_coord[idx];
 }
@@ -108,7 +108,69 @@ unsigned int GeoVector3D::Size()
 
 double &GeoVector3D::operator[](const unsigned int idx)
 {
-    assert(idx < 3);
+    assert(idx < GeoVector3D::Size());
 
     return m_coord[idx];
+}
+
+GeoVector4D::GeoVector4D()
+{
+    m_coord[0] = 0.0f;
+    m_coord[1] = 0.0f;
+    m_coord[2] = 0.0f;
+    m_coord[3] = 0.0f;
+}
+
+GeoVector4D::GeoVector4D(const double x, const double y, const double z, const double w)
+{
+    m_coord[0] = x;
+    m_coord[1] = y;
+    m_coord[2] = z;
+    m_coord[3] = w;
+}
+
+GeoVector4D::GeoVector4D(const GeoVector4D &v)
+{
+    m_coord[0] = v[0];
+    m_coord[1] = v[1];
+    m_coord[2] = v[2];
+    m_coord[3] = v[3];
+}
+
+GeoVector4D::~GeoVector4D()
+{
+}
+
+GeoVector4D &GeoVector4D::operator=(const GeoVector4D &v)
+{
+    if (&v == this)
+    {
+        return *this;
+    }
+
+    m_coord[0] = v[0];
+    m_coord[1] = v[1];
+    m_coord[2] = v[2];
+    m_coord[3] = v[3];
+
+    return *this;
+}
+
+double GeoVector4D::operator[](const unsigned int idx) const
+{
+    assert(idx < GeoVector4D::Size());
+
+    return m_coord[idx];
+}
+
+double &GeoVector4D::operator[](const unsigned int idx)
+{
+    assert(idx < GeoVector4D::Size());
+
+    return m_coord[idx];
+}
+
+unsigned int GeoVector4D::Size()
+{
+    return 4;
 }
