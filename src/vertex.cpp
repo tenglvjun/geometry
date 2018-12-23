@@ -76,6 +76,16 @@ bool GeoVertex::Flatten(double *&buf, unsigned int length)
     return true;
 }
 
+void GeoVertex::Translate(const GeoVector3D &v)
+{
+    m_pos += v;
+}
+
+void GeoVertex::Rotation(const GeoMatrix &m)
+{
+    m_pos = m * m_pos;
+}
+
 unsigned int GeoVertex::Size()
 {
     return (GeoVector3D::Size() + GeoVector3D::Size() + GeoColor::Size());

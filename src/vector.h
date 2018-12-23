@@ -13,9 +13,18 @@ public:
   GeoVector2D &operator=(const GeoVector2D &v);
   double operator[](const unsigned int idx) const;
   double &operator[](const unsigned int idx);
+  GeoVector2D &operator+=(const GeoVector2D &v);
+  GeoVector2D operator+(const GeoVector2D &v);
+  GeoVector2D operator*(const double scale) const;
+  GeoVector2D &operator*=(const double scale);
 
 public:
-  static unsigned int Size();
+  void Normalize();
+  double Magnitude();
+
+public:
+  static unsigned int
+  Size();
 
 protected:
   double m_coord[2];
@@ -33,6 +42,14 @@ public:
   GeoVector3D &operator=(const GeoVector3D &v);
   double operator[](const unsigned int idx) const;
   double &operator[](const unsigned int idx);
+  GeoVector3D &operator+=(const GeoVector3D &v);
+  GeoVector3D operator+(const GeoVector3D &v);
+  GeoVector3D operator*(const double scale) const;
+  GeoVector3D &operator*=(const double scale);
+
+public:
+  void Normalize();
+  double Magnitude();
 
 public:
   static unsigned int Size();
@@ -53,6 +70,14 @@ public:
   GeoVector4D &operator=(const GeoVector4D &v);
   double operator[](const unsigned int idx) const;
   double &operator[](const unsigned int idx);
+  GeoVector4D &operator+=(const GeoVector4D &v);
+  GeoVector4D operator+(const GeoVector4D &v);
+  GeoVector4D operator*(const double scale) const;
+  GeoVector4D &operator*=(const double scale);
+
+public:
+  void Normalize();
+  double Magnitude();
 
 public:
   static unsigned int Size();

@@ -64,7 +64,7 @@ double *GeoMatrix::operator[](const unsigned int idx)
     return m_data[idx];
 }
 
-GeoVector3D GeoMatrix::operator*(const GeoVector3D &v)
+GeoVector3D GeoMatrix::operator*(const GeoVector3D &v) const
 {
     assert((GeoVector3D::Size() == m_col) && (m_col == m_row));
 
@@ -76,7 +76,7 @@ GeoVector3D GeoMatrix::operator*(const GeoVector3D &v)
     return ret;
 }
 
-GeoVector2D GeoMatrix::operator*(const GeoVector2D &v)
+GeoVector2D GeoMatrix::operator*(const GeoVector2D &v) const
 {
     assert((GeoVector2D::Size() == m_col) && (m_col == m_row));
 

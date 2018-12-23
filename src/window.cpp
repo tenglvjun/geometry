@@ -81,7 +81,7 @@ static void glfw_framebuffer_size_callback(GLFWwindow *window, int width, int he
 }
 
 GeoWindow::GeoWindow(const std::string &title)
-    : m_window(nullptr), m_title(title), m_mouseLBtnDown(false), m_mouseRBtnDown(false)
+    : m_window(nullptr), m_title(title), m_mouseLBtnDown(false), m_mouseRBtnDown(false), m_mesh(nullptr)
 {
     m_width = DEFAULT_WINDOW_WIDTH;
     m_height = DEFAULT_WINDOW_HEIGHT;
@@ -97,6 +97,8 @@ GeoWindow::~GeoWindow()
 
     m_mouseLBtnDown = false;
     m_mouseRBtnDown = false;
+
+    SAFE_DELETE(m_mesh);
 
     glfwTerminate();
 }
@@ -170,7 +172,7 @@ void GeoWindow::ShowWindow()
     indices.push_back(1);
     indices.push_back(2);
 
-    GeoMesh mesh(vertices, indices);
+    m_mesh = new GeoMesh(vertices, indices);
 
     int a = sizeof(GeoVertex);
 
@@ -179,7 +181,7 @@ void GeoWindow::ShowWindow()
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        mesh.Draw();
+        m_mesh->Draw();
 
         glfwSwapBuffers(m_window);
         glfwPollEvents();
@@ -233,6 +235,9 @@ void GeoWindow::OnMouseButtonCallback(int button, int action, int mods)
 void GeoWindow::OnLButtonDown(double xpos, double ypos)
 {
     m_mouseLBtnDown = true;
+
+    m_lastPt.m_x = xpos;
+    m_lastPt.m_y = ypos;
 }
 
 void GeoWindow::OnLButtonUp(double xpos, double ypos)
@@ -243,6 +248,9 @@ void GeoWindow::OnLButtonUp(double xpos, double ypos)
 void GeoWindow::OnRButtonDown(double xpos, double ypos)
 {
     m_mouseRBtnDown = true;
+
+    m_lastPt.m_x = xpos;
+    m_lastPt.m_y = ypos;
 }
 
 void GeoWindow::OnRButtonUp(double xpos, double ypos)
@@ -260,6 +268,24 @@ void GeoWindow::OnMButtonUp(double xpos, double ypos)
 
 void GeoWindow::OnMouseMove(double xpos, double ypos)
 {
+    if (m_mouseLBtnDown)
+    {
+        GeoVector3D v(xpos - m_lastPt.m_x, ypos - m_lastPt.m_y, 0.0f);
+
+        v[0] /= (double)m_width;
+        v[1] /= (double)m_height;
+
+        m_mesh->Translate(v);
+
+        m_lastPt.m_x = xpos;
+        m_lastPt.m_y = ypos;
+    }
+
+    if (m_mouseRBtnDown)
+    {
+        m_lastPt.m_x = xpos;
+        m_lastPt.m_y = ypos;
+    }
 }
 
 void GeoWindow::OnClose()

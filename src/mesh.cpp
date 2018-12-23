@@ -32,6 +32,15 @@ void GeoMesh::Draw()
     glBindVertexArray(0);
 }
 
+void GeoMesh::Translate(const GeoVector3D &v)
+{
+    for(size_t i = 0; i < m_vertices.size(); i++)
+    {
+        m_vertices[i].Translate(v);
+    }
+    
+}
+
 void GeoMesh::Setup()
 {
     unsigned int size = GeoVertex::Size();

@@ -14,8 +14,8 @@ public:
   GeoMatrix &operator=(const GeoMatrix &m);
   double *operator[](const unsigned int idx) const;
   double *operator[](const unsigned int idx);
-  GeoVector3D operator*(const GeoVector3D &v);
-  GeoVector2D operator*(const GeoVector2D &v);
+  GeoVector3D operator*(const GeoVector3D &v) const;
+  GeoVector2D operator*(const GeoVector2D &v) const;
 
 public:
   void SetIdentity();

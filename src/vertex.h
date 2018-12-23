@@ -3,6 +3,7 @@
 
 #include "vector.h"
 #include "color.h"
+#include "matrix.h"
 #include <vector>
 
 class GeoVertex
@@ -21,6 +22,9 @@ public:
   GeoColor &GetColor();
 
   bool Flatten(double *&buf, unsigned int length);
+
+  void Translate(const GeoVector3D& v);
+  void Rotation(const GeoMatrix& m);
 
 public:
   static unsigned int Size();
