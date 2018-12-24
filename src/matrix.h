@@ -2,6 +2,7 @@
 #define __MATRIX_HEAD_FILE__
 
 #include "vector.h"
+#include <vector>
 
 class GeoMatrix
 {
@@ -19,7 +20,8 @@ public:
 
 public:
   void SetIdentity();
-  void Flatten(float* &buf, const unsigned int length);
+  void Flatten(std::vector<float>& data);
+  void Dump();
 
 protected:
   void Clear();

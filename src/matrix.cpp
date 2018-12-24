@@ -3,6 +3,7 @@
 #include <memory.h>
 #include <assert.h>
 #include <math.h>
+#include <iostream>
 
 GeoMatrix::GeoMatrix(const unsigned int row, const unsigned int col)
     : m_data(nullptr), m_row(0), m_col(0)
@@ -107,16 +108,27 @@ void GeoMatrix::SetIdentity()
     }
 }
 
-void GeoMatrix::Flatten(float* &buf, const unsigned int length)
+void GeoMatrix::Flatten(std::vector<float>& data)
 {
-    assert((m_row * m_col) == length);
-
     for(size_t i = 0; i < m_row; i++)
     {
         for(size_t j = 0; j < m_col; j++)
         {
-            buf[i*m_col + j] = (float)m_data[i][j];
+            data.push_back(m_data[i][j]);
         }
+    }
+}
+
+void GeoMatrix::Dump()
+{
+    for(size_t i = 0; i < m_row; i++)
+    {
+        for(size_t j = 0; j < m_col; j++)
+        {
+            std::cout << m_data[i][j] << "  ";
+        }
+
+        std::cout << std::endl;
     }
 }
 
