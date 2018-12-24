@@ -41,13 +41,13 @@ GeoVector3D GeoArcBall::ProjectToBall(const GeoVector3D& pt)
     double powx = pow(pt[0], 2);
     double powy = pow(pt[1], 2);
     double powr = pow(m_radius, 2);
+    double powr2 = powr/((double)2);
 
     
-    if (powx + powy > powr) 
+    if ((powx + powy) > powr2)
     {
-        powr /= ((double)2);
 
-        ret[2] = powr / sqrt(powx + powy);
+        ret[2] = powr2 / sqrt(powx + powy);
     }
     
     else
