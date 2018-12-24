@@ -21,7 +21,7 @@ public:
   GeoVector3D &GetNormal();
   GeoColor &GetColor();
 
-  bool Flatten(double *&buf, unsigned int length);
+  void Flatten(std::vector<double> &buf);
 
   void Translate(const GeoVector3D& v);
   void Rotation(const GeoMatrix& m);

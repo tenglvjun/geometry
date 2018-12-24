@@ -51,12 +51,10 @@ void GeoMesh::Translate(const GeoVector3D &v)
 void GeoMesh::Setup()
 {
     unsigned int size = GeoVertex::Size();
-    double *buf = new double[size * sizeof(double) * m_vertices.size()];
-    double *tmp = nullptr;
+    std::vector<double> buf;
     for (size_t i = 0; i < m_vertices.size(); i++)
     {
-        tmp = buf + i * size;
-        m_vertices[i].Flatten(tmp, size);
+        m_vertices[i].Flatten(buf);
     }
 
     glGenVertexArrays(1, &m_vao);
@@ -66,7 +64,7 @@ void GeoMesh::Setup()
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
-    glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(GeoVertex), buf, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(GeoVertex), &buf[0], GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), &m_indices[0], GL_STATIC_DRAW);
@@ -87,8 +85,6 @@ void GeoMesh::Setup()
     glBindVertexArray(0);
 
     m_shader.Init("shader/vertex/mesh.vs", "shader/fragment/mesh.fs");
-
-    SAFE_DELETE_ARRAY(buf);
 
     m_trans.SetIdentity();
 

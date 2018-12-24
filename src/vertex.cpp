@@ -46,37 +46,20 @@ GeoColor &GeoVertex::GetColor()
     return m_color;
 }
 
-bool GeoVertex::Flatten(double *&buf, unsigned int length)
+void GeoVertex::Flatten(std::vector<double> &buf)
 {
-    unsigned int size = GeoVertex::Size();
+    buf.push_back(m_pos[0]);
+    buf.push_back(m_pos[1]);
+    buf.push_back(m_pos[2]);
 
-    if (size > length)
-    {
-        assert(0);
-        return false;
-    }
+    buf.push_back(m_normal[0]);
+    buf.push_back(m_normal[1]);
+    buf.push_back(m_normal[2]);
 
-    double* b = new double[size];
-    memset(b, 0, sizeof(double) * size);
-
-    b[0] = m_pos[0];
-    b[1] = m_pos[1];
-    b[2] = m_pos[2];
-
-    b[3] = m_normal[0];
-    b[4] = m_normal[1];
-    b[5] = m_normal[2];
-
-    b[6] = m_color[0];
-    b[7] = m_color[1];
-    b[8] = m_color[2];
-    b[9] = m_color[3];
-
-    memcpy(buf, b, sizeof(double) * size);
-
-    SAFE_DELETE_ARRAY(b);
-
-    return true;
+    buf.push_back(m_color[0]);
+    buf.push_back(m_color[1]);
+    buf.push_back(m_color[2]);
+    buf.push_back(m_color[3]);
 }
 
 void GeoVertex::Translate(const GeoVector3D &v)
