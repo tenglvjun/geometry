@@ -37,8 +37,24 @@ GeoVector3D GeoArcBall::ProjectToBall(const GeoVector3D& pt)
 
     ret[0] = pt[0];
     ret[1] = pt[1];
-    ret[2] = sqrt(pow(m_radius, 2) - pow(pt[0], 2) - pow(pt[1], 2));
 
+    double powx = pow(pt[0], 2);
+    double powy = pow(pt[1], 2);
+    double powr = pow(m_radius, 2);
+
+    
+    if (powx + powy > powr) 
+    {
+        powr /= ((double)2);
+
+        ret[2] = powr / sqrt(powx + powy);
+    }
+    
+    else
+    {
+        ret[2] = sqrt(powr - powx - powy);
+    }
+    
     return ret;
 }
 
