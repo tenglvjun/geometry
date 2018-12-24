@@ -239,7 +239,7 @@ void GeoWindow::OnLButtonDown(double xpos, double ypos)
 {
     m_mouseLBtnDown = true;
 
-    m_lastPt = GeoVector2D(xpos, m_height - ypos) - m_origin;
+    m_lastPt = GeoVector2D(xpos, ypos) - m_origin;
 }
 
 void GeoWindow::OnLButtonUp(double xpos, double ypos)
@@ -251,7 +251,7 @@ void GeoWindow::OnRButtonDown(double xpos, double ypos)
 {
     m_mouseRBtnDown = true;
 
-    m_lastPt = GeoVector2D(xpos, m_height - ypos) - m_origin;
+    m_lastPt = GeoVector2D(xpos, ypos) - m_origin;
 }
 
 void GeoWindow::OnRButtonUp(double xpos, double ypos)
@@ -271,7 +271,7 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 {
     if (m_mouseLBtnDown)
     {
-        GeoVector2D pos = GeoVector2D(xpos, m_height - ypos) - m_origin;
+        GeoVector2D pos = GeoVector2D(xpos, ypos) - m_origin;
         GeoVector2D trans = pos - m_lastPt;
 
         trans[0] /= ((double)m_width/2);

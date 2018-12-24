@@ -1,6 +1,6 @@
 #include "mesh.h"
 #include "global_def.h"
-#include "log.h"
+#include <iostream>
 
 GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices)
 : m_trans(4, 4)
@@ -43,9 +43,7 @@ void GeoMesh::Translate(const GeoVector3D &v)
     std::vector<float> buf;
     m_trans.Flatten(buf);
 
-    m_shader.Use();
-    unsigned int transformLoc = glGetUniformLocation(m_shader.GetID(), "transform");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, &buf[0]);
+    m_shader.SetMatrix("transform", &buf[0]);
 }
 
 void GeoMesh::Setup()
@@ -91,7 +89,5 @@ void GeoMesh::Setup()
     std::vector<float> bufMatrix;
     m_trans.Flatten(bufMatrix);
 
-    m_shader.Use();
-    unsigned int transformLoc = glGetUniformLocation(m_shader.GetID(), "transform");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, &bufMatrix[0]);
+    m_shader.SetMatrix("transform", &bufMatrix[0]);
 }

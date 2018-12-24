@@ -75,7 +75,7 @@ bool Shader::Init(const std::string &vertexPath, const std::string &fragmentPath
     return true;
 }
 
-void Shader::Use()
+void Shader::Use() const
 {
     assert(m_programID != 0);
 
@@ -89,20 +89,26 @@ GLuint Shader::GetID() const
 
 void Shader::SetBool(const std::string &name, bool value) const
 {
-    assert(m_programID != 0);
+    Use();
     glUniform1i(glGetUniformLocation(m_programID, name.c_str()), (int)value);
 }
 
 void Shader::SetInt(const std::string &name, int value) const
 {
-    assert(m_programID != 0);
+    Use();
     glUniform1i(glGetUniformLocation(m_programID, name.c_str()), value);
 }
 
 void Shader::SetFloat(const std::string &name, float value) const
 {
-    assert(m_programID != 0);
+    Use();
     glUniform1f(glGetUniformLocation(m_programID, name.c_str()), value);
+}
+
+void Shader::SetMatrix(const std::string &name, float* values) const
+{
+    Use();
+    glUniformMatrix4fv(glGetUniformLocation(m_programID, name.c_str()), 1, GL_FALSE, values);
 }
 
 void Shader::DeleteProgram()
