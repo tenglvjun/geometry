@@ -308,6 +308,8 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
         GeoMatrix rotate = ball.GetRotateMatrix(lastPt, pos);
 
+        m_mesh->Rotate(rotate);
+
         m_lastPt = ptNow;
     }
     

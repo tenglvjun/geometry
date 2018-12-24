@@ -88,6 +88,26 @@ GeoVector2D GeoMatrix::operator*(const GeoVector2D &v) const
     return ret;
 }
 
+GeoMatrix GeoMatrix::operator*(const GeoMatrix& m) const
+{
+    assert(m_col == m.Rows());
+
+    GeoMatrix ret(m_row, m.Cols());
+
+    for(unsigned int i = 0; i < m_row; i++)
+    {
+       for(unsigned int j = 0; j < m.Cols(); j++)
+       {
+           for(unsigned int k = 0; k < m_col; k++)
+           {
+               ret[i][j] += (m_data[i][k] * m[k][j]);
+           }
+       }
+    }
+    
+    return ret;
+}
+
 void GeoMatrix::SetIdentity()
 {
     assert((m_row == m_col) && (m_row > 0));
@@ -110,20 +130,49 @@ void GeoMatrix::SetIdentity()
 
 void GeoMatrix::Flatten(std::vector<float>& data)
 {
-    for(size_t j = 0; j < m_col; j++)
+    for(unsigned int j = 0; j < m_col; j++)
     {
-        for(size_t i = 0; i < m_row; i++)
+        for(unsigned int i = 0; i < m_row; i++)
         {
-            data.push_back(m_data[i][j]);
+            data.push_back((float)(m_data[i][j]));
+        }
+    }
+}
+
+GeoMatrix GeoMatrix::SubMatrix(const unsigned int sRow, const unsigned int eRow, const unsigned int sCol, const unsigned int eCol)
+{
+    GeoMatrix m(eRow - sRow, eCol - sCol);
+
+    for(unsigned int i = sRow; i < eRow; i++)
+    {
+        for(unsigned int j = sCol; j < eCol; j++)
+        {
+            m[i-sRow][j-sCol] =  m_data[i][j];
+        }
+    }
+
+    return m;
+}
+
+void GeoMatrix::Replace(const unsigned int r, const unsigned int c, const GeoMatrix& m)
+{
+    unsigned int rows = m.Rows();
+    unsigned int cols = m.Cols();
+
+    for(unsigned int i = 0; i < rows; i++)
+    {
+        for(unsigned int j = 0; j < cols; j++)
+        {
+            m_data[i+r][j+c] = m[i][j];
         }
     }
 }
 
 void GeoMatrix::Dump()
 {
-    for(size_t i = 0; i < m_row; i++)
+    for(unsigned int i = 0; i < m_row; i++)
     {
-        for(size_t j = 0; j < m_col; j++)
+        for(unsigned int j = 0; j < m_col; j++)
         {
             std::cout << m_data[i][j] << "  ";
         }
@@ -132,19 +181,14 @@ void GeoMatrix::Dump()
     }
 }
 
-GeoMatrix GeoMatrix::SubMatrix(const unsigned int sRow, const unsigned int eRow, const unsigned int sCol, const unsigned int eCol)
+unsigned int GeoMatrix::Rows() const
 {
-    GeoMatrix m(eRow - sRow, eCol - sCol);
+    return m_row;
+}
 
-    for(size_t i = sRow; i < eRow; i++)
-    {
-        for(size_t j = sCol; j < eCol; j++)
-        {
-            m[i-sRow][j-sCol] =  m_data[i][j];
-        }
-    }
-
-    return m;
+unsigned int GeoMatrix::Cols() const
+{
+    return m_col;
 }
 
 void GeoMatrix::Clear()

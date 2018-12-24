@@ -247,7 +247,7 @@ GeoVector3D GeoVector3D::operator*(const GeoVector3D& v) const
 
     ret[0] = m_coord[1]*v[2] - m_coord[2]*v[1];
     ret[1] = m_coord[2]*v[0] - m_coord[0]*v[2];
-    ret[3] = m_coord[0]*v[1] - m_coord[1]*v[0];
+    ret[2] = m_coord[0]*v[1] - m_coord[1]*v[0];
 
     return ret;
 }

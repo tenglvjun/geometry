@@ -49,8 +49,14 @@ void GeoMesh::Translate(const GeoVector3D &v)
 void GeoMesh::Rotate(const GeoMatrix& m)
 {
     GeoMatrix subMatrix = m_trans.SubMatrix(0, 3, 0, 3);
+    subMatrix = m * subMatrix;
 
-    
+    m_trans.Replace(0, 0, subMatrix);
+
+    std::vector<float> buf;
+    m_trans.Flatten(buf);
+
+    m_shader.SetMatrix("transform", &buf[0]);
 }
 
 void GeoMesh::Setup()
