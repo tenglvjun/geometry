@@ -87,6 +87,24 @@ GeoVector2D &GeoVector2D::operator*=(const double scale)
     return *this;
 }
 
+GeoVector2D GeoVector2D::operator-(const GeoVector2D& v) const
+{
+    GeoVector2D ret;
+
+    ret[0] = m_coord[0] - v[0];
+    ret[1] = m_coord[1] - v[1];
+
+    return ret;
+}
+
+GeoVector2D &GeoVector2D::operator-=(const GeoVector2D& v)
+{
+    m_coord[0] -= v[0];
+    m_coord[1] -= v[1];
+
+    return *this;
+}
+
 void GeoVector2D::Normalize()
 {
     double magnitude = Magnitude();
@@ -194,6 +212,26 @@ GeoVector3D &GeoVector3D::operator*=(const double scale)
     m_coord[0] *= scale;
     m_coord[1] *= scale;
     m_coord[2] *= scale;
+
+    return *this;
+}
+
+GeoVector3D GeoVector3D::operator-(const GeoVector3D& v) const
+{
+    GeoVector3D ret;
+
+    ret[0] = m_coord[0] - v[0];
+    ret[1] = m_coord[1] - v[1];
+    ret[2] = m_coord[2] - v[2];
+
+    return ret;
+}
+
+GeoVector3D &GeoVector3D::operator-=(const GeoVector3D& v)
+{
+    m_coord[0] -= v[0];
+    m_coord[1] -= v[1];
+    m_coord[2] -= v[2];
 
     return *this;
 }
@@ -314,6 +352,28 @@ GeoVector4D &GeoVector4D::operator*=(const double scale)
     m_coord[1] *= scale;
     m_coord[2] *= scale;
     m_coord[3] *= scale;
+
+    return *this;
+}
+
+GeoVector4D GeoVector4D::operator-(const GeoVector4D& v) const
+{
+    GeoVector4D ret;
+
+    ret[0] = m_coord[0] - v[0];
+    ret[1] = m_coord[1] - v[1];
+    ret[2] = m_coord[2] - v[2];
+    ret[3] = m_coord[3] - v[3];
+
+    return ret;
+}
+
+GeoVector4D &GeoVector4D::operator-=(const GeoVector4D& v)
+{
+    m_coord[0] -= v[0];
+    m_coord[1] -= v[1];
+    m_coord[2] -= v[2];
+    m_coord[3] -= v[3];
 
     return *this;
 }

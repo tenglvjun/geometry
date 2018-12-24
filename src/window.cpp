@@ -137,15 +137,18 @@ bool GeoWindow::CreateGeoWindow()
 
     glfwSwapInterval(1);
 
+    m_origin[0] = m_width/2;
+    m_origin[1] = m_height/2;
+
+    glViewport(0, 0, m_width, m_height);
+    glEnable(GL_DEPTH_TEST);
+
     return true;
 }
 
 void GeoWindow::ShowGeoWindow()
 {
     assert(m_window);
-
-    glViewport(0, 0, m_width, m_height);
-    glEnable(GL_DEPTH_TEST);
 
     std::vector<GeoVertex> vertices;
     std::vector<unsigned int> indices;
@@ -236,8 +239,7 @@ void GeoWindow::OnLButtonDown(double xpos, double ypos)
 {
     m_mouseLBtnDown = true;
 
-    m_lastPt.m_x = xpos;
-    m_lastPt.m_y = ypos;
+    m_lastPt = GeoVector2D(xpos, m_height - ypos) - m_origin;
 }
 
 void GeoWindow::OnLButtonUp(double xpos, double ypos)
@@ -249,8 +251,7 @@ void GeoWindow::OnRButtonDown(double xpos, double ypos)
 {
     m_mouseRBtnDown = true;
 
-    m_lastPt.m_x = xpos;
-    m_lastPt.m_y = ypos;
+    m_lastPt = GeoVector2D(xpos, m_height - ypos) - m_origin;
 }
 
 void GeoWindow::OnRButtonUp(double xpos, double ypos)
@@ -270,21 +271,19 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 {
     if (m_mouseLBtnDown)
     {
-        GeoVector3D v(xpos - m_lastPt.m_x, ypos - m_lastPt.m_y, 0.0f);
+        GeoVector2D pos = GeoVector2D(xpos, m_height - ypos) - m_origin;
+        GeoVector2D trans = pos - m_lastPt;
 
-        v[0] /= (double)m_width;
-        v[1] /= (double)m_height;
+        trans[0] /= ((double)m_width/2);
+        trans[1] /= ((double)m_height/2);
 
-        m_mesh->Translate(v);
+        m_mesh->Translate(GeoVector3D(trans[0], trans[1], 0.0f));
 
-        m_lastPt.m_x = xpos;
-        m_lastPt.m_y = ypos;
+        m_lastPt = pos;
     }
 
     if (m_mouseRBtnDown)
     {
-        m_lastPt.m_x = xpos;
-        m_lastPt.m_y = ypos;
     }
 }
 
@@ -304,6 +303,9 @@ void GeoWindow::OnFrameBufferSize(int width, int height)
     m_width = width;
 
     glViewport(0, 0, m_width, m_height);
+
+    m_origin[0] = m_width/2;
+    m_origin[1] = m_height/2;
 }
 
 void GeoWindow::OnScroll(double xoffset, double yoffset)

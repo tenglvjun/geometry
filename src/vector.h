@@ -17,6 +17,8 @@ public:
   GeoVector2D operator+(const GeoVector2D &v);
   GeoVector2D operator*(const double scale) const;
   GeoVector2D &operator*=(const double scale);
+  GeoVector2D operator-(const GeoVector2D& v) const;
+  GeoVector2D &operator-=(const GeoVector2D& v);
 
 public:
   void Normalize();
@@ -46,6 +48,8 @@ public:
   GeoVector3D operator+(const GeoVector3D &v);
   GeoVector3D operator*(const double scale) const;
   GeoVector3D &operator*=(const double scale);
+  GeoVector3D operator-(const GeoVector3D& v) const;
+  GeoVector3D &operator-=(const GeoVector3D& v);
 
 public:
   void Normalize();
@@ -74,6 +78,8 @@ public:
   GeoVector4D operator+(const GeoVector4D &v);
   GeoVector4D operator*(const double scale) const;
   GeoVector4D &operator*=(const double scale);
+  GeoVector4D operator-(const GeoVector4D& v) const;
+  GeoVector4D &operator-=(const GeoVector4D& v);
 
 public:
   void Normalize();

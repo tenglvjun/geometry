@@ -115,7 +115,7 @@ void GeoMatrix::Flatten(float* &buf, const unsigned int length)
     {
         for(size_t j = 0; j < m_col; j++)
         {
-            buf[i*m_col + j] = m_data[i][j];
+            buf[i*m_col + j] = (float)m_data[i][j];
         }
     }
 }

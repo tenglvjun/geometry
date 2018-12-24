@@ -5,25 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <string>
 #include "mesh.h"
-#include "matrix.h"
-
-struct UIPoint
-{
-  UIPoint()
-  {
-    m_x = 0.0f;
-    m_y = 0.0f;
-  }
-
-  UIPoint(const double x, const double y)
-  {
-    m_x = x;
-    m_y = y;
-  }
-
-  double m_x;
-  double m_y;
-};
+#include "vector.h"
 
 class GeoWindow
 {
@@ -64,7 +46,8 @@ protected:
   std::string m_title;
   bool m_mouseRBtnDown;
   bool m_mouseLBtnDown;
-  UIPoint m_lastPt;
+  GeoVector2D m_lastPt;
+  GeoVector2D m_origin;
   GeoMesh *m_mesh;
 };
 
