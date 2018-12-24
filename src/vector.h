@@ -22,7 +22,7 @@ public:
 
 public:
   void Normalize();
-  double Magnitude();
+  double Magnitude() const;
 
 public:
   static unsigned int
@@ -50,10 +50,12 @@ public:
   GeoVector3D &operator*=(const double scale);
   GeoVector3D operator-(const GeoVector3D& v) const;
   GeoVector3D &operator-=(const GeoVector3D& v);
+  double operator%(const GeoVector3D& v) const;
+  GeoVector3D operator*(const GeoVector3D& v) const;
 
 public:
   void Normalize();
-  double Magnitude();
+  double Magnitude() const;
 
 public:
   static unsigned int Size();
@@ -83,7 +85,7 @@ public:
 
 public:
   void Normalize();
-  double Magnitude();
+  double Magnitude() const;
 
 public:
   static unsigned int Size();

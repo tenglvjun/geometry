@@ -2,6 +2,7 @@
 #include "log.h"
 #include <assert.h>
 #include "mesh.h"
+#include "arcball.h"
 
 #if !defined(DEFAULT_WINDOW_HEIGHT)
 #define DEFAULT_WINDOW_HEIGHT 480
@@ -241,6 +242,9 @@ void GeoWindow::OnLButtonDown(double xpos, double ypos)
 
     m_lastPt = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
     m_lastPt[1] = -m_lastPt[1];
+
+    m_lastPt[0] /= ((double)m_width/2);
+    m_lastPt[1] /= ((double)m_height/2);
 }
 
 void GeoWindow::OnLButtonUp(double xpos, double ypos)
@@ -254,6 +258,9 @@ void GeoWindow::OnRButtonDown(double xpos, double ypos)
 
     m_lastPt = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
     m_lastPt[1] = -m_lastPt[1];
+
+    m_lastPt[0] /= ((double)m_width/2);
+    m_lastPt[1] /= ((double)m_height/2);
 }
 
 void GeoWindow::OnRButtonUp(double xpos, double ypos)
@@ -285,6 +292,25 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
         m_lastPt = pos;
     }
+
+    
+    if (m_mouseLBtnDown) 
+    {
+        GeoVector3D ptNow = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
+        ptNow[1] = -ptNow[1];
+
+        ptNow[0] /= ((double)m_width/2);
+        ptNow[1] /= ((double)m_height/2);
+
+        GeoArcBall ball;
+        GeoVector3D lastPt = ball.ProjectToBall(m_lastPt);
+        GeoVector3D pos = ball.ProjectToBall(ptNow);
+
+        GeoMatrix rotate = ball.GetRotateMatrix(lastPt, pos);
+
+        m_lastPt = ptNow;
+    }
+    
 }
 
 void GeoWindow::OnClose()

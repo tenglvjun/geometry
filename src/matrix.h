@@ -22,6 +22,7 @@ public:
   void SetIdentity();
   void Flatten(std::vector<float>& data);
   void Dump();
+  GeoMatrix SubMatrix(const unsigned int sRow, const unsigned int eRow, const unsigned int sCol, const unsigned int eCol);
 
 protected:
   void Clear();

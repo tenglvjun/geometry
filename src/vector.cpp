@@ -113,7 +113,7 @@ void GeoVector2D::Normalize()
     m_coord[1] /= magnitude;
 }
 
-double GeoVector2D::Magnitude()
+double GeoVector2D::Magnitude() const
 {
     return sqrt(m_coord[0] * m_coord[0] + m_coord[1] * m_coord[1]);
 }
@@ -236,6 +236,22 @@ GeoVector3D &GeoVector3D::operator-=(const GeoVector3D& v)
     return *this;
 }
 
+double GeoVector3D::operator%(const GeoVector3D& v) const
+{
+    return m_coord[0]*v[0] + m_coord[1]*v[1] + m_coord[2]*v[2];
+}
+
+GeoVector3D GeoVector3D::operator*(const GeoVector3D& v) const
+{
+    GeoVector3D ret;
+
+    ret[0] = m_coord[1]*v[2] - m_coord[2]*v[1];
+    ret[1] = m_coord[2]*v[0] - m_coord[0]*v[2];
+    ret[3] = m_coord[0]*v[1] - m_coord[1]*v[0];
+
+    return ret;
+}
+
 void GeoVector3D::Normalize()
 {
     double magnitude = Magnitude();
@@ -245,7 +261,7 @@ void GeoVector3D::Normalize()
     m_coord[2] /= magnitude;
 }
 
-double GeoVector3D::Magnitude()
+double GeoVector3D::Magnitude() const
 {
     return sqrt(m_coord[0] * m_coord[0] + m_coord[1] * m_coord[1] + m_coord[2] * m_coord[2]);
 }
@@ -388,7 +404,7 @@ void GeoVector4D::Normalize()
     m_coord[3] /= magnitude;
 }
 
-double GeoVector4D::Magnitude()
+double GeoVector4D::Magnitude() const
 {
     return sqrt(m_coord[0] * m_coord[0] + m_coord[1] * m_coord[1] + m_coord[2] * m_coord[2] + m_coord[3] * m_coord[3]);
 }

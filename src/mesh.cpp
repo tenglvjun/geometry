@@ -46,6 +46,13 @@ void GeoMesh::Translate(const GeoVector3D &v)
     m_shader.SetMatrix("transform", &buf[0]);
 }
 
+void GeoMesh::Rotate(const GeoMatrix& m)
+{
+    GeoMatrix subMatrix = m_trans.SubMatrix(0, 3, 0, 3);
+
+    
+}
+
 void GeoMesh::Setup()
 {
     unsigned int size = GeoVertex::Size();

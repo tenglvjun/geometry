@@ -132,6 +132,21 @@ void GeoMatrix::Dump()
     }
 }
 
+GeoMatrix GeoMatrix::SubMatrix(const unsigned int sRow, const unsigned int eRow, const unsigned int sCol, const unsigned int eCol)
+{
+    GeoMatrix m(eRow - sRow, eCol - sCol);
+
+    for(size_t i = sRow; i < eRow; i++)
+    {
+        for(size_t j = sCol; j < eCol; j++)
+        {
+            m[i-sRow][j-sCol] =  m_data[i][j];
+        }
+    }
+
+    return m;
+}
+
 void GeoMatrix::Clear()
 {
     for (unsigned int row = 0; row < m_row; row++)

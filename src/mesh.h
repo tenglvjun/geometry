@@ -17,6 +17,7 @@ class GeoMesh
   public:
     void Draw();
     void Translate(const GeoVector3D& v);
+    void Rotate(const GeoMatrix& m);
 
   private:
     GeoMesh();
