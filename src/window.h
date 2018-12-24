@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <string>
 #include "mesh.h"
+#include "matrix.h"
 
 struct UIPoint
 {
@@ -31,8 +32,8 @@ public:
   virtual ~GeoWindow();
 
 public:
-  bool CreateWindow();
-  void ShowWindow();
+  bool CreateGeoWindow();
+  void ShowGeoWindow();
 
 public:
   void OnKeyCallback(int key, int scancode, int action, int mods);

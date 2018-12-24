@@ -1,6 +1,7 @@
 #include "vertex.h"
 #include <assert.h>
 #include <memory.h>
+#include "global_def.h"
 
 GeoVertex::GeoVertex()
 {
@@ -55,7 +56,7 @@ bool GeoVertex::Flatten(double *&buf, unsigned int length)
         return false;
     }
 
-    double b[size];
+    double* b = new double[size];
     memset(b, 0, sizeof(double) * size);
 
     b[0] = m_pos[0];
@@ -72,6 +73,8 @@ bool GeoVertex::Flatten(double *&buf, unsigned int length)
     b[9] = m_color[3];
 
     memcpy(buf, b, sizeof(double) * size);
+
+    SAFE_DELETE_ARRAY(b);
 
     return true;
 }

@@ -82,6 +82,11 @@ void Shader::Use()
     glUseProgram(m_programID);
 }
 
+GLuint Shader::GetID() const
+{
+    return m_programID;
+}
+
 void Shader::SetBool(const std::string &name, bool value) const
 {
     assert(m_programID != 0);

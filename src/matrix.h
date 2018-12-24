@@ -19,6 +19,7 @@ public:
 
 public:
   void SetIdentity();
+  void Flatten(float* &buf, const unsigned int length);
 
 protected:
   void Clear();

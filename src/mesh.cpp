@@ -1,7 +1,9 @@
 #include "mesh.h"
 #include "global_def.h"
+#include "log.h"
 
 GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices)
+: m_trans(4, 4)
 {
     m_vertices = vertices;
     m_indices = indices;
@@ -28,17 +30,25 @@ void GeoMesh::Draw()
 
     // draw mesh
     glBindVertexArray(m_vao);
-    glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, (GLsizei)m_indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
 
 void GeoMesh::Translate(const GeoVector3D &v)
 {
-    for(size_t i = 0; i < m_vertices.size(); i++)
-    {
-        m_vertices[i].Translate(v);
-    }
-    
+    m_trans[0][3] += v[0];
+    m_trans[1][3] += v[1];
+    m_trans[2][3] += v[2];
+
+    float* buf = new float[16];
+    memset(buf, 0, sizeof(float)*16);
+    m_trans.Flatten(buf, 16);
+
+    m_shader.Use();
+    unsigned int transformLoc = glGetUniformLocation(m_shader.GetID(), "transform");
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, buf);
+
+    SAFE_DELETE_ARRAY(buf);
 }
 
 void GeoMesh::Setup()
@@ -80,6 +90,18 @@ void GeoMesh::Setup()
     glBindVertexArray(0);
 
     m_shader.Init("shader/vertex/mesh.vs", "shader/fragment/mesh.fs");
+
+    m_trans.SetIdentity();
+
+    float* bufMatrix = new float[16];
+    memset(bufMatrix, 0, sizeof(float)*16);
+    m_trans.Flatten(bufMatrix, 16);
+
+    m_shader.Use();
+    unsigned int transformLoc = glGetUniformLocation(m_shader.GetID(), "transform");
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, bufMatrix);
+
+    SAFE_DELETE_ARRAY(bufMatrix);
 
     SAFE_DELETE_ARRAY(buf);
 }

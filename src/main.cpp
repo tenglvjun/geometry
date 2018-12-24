@@ -5,8 +5,8 @@ int main(int argc, char const *argv[])
 {
     GeoWindow window("geometry");
 
-    window.CreateWindow();
-    window.ShowWindow();
+    window.CreateGeoWindow();
+    window.ShowGeoWindow();
 
     return 0;
 }

@@ -6,6 +6,7 @@
 #include <vector>
 #include "vertex.h"
 #include "shader.h"
+#include "matrix.h"
 
 class GeoMesh
 {
@@ -28,6 +29,7 @@ class GeoMesh
     std::vector<unsigned int> m_indices;
     unsigned int m_vao, m_vbo, m_ebo;
     Shader m_shader;
+    GeoMatrix  m_trans;
 };
 
 #endif // __MESH_HEAD_FILE__

@@ -107,6 +107,19 @@ void GeoMatrix::SetIdentity()
     }
 }
 
+void GeoMatrix::Flatten(float* &buf, const unsigned int length)
+{
+    assert((m_row * m_col) == length);
+
+    for(size_t i = 0; i < m_row; i++)
+    {
+        for(size_t j = 0; j < m_col; j++)
+        {
+            buf[i*m_col + j] = m_data[i][j];
+        }
+    }
+}
+
 void GeoMatrix::Clear()
 {
     for (unsigned int row = 0; row < m_row; row++)

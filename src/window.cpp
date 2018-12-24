@@ -103,7 +103,7 @@ GeoWindow::~GeoWindow()
     glfwTerminate();
 }
 
-bool GeoWindow::CreateWindow()
+bool GeoWindow::CreateGeoWindow()
 {
     glfwSetErrorCallback(glfw_error_callback);
 
@@ -140,7 +140,7 @@ bool GeoWindow::CreateWindow()
     return true;
 }
 
-void GeoWindow::ShowWindow()
+void GeoWindow::ShowGeoWindow()
 {
     assert(m_window);
 
