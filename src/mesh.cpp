@@ -43,7 +43,7 @@ void GeoMesh::Translate(const GeoVector3D &v)
     std::vector<float> buf;
     m_trans.Flatten(buf);
 
-    m_shader.SetMatrix("transform", &buf[0]);
+    m_shader.SetMatrix("transform", false, &buf[0]);
 }
 
 void GeoMesh::Rotate(const GeoMatrix &m)
