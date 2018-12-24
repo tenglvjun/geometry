@@ -87,7 +87,7 @@ GeoVector2D &GeoVector2D::operator*=(const double scale)
     return *this;
 }
 
-GeoVector2D GeoVector2D::operator-(const GeoVector2D& v) const
+GeoVector2D GeoVector2D::operator-(const GeoVector2D &v) const
 {
     GeoVector2D ret;
 
@@ -97,7 +97,7 @@ GeoVector2D GeoVector2D::operator-(const GeoVector2D& v) const
     return ret;
 }
 
-GeoVector2D &GeoVector2D::operator-=(const GeoVector2D& v)
+GeoVector2D &GeoVector2D::operator-=(const GeoVector2D &v)
 {
     m_coord[0] -= v[0];
     m_coord[1] -= v[1];
@@ -216,7 +216,7 @@ GeoVector3D &GeoVector3D::operator*=(const double scale)
     return *this;
 }
 
-GeoVector3D GeoVector3D::operator-(const GeoVector3D& v) const
+GeoVector3D GeoVector3D::operator-(const GeoVector3D &v) const
 {
     GeoVector3D ret;
 
@@ -227,7 +227,7 @@ GeoVector3D GeoVector3D::operator-(const GeoVector3D& v) const
     return ret;
 }
 
-GeoVector3D &GeoVector3D::operator-=(const GeoVector3D& v)
+GeoVector3D &GeoVector3D::operator-=(const GeoVector3D &v)
 {
     m_coord[0] -= v[0];
     m_coord[1] -= v[1];
@@ -236,18 +236,18 @@ GeoVector3D &GeoVector3D::operator-=(const GeoVector3D& v)
     return *this;
 }
 
-double GeoVector3D::operator%(const GeoVector3D& v) const
+double GeoVector3D::operator%(const GeoVector3D &v) const
 {
-    return m_coord[0]*v[0] + m_coord[1]*v[1] + m_coord[2]*v[2];
+    return m_coord[0] * v[0] + m_coord[1] * v[1] + m_coord[2] * v[2];
 }
 
-GeoVector3D GeoVector3D::operator*(const GeoVector3D& v) const
+GeoVector3D GeoVector3D::operator*(const GeoVector3D &v) const
 {
     GeoVector3D ret;
 
-    ret[0] = m_coord[1]*v[2] - m_coord[2]*v[1];
-    ret[1] = m_coord[2]*v[0] - m_coord[0]*v[2];
-    ret[2] = m_coord[0]*v[1] - m_coord[1]*v[0];
+    ret[0] = m_coord[1] * v[2] - m_coord[2] * v[1];
+    ret[1] = m_coord[2] * v[0] - m_coord[0] * v[2];
+    ret[2] = m_coord[0] * v[1] - m_coord[1] * v[0];
 
     return ret;
 }
@@ -372,7 +372,7 @@ GeoVector4D &GeoVector4D::operator*=(const double scale)
     return *this;
 }
 
-GeoVector4D GeoVector4D::operator-(const GeoVector4D& v) const
+GeoVector4D GeoVector4D::operator-(const GeoVector4D &v) const
 {
     GeoVector4D ret;
 
@@ -384,7 +384,7 @@ GeoVector4D GeoVector4D::operator-(const GeoVector4D& v) const
     return ret;
 }
 
-GeoVector4D &GeoVector4D::operator-=(const GeoVector4D& v)
+GeoVector4D &GeoVector4D::operator-=(const GeoVector4D &v)
 {
     m_coord[0] -= v[0];
     m_coord[1] -= v[1];

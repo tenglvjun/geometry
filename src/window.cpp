@@ -138,8 +138,8 @@ bool GeoWindow::CreateGeoWindow()
 
     glfwSwapInterval(1);
 
-    m_origin[0] = m_width/2;
-    m_origin[1] = m_height/2;
+    m_origin[0] = m_width / 2;
+    m_origin[1] = m_height / 2;
 
     glViewport(0, 0, m_width, m_height);
     glEnable(GL_DEPTH_TEST);
@@ -243,8 +243,8 @@ void GeoWindow::OnLButtonDown(double xpos, double ypos)
     m_lastPt = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
     m_lastPt[1] = -m_lastPt[1];
 
-    m_lastPt[0] /= ((double)m_width/2);
-    m_lastPt[1] /= ((double)m_height/2);
+    m_lastPt[0] /= ((double)m_width / 2);
+    m_lastPt[1] /= ((double)m_height / 2);
 }
 
 void GeoWindow::OnLButtonUp(double xpos, double ypos)
@@ -259,8 +259,8 @@ void GeoWindow::OnRButtonDown(double xpos, double ypos)
     m_lastPt = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
     m_lastPt[1] = -m_lastPt[1];
 
-    m_lastPt[0] /= ((double)m_width/2);
-    m_lastPt[1] /= ((double)m_height/2);
+    m_lastPt[0] /= ((double)m_width / 2);
+    m_lastPt[1] /= ((double)m_height / 2);
 }
 
 void GeoWindow::OnRButtonUp(double xpos, double ypos)
@@ -285,22 +285,21 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
         GeoVector3D trans = pos - m_lastPt;
 
-        trans[0] /= ((double)m_width/2);
-        trans[1] /= ((double)m_height/2);
+        trans[0] /= ((double)m_width / 2);
+        trans[1] /= ((double)m_height / 2);
 
         m_mesh->Translate(trans);
 
         m_lastPt = pos;
     }
 
-    
-    if (m_mouseLBtnDown) 
+    if (m_mouseLBtnDown)
     {
         GeoVector3D ptNow = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
         ptNow[1] = -ptNow[1];
 
-        ptNow[0] /= ((double)m_width/2);
-        ptNow[1] /= ((double)m_height/2);
+        ptNow[0] /= ((double)m_width / 2);
+        ptNow[1] /= ((double)m_height / 2);
 
         GeoArcBall ball;
         GeoVector3D lastPt = ball.ProjectToBall(m_lastPt);
@@ -312,7 +311,6 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
         m_lastPt = ptNow;
     }
-    
 }
 
 void GeoWindow::OnClose()
@@ -332,8 +330,8 @@ void GeoWindow::OnFrameBufferSize(int width, int height)
 
     glViewport(0, 0, m_width, m_height);
 
-    m_origin[0] = m_width/2;
-    m_origin[1] = m_height/2;
+    m_origin[0] = m_width / 2;
+    m_origin[1] = m_height / 2;
 }
 
 void GeoWindow::OnScroll(double xoffset, double yoffset)

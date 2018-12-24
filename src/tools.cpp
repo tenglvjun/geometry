@@ -30,5 +30,5 @@ std::string Tools::GetLocalTime()
 
 bool Tools::IsZero(double v)
 {
-    return (fabs(v) < EPSILON) ?  true : false;
+    return (fabs(v) < EPSILON) ? true : false;
 }

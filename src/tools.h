@@ -7,16 +7,16 @@
 
 class Tools final
 {
-  public:
-    Tools();
-    ~Tools();
+public:
+  Tools();
+  ~Tools();
 
-  public:
-    SINGLETON_DECLARE(Tools)
-  public:
-    static double Radia2Degree(double r);
-    static std::string GetLocalTime();
-    static bool IsZero(double v);
+public:
+  SINGLETON_DECLARE(Tools)
+public:
+  static double Radia2Degree(double r);
+  static std::string GetLocalTime();
+  static bool IsZero(double v);
 };
 
 #endif // __TOOLS_HEAD_FILE__

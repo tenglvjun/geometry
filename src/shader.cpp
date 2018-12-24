@@ -105,10 +105,10 @@ void Shader::SetFloat(const std::string &name, float value) const
     glUniform1f(glGetUniformLocation(m_programID, name.c_str()), value);
 }
 
-void Shader::SetMatrix(const std::string &name, float* values) const
+void Shader::SetMatrix(const std::string &name, bool transpose, float *values) const
 {
     Use();
-    glUniformMatrix4fv(glGetUniformLocation(m_programID, name.c_str()), 1, GL_FALSE, values);
+    glUniformMatrix4fv(glGetUniformLocation(m_programID, name.c_str()), 1, transpose ? GL_TRUE : GL_FALSE, values);
 }
 
 void Shader::DeleteProgram()

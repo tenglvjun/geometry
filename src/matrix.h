@@ -17,13 +17,13 @@ public:
   double *operator[](const unsigned int idx);
   GeoVector3D operator*(const GeoVector3D &v) const;
   GeoVector2D operator*(const GeoVector2D &v) const;
-  GeoMatrix operator*(const GeoMatrix& m) const;
+  GeoMatrix operator*(const GeoMatrix &m) const;
 
 public:
   void SetIdentity();
-  void Flatten(std::vector<float>& data);
+  void Flatten(std::vector<float> &data);
   GeoMatrix SubMatrix(const unsigned int sRow, const unsigned int eRow, const unsigned int sCol, const unsigned int eCol);
-  void Replace(const unsigned int r, const unsigned int c, const GeoMatrix& m);
+  void Replace(const unsigned int r, const unsigned int c, const GeoMatrix &m);
   void Dump();
   unsigned int Rows() const;
   unsigned int Cols() const;

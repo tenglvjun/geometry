@@ -23,8 +23,8 @@ public:
 
   void Flatten(std::vector<double> &buf);
 
-  void Translate(const GeoVector3D& v);
-  void Rotation(const GeoMatrix& m);
+  void Translate(const GeoVector3D &v);
+  void Rotation(const GeoMatrix &m);
 
 public:
   static unsigned int Size();

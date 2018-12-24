@@ -3,7 +3,7 @@
 #include <iostream>
 
 GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices)
-: m_trans(4, 4)
+    : m_trans(4, 4)
 {
     m_vertices = vertices;
     m_indices = indices;
@@ -46,7 +46,7 @@ void GeoMesh::Translate(const GeoVector3D &v)
     m_shader.SetMatrix("transform", &buf[0]);
 }
 
-void GeoMesh::Rotate(const GeoMatrix& m)
+void GeoMesh::Rotate(const GeoMatrix &m)
 {
     GeoMatrix subMatrix = m_trans.SubMatrix(0, 3, 0, 3);
     subMatrix = m * subMatrix;
@@ -56,7 +56,7 @@ void GeoMesh::Rotate(const GeoMatrix& m)
     std::vector<float> buf;
     m_trans.Flatten(buf);
 
-    m_shader.SetMatrix("transform", &buf[0]);
+    m_shader.SetMatrix("transform", false, &buf[0]);
 }
 
 void GeoMesh::Setup()
@@ -102,5 +102,5 @@ void GeoMesh::Setup()
     std::vector<float> bufMatrix;
     m_trans.Flatten(bufMatrix);
 
-    m_shader.SetMatrix("transform", &bufMatrix[0]);
+    m_shader.SetMatrix("transform", false, &bufMatrix[0]);
 }

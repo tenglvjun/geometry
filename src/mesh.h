@@ -10,27 +10,27 @@
 
 class GeoMesh
 {
-  public:
-    GeoMesh(std::vector<GeoVertex>& vertices, std::vector<unsigned int>& indices);
-    virtual ~GeoMesh();
+public:
+  GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices);
+  virtual ~GeoMesh();
 
-  public:
-    void Draw();
-    void Translate(const GeoVector3D& v);
-    void Rotate(const GeoMatrix& m);
+public:
+  void Draw();
+  void Translate(const GeoVector3D &v);
+  void Rotate(const GeoMatrix &m);
 
-  private:
-    GeoMesh();
-    GeoMesh &operator=(const GeoMesh &mesh);
+private:
+  GeoMesh();
+  GeoMesh &operator=(const GeoMesh &mesh);
 
-    void Setup();
+  void Setup();
 
-  protected:
-    std::vector<GeoVertex> m_vertices;
-    std::vector<unsigned int> m_indices;
-    unsigned int m_vao, m_vbo, m_ebo;
-    Shader m_shader;
-    GeoMatrix  m_trans;
+protected:
+  std::vector<GeoVertex> m_vertices;
+  std::vector<unsigned int> m_indices;
+  unsigned int m_vao, m_vbo, m_ebo;
+  Shader m_shader;
+  GeoMatrix m_trans;
 };
 
 #endif // __MESH_HEAD_FILE__
