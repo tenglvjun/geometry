@@ -110,9 +110,9 @@ void GeoMatrix::SetIdentity()
 
 void GeoMatrix::Flatten(std::vector<float>& data)
 {
-    for(size_t i = 0; i < m_row; i++)
+    for(size_t j = 0; j < m_col; j++)
     {
-        for(size_t j = 0; j < m_col; j++)
+        for(size_t i = 0; i < m_row; i++)
         {
             data.push_back(m_data[i][j]);
         }

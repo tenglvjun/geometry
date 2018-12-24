@@ -46,8 +46,8 @@ protected:
   std::string m_title;
   bool m_mouseRBtnDown;
   bool m_mouseLBtnDown;
-  GeoVector2D m_lastPt;
-  GeoVector2D m_origin;
+  GeoVector3D m_lastPt;
+  GeoVector3D m_origin;
   GeoMesh *m_mesh;
 };
 

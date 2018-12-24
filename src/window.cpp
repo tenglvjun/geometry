@@ -239,7 +239,8 @@ void GeoWindow::OnLButtonDown(double xpos, double ypos)
 {
     m_mouseLBtnDown = true;
 
-    m_lastPt = GeoVector2D(xpos, ypos) - m_origin;
+    m_lastPt = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
+    m_lastPt[1] = -m_lastPt[1];
 }
 
 void GeoWindow::OnLButtonUp(double xpos, double ypos)
@@ -251,7 +252,8 @@ void GeoWindow::OnRButtonDown(double xpos, double ypos)
 {
     m_mouseRBtnDown = true;
 
-    m_lastPt = GeoVector2D(xpos, ypos) - m_origin;
+    m_lastPt = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
+    m_lastPt[1] = -m_lastPt[1];
 }
 
 void GeoWindow::OnRButtonUp(double xpos, double ypos)
@@ -269,21 +271,19 @@ void GeoWindow::OnMButtonUp(double xpos, double ypos)
 
 void GeoWindow::OnMouseMove(double xpos, double ypos)
 {
-    if (m_mouseLBtnDown)
+    if (m_mouseRBtnDown)
     {
-        GeoVector2D pos = GeoVector2D(xpos, ypos) - m_origin;
-        GeoVector2D trans = pos - m_lastPt;
+        GeoVector3D pos = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
+        pos[1] = -pos[1];
+
+        GeoVector3D trans = pos - m_lastPt;
 
         trans[0] /= ((double)m_width/2);
         trans[1] /= ((double)m_height/2);
 
-        m_mesh->Translate(GeoVector3D(trans[0], trans[1], 0.0f));
+        m_mesh->Translate(trans);
 
         m_lastPt = pos;
-    }
-
-    if (m_mouseRBtnDown)
-    {
     }
 }
 
