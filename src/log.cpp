@@ -28,11 +28,23 @@ void Log::OutputConsole(const std::string &msg, LogLevel_e level /* = Level_Info
     }
 }
 
-void Log::OutputConsole(int code, const std::string &msg, LogLevel_e level /* = Level_Info */)
+void Log::OutputConsole(int code, const std::string msg /* = "" */, LogLevel_e level /* = Level_Info */)
 {
     std::string now = Tools::GetInstance()->GetLocalTime();
 
     std::cout << now << " " << m_mapLevelMsg[level] << code << " " << msg << std::endl;
+
+    if (Level_Fatal == level)
+    {
+        abort();
+    }
+}
+
+void Log::OutputConsole(double value, const std::string msg /* = "" */, LogLevel_e level /* = Level_Info */)
+{
+    std::string now = Tools::GetInstance()->GetLocalTime();
+
+    std::cout << now << " " << m_mapLevelMsg[level] << value << " " << msg << std::endl;
 
     if (Level_Fatal == level)
     {

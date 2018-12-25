@@ -344,6 +344,7 @@ void GeoWindow::OnFrameBufferSize(int width, int height)
 
 void GeoWindow::OnScroll(double xoffset, double yoffset)
 {
+    GeoCamera::GetInstance()->Move(GeoVector3D(0.0f, 0.0f, (yoffset < 0.0f) ? -0.01f : 0.01f));
 }
 
 void GeoWindow::SetCallback()
