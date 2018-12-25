@@ -1,6 +1,6 @@
 #include "tools.h"
 #include <time.h>
-#include <math.h>
+#include <cmath>
 
 SINGLETON_IMPLEMENT(Tools)
 

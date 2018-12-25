@@ -1,6 +1,8 @@
 #include "vector.h"
 #include <assert.h>
-#include <math.h>
+#include <cmath>
+#include <iostream>
+#include "tools.h"
 
 GeoVector2D::GeoVector2D()
 {
@@ -103,6 +105,18 @@ GeoVector2D &GeoVector2D::operator-=(const GeoVector2D &v)
     m_coord[1] -= v[1];
 
     return *this;
+}
+
+bool GeoVector2D::operator==(const GeoVector2D &v)
+{
+    
+    if (Tools::GetInstance()->IsZero(m_coord[0] - v[0]) && 
+        Tools::GetInstance()->IsZero(m_coord[1] - v[1])) 
+    {
+        return true;
+    }
+    
+    return false;
 }
 
 void GeoVector2D::Normalize()
@@ -252,6 +266,19 @@ GeoVector3D GeoVector3D::operator*(const GeoVector3D &v) const
     return ret;
 }
 
+bool GeoVector3D::operator==(const GeoVector3D &v)
+{
+    
+    if (Tools::GetInstance()->IsZero(m_coord[0] - v[0]) && 
+        Tools::GetInstance()->IsZero(m_coord[1] - v[1]) && 
+        Tools::GetInstance()->IsZero(m_coord[2] - v[2])) 
+    {
+        return true;
+    }
+    
+    return false;
+}
+
 void GeoVector3D::Normalize()
 {
     double magnitude = Magnitude();
@@ -264,6 +291,11 @@ void GeoVector3D::Normalize()
 double GeoVector3D::Magnitude() const
 {
     return sqrt(m_coord[0] * m_coord[0] + m_coord[1] * m_coord[1] + m_coord[2] * m_coord[2]);
+}
+
+void GeoVector3D::Dump() const
+{
+    std::cout << m_coord[0] << "    " << m_coord[1] << "    " << m_coord[2] << std::endl;
 }
 
 unsigned int GeoVector3D::Size()
@@ -392,6 +424,20 @@ GeoVector4D &GeoVector4D::operator-=(const GeoVector4D &v)
     m_coord[3] -= v[3];
 
     return *this;
+}
+
+bool GeoVector4D::operator==(const GeoVector4D &v)
+{
+    
+    if (Tools::GetInstance()->IsZero(m_coord[0] - v[0]) && 
+        Tools::GetInstance()->IsZero(m_coord[1] - v[1]) && 
+        Tools::GetInstance()->IsZero(m_coord[2] - v[2]) && 
+        Tools::GetInstance()->IsZero(m_coord[3] - v[3])) 
+    {
+        return true;
+    }
+    
+    return false;
 }
 
 void GeoVector4D::Normalize()

@@ -1,5 +1,6 @@
 #include "arcball.h"
-#include <math.h>
+#include <cmath>
+#include "tools.h"
 
 GeoArcBall::GeoArcBall()
     : m_center(0.0f, 0.0f, 0.0f)
@@ -37,12 +38,12 @@ GeoVector3D GeoArcBall::ProjectToBall(const GeoVector3D &pt)
     ret[0] = pt[0];
     ret[1] = pt[1];
 
-    double powx = pow(pt[0], 2);
-    double powy = pow(pt[1], 2);
-    double powr = pow(m_radius, 2);
+    double powx = pt[0] * pt[0];
+    double powy = pt[1] * pt[1];
+    double powr = m_radius * m_radius;
     double powr2 = powr / ((double)2);
 
-    if ((powx + powy) > powr2)
+    if ((powx + powy) >= powr2)
     {
 
         ret[2] = powr2 / sqrt(powx + powy);

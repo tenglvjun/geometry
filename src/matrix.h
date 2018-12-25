@@ -24,7 +24,7 @@ public:
   void Flatten(std::vector<float> &data);
   GeoMatrix SubMatrix(const unsigned int sRow, const unsigned int eRow, const unsigned int sCol, const unsigned int eCol);
   void Replace(const unsigned int r, const unsigned int c, const GeoMatrix &m);
-  void Dump();
+  void Dump() const;
   unsigned int Rows() const;
   unsigned int Cols() const;
 

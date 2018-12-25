@@ -242,9 +242,6 @@ void GeoWindow::OnLButtonDown(double xpos, double ypos)
 
     m_lastPt = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
     m_lastPt[1] = -m_lastPt[1];
-
-    m_lastPt[0] /= ((double)m_width / 2);
-    m_lastPt[1] /= ((double)m_height / 2);
 }
 
 void GeoWindow::OnLButtonUp(double xpos, double ypos)
@@ -258,9 +255,6 @@ void GeoWindow::OnRButtonDown(double xpos, double ypos)
 
     m_lastPt = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
     m_lastPt[1] = -m_lastPt[1];
-
-    m_lastPt[0] /= ((double)m_width / 2);
-    m_lastPt[1] /= ((double)m_height / 2);
 }
 
 void GeoWindow::OnRButtonUp(double xpos, double ypos)
@@ -298,12 +292,23 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
         GeoVector3D ptNow = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
         ptNow[1] = -ptNow[1];
 
-        ptNow[0] /= ((double)m_width / 2);
-        ptNow[1] /= ((double)m_height / 2);
+        
+        if (ptNow == m_lastPt) {
+            return;
+        }
+        
+
+        GeoVector3D lastPt = m_lastPt;
+        lastPt[0] /= ((double)m_width / 2);
+        lastPt[1] /= ((double)m_height / 2);
+
+        GeoVector3D pos = ptNow;
+        pos[0] /= ((double)m_width / 2);
+        pos[1] /= ((double)m_height / 2);
 
         GeoArcBall ball;
-        GeoVector3D lastPt = ball.ProjectToBall(m_lastPt);
-        GeoVector3D pos = ball.ProjectToBall(ptNow);
+        lastPt = ball.ProjectToBall(lastPt);
+        pos = ball.ProjectToBall(pos);
 
         GeoMatrix rotate = ball.GetRotateMatrix(lastPt, pos);
 
