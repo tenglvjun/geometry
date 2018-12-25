@@ -128,7 +128,7 @@ void GeoMatrix::SetIdentity()
     }
 }
 
-void GeoMatrix::Flatten(std::vector<float> &data)
+void GeoMatrix::Flatten(std::vector<float> &data) const
 {
     for (unsigned int j = 0; j < m_col; j++)
     {

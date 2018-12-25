@@ -3,6 +3,7 @@
 #include <assert.h>
 #include "mesh.h"
 #include "arcball.h"
+#include "camera.h"
 
 #if !defined(DEFAULT_WINDOW_HEIGHT)
 #define DEFAULT_WINDOW_HEIGHT 480
@@ -144,6 +145,8 @@ bool GeoWindow::CreateGeoWindow()
     glViewport(0, 0, m_width, m_height);
     glEnable(GL_DEPTH_TEST);
 
+    GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 3.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
+
     return true;
 }
 
@@ -282,7 +285,7 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
         trans[0] /= ((double)m_width / 2);
         trans[1] /= ((double)m_height / 2);
 
-        m_mesh->Translate(trans);
+        GeoCamera::GetInstance()->Move(trans);
 
         m_lastPt = pos;
     }
@@ -312,7 +315,7 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
         GeoMatrix rotate = ball.GetRotateMatrix(lastPt, pos);
 
-        m_mesh->Rotate(rotate);
+        GeoCamera::GetInstance()->Rotate(rotate);
 
         m_lastPt = ptNow;
     }

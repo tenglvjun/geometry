@@ -1,9 +1,9 @@
 #include "mesh.h"
 #include "global_def.h"
 #include <iostream>
+#include "camera.h"
 
 GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices)
-    : m_trans(4, 4)
 {
     m_vertices = vertices;
     m_indices = indices;
@@ -26,37 +26,17 @@ GeoMesh::~GeoMesh()
 
 void GeoMesh::Draw()
 {
-    m_shader.Use();
+    const GeoMatrix& trans = GeoCamera::GetInstance()->GetMatrix();
+
+    std::vector<float> matrix;
+    trans.Flatten(matrix);
+
+    m_shader.SetMatrix("transform", false, &matrix[0]);
 
     // draw mesh
     glBindVertexArray(m_vao);
     glDrawElements(GL_TRIANGLES, (GLsizei)m_indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
-}
-
-void GeoMesh::Translate(const GeoVector3D &v)
-{
-    m_trans[0][3] += v[0];
-    m_trans[1][3] += v[1];
-    m_trans[2][3] += v[2];
-
-    std::vector<float> buf;
-    m_trans.Flatten(buf);
-
-    m_shader.SetMatrix("transform", false, &buf[0]);
-}
-
-void GeoMesh::Rotate(const GeoMatrix &m)
-{
-    GeoMatrix subMatrix = m_trans.SubMatrix(0, 3, 0, 3);
-    subMatrix = m * subMatrix;
-
-    m_trans.Replace(0, 0, subMatrix);
-
-    std::vector<float> buf;
-    m_trans.Flatten(buf);
-
-    m_shader.SetMatrix("transform", false, &buf[0]);
 }
 
 void GeoMesh::Setup()
@@ -97,10 +77,10 @@ void GeoMesh::Setup()
 
     m_shader.Init("shader/vertex/mesh.vs", "shader/fragment/mesh.fs");
 
-    m_trans.SetIdentity();
+    const GeoMatrix& trans = GeoCamera::GetInstance()->GetMatrix();
 
-    std::vector<float> bufMatrix;
-    m_trans.Flatten(bufMatrix);
+    std::vector<float> matrix;
+    trans.Flatten(matrix);
 
-    m_shader.SetMatrix("transform", false, &bufMatrix[0]);
+    m_shader.SetMatrix("transform", false, &matrix[0]);
 }

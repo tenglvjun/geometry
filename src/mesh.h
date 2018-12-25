@@ -16,8 +16,6 @@ public:
 
 public:
   void Draw();
-  void Translate(const GeoVector3D &v);
-  void Rotate(const GeoMatrix &m);
 
 private:
   GeoMesh();
@@ -30,7 +28,6 @@ protected:
   std::vector<unsigned int> m_indices;
   unsigned int m_vao, m_vbo, m_ebo;
   Shader m_shader;
-  GeoMatrix m_trans;
 };
 
 #endif // __MESH_HEAD_FILE__
