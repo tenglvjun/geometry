@@ -22,6 +22,7 @@ private:
   GeoMesh &operator=(const GeoMesh &mesh);
 
   void Setup();
+  void UpdateMatrix();
 
 protected:
   std::vector<GeoVertex> m_vertices;

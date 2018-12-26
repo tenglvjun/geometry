@@ -29,19 +29,7 @@ GeoMesh::~GeoMesh()
 
 void GeoMesh::Draw()
 {
-    std::vector<float> matrix;
-    m_model.Flatten(matrix);
-    m_shader.SetMatrix("model", false, &matrix[0]);
-
-    const GeoMatrix& view = GeoCamera::GetInstance()->GetViewMatrix();
-    matrix.clear();
-    view.Flatten(matrix);
-    m_shader.SetMatrix("view", false, &matrix[0]);
-
-    const GeoMatrix& projection = GeoCamera::GetInstance()->GetProjectionMatrix();
-    matrix.clear();
-    projection.Flatten(matrix);
-    m_shader.SetMatrix("projection", false, &matrix[0]);
+    UpdateMatrix();
 
     // draw mesh
     glBindVertexArray(m_vao);
@@ -87,6 +75,11 @@ void GeoMesh::Setup()
 
     m_shader.Init("shader/vertex/mesh.vs", "shader/fragment/mesh.fs");
 
+    UpdateMatrix();
+}
+
+void GeoMesh::UpdateMatrix()
+{
     std::vector<float> matrix;
     m_model[0][3] = m_pos[0];
     m_model[1][3] = m_pos[1];
