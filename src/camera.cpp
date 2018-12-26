@@ -3,19 +3,21 @@
 SINGLETON_IMPLEMENT(GeoCamera);
 
 GeoCamera::GeoCamera()
-    : m_view(4, 4)
+    : m_view(4, 4), m_projection(4, 4)
 {
     m_view.SetIdentity();
+    m_projection.SetIdentity();
 }
 
 GeoCamera::GeoCamera(const GeoCamera &camera)
-    : m_view(4, 4)
+    : m_view(4, 4), m_projection(4, 4)
 {
     m_pos = camera.m_pos;
     m_font = camera.m_font;
     m_up = camera.m_up;
     m_side = camera.m_side;
     m_view = camera.m_view;
+    m_projection = camera.m_projection;
 }
 
 GeoCamera::~GeoCamera()
@@ -34,6 +36,7 @@ GeoCamera &GeoCamera::operator=(const GeoCamera &camera)
     m_up = camera.m_up;
     m_side = camera.m_side;
     m_view = camera.m_view;
+    m_projection = camera.m_projection;
 
     return *this;
 }
@@ -74,9 +77,28 @@ void GeoCamera::ResetCamera(const GeoVector3D &pos, const GeoVector3D& center,  
     m_view = m1 * m2;
 }
 
+void GeoCamera::SetFrustum(const double left, const double right, const double top, const double bottom, const double near, const double far)
+{
+    m_projection.SetIdentity();
+
+    m_projection[0][0] = 2 * near / (right - left);
+    m_projection[0][2] = (right + left) / (right - left);
+    m_projection[1][1] = 2 * near / (top - bottom);
+    m_projection[1][2] = (top + bottom) / (top - bottom);
+    m_projection[2][2] = -((far + near) / (far - near));
+    m_projection[2][3] = -((2 * near * far) / (far - near));
+    m_projection[3][2] = -1;
+    m_projection[3][3] = 0; 
+}
+
 const GeoMatrix &GeoCamera::GetViewMatrix() const
 {
     return m_view;
+}
+
+const GeoMatrix &GeoCamera::GetProjectionMatrix() const
+{
+    return m_projection;
 }
 
 void GeoCamera::Move(const GeoVector3D &v)
