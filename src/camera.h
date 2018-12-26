@@ -16,20 +16,20 @@ class GeoCamera
     GeoCamera &operator=(const GeoCamera &camera);
 
   public:
-    void ResetCamera(const GeoVector3D &pos, const GeoVector3D &up);
-    const GeoMatrix &GetMatrix() const;
+    void ResetCamera(const GeoVector3D &pos, const GeoVector3D& center,  const GeoVector3D &up);
     void Move(const GeoVector3D &v);
     void Rotate(const GeoMatrix &m);
+    const GeoMatrix &GetViewMatrix() const;
 
   public:
     SINGLETON_DECLARE(GeoCamera);
 
   protected:
     GeoVector3D m_pos;
-    GeoVector3D m_dir;
+    GeoVector3D m_font;
     GeoVector3D m_up;
-    GeoVector3D m_left;
-    GeoMatrix m_trans;
+    GeoVector3D m_side;
+    GeoMatrix m_view;
 };
 
 #endif // __CAMERA_HEAD_FILE__

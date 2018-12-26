@@ -3,10 +3,13 @@
 #include <iostream>
 #include "camera.h"
 
-GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices)
+GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices, GeoVector3D& pos)
+    : m_model(4, 4)
 {
     m_vertices = vertices;
     m_indices = indices;
+    m_pos = pos;
+    m_model.SetIdentity();
     m_vao = m_vbo = m_ebo = 0;
 
     Setup();
@@ -26,12 +29,15 @@ GeoMesh::~GeoMesh()
 
 void GeoMesh::Draw()
 {
-    const GeoMatrix& trans = GeoCamera::GetInstance()->GetMatrix();
-
     std::vector<float> matrix;
+    m_model.Flatten(matrix);
+    m_shader.SetMatrix("model", false, &matrix[0]);
+
+    const GeoMatrix& trans = GeoCamera::GetInstance()->GetViewMatrix();
+    matrix.clear();
     trans.Flatten(matrix);
 
-    m_shader.SetMatrix("transform", false, &matrix[0]);
+    m_shader.SetMatrix("view", false, &matrix[0]);
 
     // draw mesh
     glBindVertexArray(m_vao);
@@ -77,10 +83,16 @@ void GeoMesh::Setup()
 
     m_shader.Init("shader/vertex/mesh.vs", "shader/fragment/mesh.fs");
 
-    const GeoMatrix& trans = GeoCamera::GetInstance()->GetMatrix();
-
     std::vector<float> matrix;
+    m_model[0][3] = m_pos[0];
+    m_model[1][3] = m_pos[1];
+    m_model[2][3] = m_pos[2];
+    m_model.Flatten(matrix);
+    m_shader.SetMatrix("model", false, &matrix[0]);
+
+    const GeoMatrix& trans = GeoCamera::GetInstance()->GetViewMatrix();
+    matrix.clear();
     trans.Flatten(matrix);
 
-    m_shader.SetMatrix("transform", false, &matrix[0]);
+    m_shader.SetMatrix("view", false, &matrix[0]);
 }

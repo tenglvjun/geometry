@@ -145,7 +145,7 @@ bool GeoWindow::CreateGeoWindow()
     glViewport(0, 0, m_width, m_height);
     glEnable(GL_DEPTH_TEST);
 
-    GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 3.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
+    GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 3.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
 
     return true;
 }
@@ -179,7 +179,7 @@ void GeoWindow::ShowGeoWindow()
     indices.push_back(1);
     indices.push_back(2);
 
-    m_mesh = new GeoMesh(vertices, indices);
+    m_mesh = new GeoMesh(vertices, indices, GeoVector3D(0.3f, 0.4f, 0.0f));
 
     int a = sizeof(GeoVertex);
 
@@ -344,7 +344,6 @@ void GeoWindow::OnFrameBufferSize(int width, int height)
 
 void GeoWindow::OnScroll(double xoffset, double yoffset)
 {
-    GeoCamera::GetInstance()->Move(GeoVector3D(0.0f, 0.0f, (yoffset < 0.0f) ? -0.01f : 0.01f));
 }
 
 void GeoWindow::SetCallback()

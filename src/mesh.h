@@ -11,7 +11,7 @@
 class GeoMesh
 {
 public:
-  GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices);
+  GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices, GeoVector3D& pos);
   virtual ~GeoMesh();
 
 public:
@@ -26,6 +26,8 @@ private:
 protected:
   std::vector<GeoVertex> m_vertices;
   std::vector<unsigned int> m_indices;
+  GeoVector3D m_pos;
+  GeoMatrix m_model;
   unsigned int m_vao, m_vbo, m_ebo;
   Shader m_shader;
 };
