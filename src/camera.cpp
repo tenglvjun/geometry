@@ -1,4 +1,5 @@
 #include "camera.h"
+#include <iostream>
 
 SINGLETON_IMPLEMENT(GeoCamera);
 
@@ -59,20 +60,20 @@ void GeoCamera::ResetCamera(const GeoVector3D &pos, const GeoVector3D& center,  
     GeoMatrix m1(4, 4);
     m1.SetIdentity();
     m1[0][0] = m_side[0];
-    m1[1][0] = m_side[1];
-    m1[2][0] = m_side[2];
-    m1[0][1] = m_up[0];
+    m1[0][1] = m_side[1];
+    m1[0][2] = m_side[2];
+    m1[1][0] = m_up[0];
     m1[1][1] = m_up[1];
-    m1[2][1] = m_up[2];
-    m1[0][2] = -m_font[0];
-    m1[1][2] = -m_font[1];
+    m1[1][2] = m_up[2];
+    m1[2][0] = -m_font[0];
+    m1[2][1] = -m_font[1];
     m1[2][2] = -m_font[2];
 
     GeoMatrix m2(4, 4);
     m2.SetIdentity();
-    m2[3][0] = -m_pos[0];
-    m2[3][1] = -m_pos[1];
-    m2[3][2] = -m_pos[2];
+    m2[0][3] = -m_pos[0];
+    m2[1][3] = -m_pos[1];
+    m2[2][3] = -m_pos[2];
 
     m_view = m1 * m2;
 }
@@ -88,7 +89,7 @@ void GeoCamera::SetFrustum(const double left, const double right, const double t
     m_projection[2][2] = -((far + near) / (far - near));
     m_projection[2][3] = -((2 * near * far) / (far - near));
     m_projection[3][2] = -1;
-    m_projection[3][3] = 0; 
+    m_projection[3][3] = 0;
 }
 
 const GeoMatrix &GeoCamera::GetViewMatrix() const

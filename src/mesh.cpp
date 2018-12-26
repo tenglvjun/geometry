@@ -33,9 +33,9 @@ void GeoMesh::Draw()
     m_model.Flatten(matrix);
     m_shader.SetMatrix("model", false, &matrix[0]);
 
-    const GeoMatrix& trans = GeoCamera::GetInstance()->GetViewMatrix();
+    const GeoMatrix& view = GeoCamera::GetInstance()->GetViewMatrix();
     matrix.clear();
-    trans.Flatten(matrix);
+    view.Flatten(matrix);
     m_shader.SetMatrix("view", false, &matrix[0]);
 
     const GeoMatrix& projection = GeoCamera::GetInstance()->GetProjectionMatrix();
