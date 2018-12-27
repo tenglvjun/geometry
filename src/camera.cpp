@@ -1,13 +1,26 @@
 #include "camera.h"
 #include <iostream>
 
+GeoFrustum::GeoFrustum()
+{
+    m_left = m_right = m_top = m_bottom = m_near = m_far = 0.0f;
+}
+
+GeoFrustum::GeoFrustum(const double left, const double right, const double bottom, const double top, const double near, const double far)
+{
+    m_left = left;
+    m_right = right;
+    m_top = top;
+    m_bottom = bottom;
+    m_near = near;
+    m_far = far;
+}
+
 SINGLETON_IMPLEMENT(GeoCamera);
 
 GeoCamera::GeoCamera()
     : m_view(4, 4), m_projection(4, 4), m_sensitivity(0.1f), m_projType(PT_None)
 {
-    m_left = m_right = m_top = m_bottom = m_near = m_far = 0.0f;
-
     m_view.SetIdentity();
     m_projection.SetIdentity();
 }
@@ -44,13 +57,13 @@ GeoCamera &GeoCamera::operator=(const GeoCamera &camera)
     return *this;
 }
 
-void GeoCamera::ResetCamera(const GeoVector3D &pos, const GeoVector3D& center,  const GeoVector3D &up)
+void GeoCamera::ResetCamera(const GeoVector3D &pos, const GeoVector3D &center, const GeoVector3D &up)
 {
     m_pos = pos;
     m_center = center;
     m_up = up;
-    
-   m_front = m_center - m_pos;
+
+    m_front = m_center - m_pos;
     m_front.Normalize();
 
     m_side = m_front * m_up;
@@ -81,44 +94,10 @@ void GeoCamera::ResetCamera(const GeoVector3D &pos, const GeoVector3D& center,  
     m_view = m1 * m2;
 }
 
-void GeoCamera::SetFrustum(const double left, const double right, const double bottom, const double top, const double near, const double far)
+void GeoCamera::SetFrustum(const GeoFrustum &frustum, ProjType pt)
 {
-    m_left = left;
-    m_right = right;
-    m_top = top;
-    m_bottom = bottom;
-    m_near = near;
-    m_far = far;
-
-    m_projType = PT_Persp;
-
-    UpdateProjection();
-}
-
-void GeoCamera::SetFrustum(const double left, const double right, const double bottom, const double top, const double near)
-{
-    m_left = left;
-    m_right = right;
-    m_top = top;
-    m_bottom = bottom;
-    m_near = near;
-    m_far = 0.0f;
-
-    m_projType = PT_Persp_Infinite;
-
-    UpdateProjection();
-}
-
-void GeoCamera::SetOrtho(const double left, const double right, const double bottom, const double top, const double near, const double far)
-{
-    m_left = left;
-    m_right = right;
-    m_top = top;
-    m_bottom = bottom;
-    m_near = near;
-    m_far = far;
-
-    m_projType = PT_Ortho;
+    m_frustum = frustum;
+    m_projType = pt;
 
     UpdateProjection();
 }
@@ -150,9 +129,7 @@ void GeoCamera::Rotate(const GeoMatrix &m)
 
 void GeoCamera::Scale(bool enlarge)
 {
-    double zoom = enlarge ? (1 + m_sensitivity) : (1 - m_sensitivity);
-
-    m_near *= zoom;
+    m_frustum.m_near += (enlarge ? (m_sensitivity) : (-m_sensitivity));
 
     UpdateProjection();
 }
@@ -161,47 +138,47 @@ void GeoCamera::UpdateProjection()
 {
     switch (m_projType)
     {
-        case PT_Persp:
-        {
-            m_projection.SetIdentity();
-            m_projection[0][0] = 2 * m_near / (m_right - m_left);
-            m_projection[0][2] = (m_right + m_left) / (m_right - m_left);
-            m_projection[1][1] = 2 * m_near / (m_top - m_bottom);
-            m_projection[1][2] = (m_top + m_bottom) / (m_top - m_bottom);
-            m_projection[2][2] = -((m_far + m_near) / (m_far - m_near));
-            m_projection[2][3] = -((2 * m_near * m_far) / (m_far - m_near));
-            m_projection[3][2] = -1;
-            m_projection[3][3] = 0;
+    case PT_Persp:
+    {
+        m_projection.SetIdentity();
+        m_projection[0][0] = 2 * m_frustum.m_near / (m_frustum.m_right - m_frustum.m_left);
+        m_projection[0][2] = (m_frustum.m_right + m_frustum.m_left) / (m_frustum.m_right - m_frustum.m_left);
+        m_projection[1][1] = 2 * m_frustum.m_near / (m_frustum.m_top - m_frustum.m_bottom);
+        m_projection[1][2] = (m_frustum.m_top + m_frustum.m_bottom) / (m_frustum.m_top - m_frustum.m_bottom);
+        m_projection[2][2] = -((m_frustum.m_far + m_frustum.m_near) / (m_frustum.m_far - m_frustum.m_near));
+        m_projection[2][3] = -((2 * m_frustum.m_near * m_frustum.m_far) / (m_frustum.m_far - m_frustum.m_near));
+        m_projection[3][2] = -1;
+        m_projection[3][3] = 0;
 
-            break;
-        }
-        case PT_Persp_Infinite:
-        {
-            m_projection.SetIdentity();
-            m_projection[0][0] = 2 * m_near / (m_right - m_left);
-            m_projection[0][2] = (m_right + m_left) / (m_right - m_left);
-            m_projection[1][1] = 2 * m_near / (m_top - m_bottom);
-            m_projection[1][2] = (m_top + m_bottom) / (m_top - m_bottom);
-            m_projection[2][2] = -1;
-            m_projection[2][3] = -2 * m_near;
-            m_projection[3][2] = -1;
-            m_projection[3][3] = 0;
+        break;
+    }
+    case PT_Persp_Infinite:
+    {
+        m_projection.SetIdentity();
+        m_projection[0][0] = 2 * m_frustum.m_near / (m_frustum.m_right - m_frustum.m_left);
+        m_projection[0][2] = (m_frustum.m_right + m_frustum.m_left) / (m_frustum.m_right - m_frustum.m_left);
+        m_projection[1][1] = 2 * m_frustum.m_near / (m_frustum.m_top - m_frustum.m_bottom);
+        m_projection[1][2] = (m_frustum.m_top + m_frustum.m_bottom) / (m_frustum.m_top - m_frustum.m_bottom);
+        m_projection[2][2] = -1;
+        m_projection[2][3] = -2 * m_frustum.m_near;
+        m_projection[3][2] = -1;
+        m_projection[3][3] = 0;
 
-            break;
-        }
-        case PT_Ortho:
-        {
-            m_projection.SetIdentity();
-            m_projection[0][0] = 2 / (m_right - m_left);
-            m_projection[0][3] = -(m_right + m_left) / (m_right - m_left);
-            m_projection[1][1] = 2 / (m_top - m_bottom);
-            m_projection[1][3] = -(m_top + m_bottom) / (m_top - m_bottom);
-            m_projection[2][2] = -2 / (m_far - m_near);
-            m_projection[2][3] = -(m_near + m_far) / (m_far - m_near);
+        break;
+    }
+    case PT_Ortho:
+    {
+        m_projection.SetIdentity();
+        m_projection[0][0] = 2 / (m_frustum.m_right - m_frustum.m_left);
+        m_projection[0][3] = -(m_frustum.m_right + m_frustum.m_left) / (m_frustum.m_right - m_frustum.m_left);
+        m_projection[1][1] = 2 / (m_frustum.m_top - m_frustum.m_bottom);
+        m_projection[1][3] = -(m_frustum.m_top + m_frustum.m_bottom) / (m_frustum.m_top - m_frustum.m_bottom);
+        m_projection[2][2] = -2 / (m_frustum.m_far - m_frustum.m_near);
+        m_projection[2][3] = -(m_frustum.m_near + m_frustum.m_far) / (m_frustum.m_far - m_frustum.m_near);
 
-            break;
-        }
-        default:
-            break;
+        break;
+    }
+    default:
+        break;
     }
 }

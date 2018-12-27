@@ -147,7 +147,9 @@ bool GeoWindow::CreateGeoWindow()
     glEnable(GL_DEPTH_TEST);
 
     GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 5.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
-    GeoCamera::GetInstance()->SetFrustum(-1.0f, 1.0f, -1.0f, 1.0f, 2.0f, -10.f);
+
+    GeoFrustum frustum(-1.0f, 1.0f, -1.0f, 1.0f, 2.0f, -10.f);
+    GeoCamera::GetInstance()->SetFrustum(frustum, PT_Persp);
 
     return true;
 }
@@ -300,10 +302,10 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
         GeoVector3D ptNow = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
         ptNow[1] = -ptNow[1];
 
-        if (ptNow == m_lastPt) {
+        if (ptNow == m_lastPt)
+        {
             return;
         }
-        
 
         GeoVector3D lastPt = m_lastPt;
         lastPt[0] /= ((double)m_width / 2);
