@@ -22,6 +22,8 @@ class GeoCamera
     // far -> infinite
     void SetFrustum(const double left, const double right, const double bottom, const double top, const double near);
 
+    void SetOrtho(const double left, const double right, const double bottom, const double top, const double near);
+
     void Move(const GeoVector3D &v);
     void Rotate(const GeoMatrix &m);
     const GeoMatrix &GetViewMatrix() const;

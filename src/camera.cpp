@@ -105,6 +105,18 @@ void GeoCamera::SetFrustum(const double left, const double right, const double b
     m_projection[3][3] = 0;
 }
 
+void GeoCamera::SetOrtho(const double left, const double right, const double bottom, const double top, const double near)
+{
+    m_projection.SetIdentity();
+
+    m_projection[0][0] = 2 / (right - left);
+    m_projection[0][3] = -(right + left) / (right - left);
+    m_projection[1][1] = 2 / (top - bottom);
+    m_projection[1][3] = -(top + bottom) / (top - bottom);
+    m_projection[2][2] = -2 / (far - near));
+    m_projection[2][3] = -(near + far) / (far - near);
+}
+
 const GeoMatrix &GeoCamera::GetViewMatrix() const
 {
     return m_view;
