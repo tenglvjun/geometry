@@ -145,7 +145,7 @@ bool GeoWindow::CreateGeoWindow()
     glViewport(0, 0, m_width, m_height);
     glEnable(GL_DEPTH_TEST);
 
-    GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 3.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, -1.0f, 0.0f));
+    GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 3.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
     GeoCamera::GetInstance()->SetFrustum(-1.0f, 1.0f, -1.0f, 1.0f, 2.0f, -10.0f);
 
     return true;
@@ -182,7 +182,7 @@ void GeoWindow::ShowGeoWindow()
     indices.push_back(1);
     indices.push_back(2);
 
-    GeoVector3D pos(0.3f, 0.4f, 0.0f);
+    GeoVector3D pos(0.0f, 0.0f, 0.0f);
     m_mesh = new GeoMesh(vertices, indices, pos);
 
     int a = sizeof(GeoVertex);

@@ -17,7 +17,7 @@ class GeoCamera
 
   public:
     void ResetCamera(const GeoVector3D &pos, const GeoVector3D& center,  const GeoVector3D &up);
-    void SetFrustum(const double left, const double right, const double top, const double bottom, const double near, const double far);
+    void SetFrustum(const double left, const double right, const double bottom, const double top, const double near, const double far);
     void Move(const GeoVector3D &v);
     void Rotate(const GeoMatrix &m);
     const GeoMatrix &GetViewMatrix() const;
@@ -28,7 +28,7 @@ class GeoCamera
 
   protected:
     GeoVector3D m_pos;
-    GeoVector3D m_font;
+    GeoVector3D m_front;
     GeoVector3D m_up;
     GeoVector3D m_side;
     GeoMatrix m_view;
