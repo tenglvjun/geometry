@@ -11,7 +11,7 @@
 class GeoMesh
 {
 public:
-  GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices, GeoVector3D& pos);
+  GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices, GeoVector3D &pos);
   virtual ~GeoMesh();
 
 public:
