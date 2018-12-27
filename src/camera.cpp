@@ -79,6 +79,8 @@ void GeoCamera::ResetCamera(const GeoVector3D &pos, const GeoVector3D& center,  
 
 void GeoCamera::SetFrustum(const double left, const double right, const double bottom, const double top, const double near, const double far)
 {
+    m_projection.SetIdentity();
+
     m_projection[0][0] = 2 * near / (right - left);
     m_projection[0][2] = (right + left) / (right - left);
     m_projection[1][1] = 2 * near / (top - bottom);
@@ -87,8 +89,20 @@ void GeoCamera::SetFrustum(const double left, const double right, const double b
     m_projection[2][3] = -((2 * near * far) / (far - near));
     m_projection[3][2] = -1;
     m_projection[3][3] = 0;
+}
 
-    m_projection.Dump();
+void GeoCamera::SetFrustum(const double left, const double right, const double bottom, const double top, const double near)
+{
+    m_projection.SetIdentity();
+
+    m_projection[0][0] = 2 * near / (right - left);
+    m_projection[0][2] = (right + left) / (right - left);
+    m_projection[1][1] = 2 * near / (top - bottom);
+    m_projection[1][2] = (top + bottom) / (top - bottom);
+    m_projection[2][2] = -1;
+    m_projection[2][3] = -2 * near;
+    m_projection[3][2] = -1;
+    m_projection[3][3] = 0;
 }
 
 const GeoMatrix &GeoCamera::GetViewMatrix() const

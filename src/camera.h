@@ -17,7 +17,11 @@ class GeoCamera
 
   public:
     void ResetCamera(const GeoVector3D &pos, const GeoVector3D& center,  const GeoVector3D &up);
+
     void SetFrustum(const double left, const double right, const double bottom, const double top, const double near, const double far);
+    // far -> infinite
+    void SetFrustum(const double left, const double right, const double bottom, const double top, const double near);
+
     void Move(const GeoVector3D &v);
     void Rotate(const GeoMatrix &m);
     const GeoMatrix &GetViewMatrix() const;

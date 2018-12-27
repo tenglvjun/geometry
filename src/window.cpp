@@ -146,7 +146,7 @@ bool GeoWindow::CreateGeoWindow()
     glEnable(GL_DEPTH_TEST);
 
     GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 3.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
-    GeoCamera::GetInstance()->SetFrustum(-1.0f, 1.0f, -1.0f, 1.0f, 2.0f, -10.0f);
+    GeoCamera::GetInstance()->SetFrustum(-1.0f, 1.0f, -1.0f, 1.0f, 2.0f);
 
     return true;
 }
@@ -248,6 +248,7 @@ void GeoWindow::OnLButtonDown(double xpos, double ypos)
     m_mouseLBtnDown = true;
 
     m_lastPt = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
+    m_lastPt[1] = -m_lastPt[1];
 }
 
 void GeoWindow::OnLButtonUp(double xpos, double ypos)
@@ -260,6 +261,7 @@ void GeoWindow::OnRButtonDown(double xpos, double ypos)
     m_mouseRBtnDown = true;
 
     m_lastPt = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
+    m_lastPt[1] = -m_lastPt[1];
 }
 
 void GeoWindow::OnRButtonUp(double xpos, double ypos)
@@ -280,6 +282,7 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
     if (m_mouseRBtnDown)
     {
         GeoVector3D pos = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
+        pos[1] = -pos[1];
 
         GeoVector3D trans = pos - m_lastPt;
 
@@ -293,7 +296,9 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
     if (m_mouseLBtnDown)
     {
-        GeoVector3D ptNow = GeoVector3D(xpos, ypos, 0.0f) - m_origin;  
+        GeoVector3D ptNow = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
+        ptNow[1] = -ptNow[1];
+
         if (ptNow == m_lastPt) {
             return;
         }
