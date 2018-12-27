@@ -4,6 +4,7 @@
 #include "mesh.h"
 #include "arcball.h"
 #include "camera.h"
+#include "tools.h"
 
 #if !defined(DEFAULT_WINDOW_HEIGHT)
 #define DEFAULT_WINDOW_HEIGHT 480
@@ -145,8 +146,8 @@ bool GeoWindow::CreateGeoWindow()
     glViewport(0, 0, m_width, m_height);
     glEnable(GL_DEPTH_TEST);
 
-    GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 3.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
-    GeoCamera::GetInstance()->SetFrustum(-1.0f, 1.0f, -1.0f, 1.0f, 2.0f);
+    GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 5.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
+    GeoCamera::GetInstance()->SetFrustum(-1.0f, 1.0f, -1.0f, 1.0f, 2.0f, -10.f);
 
     return true;
 }
@@ -347,6 +348,7 @@ void GeoWindow::OnFrameBufferSize(int width, int height)
 
 void GeoWindow::OnScroll(double xoffset, double yoffset)
 {
+    GeoCamera::GetInstance()->Scale(Tools::GetInstance()->IsZero(1.0f + yoffset));
 }
 
 void GeoWindow::SetCallback()
