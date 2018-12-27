@@ -34,6 +34,7 @@ GeoCamera::GeoCamera(const GeoCamera &camera)
     m_side = camera.m_side;
     m_view = camera.m_view;
     m_projection = camera.m_projection;
+    m_frustum = camera.m_frustum;
 }
 
 GeoCamera::~GeoCamera()
@@ -53,6 +54,7 @@ GeoCamera &GeoCamera::operator=(const GeoCamera &camera)
     m_side = camera.m_side;
     m_view = camera.m_view;
     m_projection = camera.m_projection;
+    m_frustum = camera.m_frustum;
 
     return *this;
 }
