@@ -20,6 +20,7 @@ public:
   GeoVector2D operator-(const GeoVector2D &v) const;
   GeoVector2D &operator-=(const GeoVector2D &v);
   bool operator==(const GeoVector2D &v);
+  double operator%(const GeoVector2D &v) const;
 
 public:
   void Normalize();

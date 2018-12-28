@@ -119,6 +119,11 @@ bool GeoVector2D::operator==(const GeoVector2D &v)
     return false;
 }
 
+double GeoVector2D::operator%(const GeoVector2D &v) const
+{
+    return m_coord[0]*v[0] + m_coord[1]*v[1];
+}
+
 void GeoVector2D::Normalize()
 {
     double magnitude = Magnitude();
