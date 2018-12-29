@@ -148,10 +148,15 @@ bool GeoWindow::CreateGeoWindow()
     glEnable(GL_DEPTH_TEST);
 
     GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 10.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
-    GeoFrustum frustum(-1.0f, 1.0f, -1.0f, 1.0f, 2.0f, -10.f);
+
+    double x, y, maximum;
+    maximum = Tools::GetInstance()->Maximum(m_width, m_height);
+    x = m_width / maximum;
+    y = m_height / maximum;
+    GeoFrustum frustum(-x, x, -1.0f, 1.0f, 2.0f, -10.f);
     GeoCamera::GetInstance()->SetFrustum(frustum, PT_Persp);
 
-    GeoLight::GetInstance()->SetLight(GeoVector3D(1.0f, 1.0f, 5.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoColor(1.0f, 1.0f, 1.0f, 1.0f));
+    GeoLight::GetInstance()->SetLight(GeoVector3D(1.0f, 1.0f, 10.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoColor(1.0f, 1.0f, 1.0f, 1.0f));
 
     return true;
 }
@@ -391,6 +396,13 @@ void GeoWindow::OnFrameBufferSize(int width, int height)
     m_origin[1] = m_height / 2;
 
     glViewport(0, 0, m_width, m_height);
+
+    double x, y, maximum;
+    maximum = Tools::GetInstance()->Maximum(m_width, m_height);
+    x = m_width / maximum;
+    y = m_height / maximum;
+    GeoFrustum frustum(-x, x, -1.0f, 1.0f, 2.0f, -10.f);
+    GeoCamera::GetInstance()->SetFrustum(frustum, PT_Persp);
 }
 
 void GeoWindow::OnScroll(double xoffset, double yoffset)
