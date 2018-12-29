@@ -1,6 +1,8 @@
 #if !defined(__COLOR_HEAD_FILE__)
 #define __COLOR_HEAD_FILE__
 
+#include <vector>
+
 class GeoColor
 {
 public:
@@ -20,6 +22,7 @@ public:
 
 public:
   void Scale(const double scale, bool applyAlpha);
+  void Flatten(std::vector<float> &data) const;
 
 public:
   static unsigned int Size();

@@ -27,6 +27,7 @@ private:
 protected:
   std::vector<GeoVertex> m_vertices;
   std::vector<unsigned int> m_indices;
+  std::vector<GeoVector3D> m_normals;
   GeoVector3D m_pos;
   GeoMatrix m_model;
   unsigned int m_vao, m_vbo, m_ebo;

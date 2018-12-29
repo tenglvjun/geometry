@@ -8,7 +8,8 @@
 class GeoLight
 {
 public:
-    GeoLight(const GeoVector3D& pos, const GeoVector3D& dir, const GeoColor& color);
+    GeoLight();
+    GeoLight(const GeoVector3D& pos, const GeoVector3D& origin, const GeoColor& color);
     GeoLight(const GeoLight& light);
     virtual ~GeoLight();
 
@@ -16,14 +17,16 @@ public:
     GeoLight& operator=(const GeoLight& light);
 
 public:
-    const GeoVector3D& LightPosition() const;
-    void LightPosition(const GeoVector3D& pos);
+    void SetLight(const GeoVector3D& pos, const GeoVector3D& origin, const GeoColor& color);
 
-    const GeoVector3D& LightDirection() const;
-    void LightDirection(const GeoVector3D& dir);
+    const GeoVector3D& Position() const;
+    void Position(const GeoVector3D& pos);
 
-    const GeoColor& LightColor() const;
-    void LightColor(const GeoColor& color);
+    const GeoVector3D& Direction() const;
+    void Direction(const GeoVector3D& dir);
+
+    const GeoColor& Color() const;
+    void Color(const GeoColor& color);
 
     double AmbientStrength() const;
     void AmbientStrength(const double ambientStrength);
@@ -39,9 +42,6 @@ public:
 
 public:
     SINGLETON_DECLARE(GeoLight);
-
-private:
-    GeoLight();
 
 protected:
     GeoVector3D m_pos;

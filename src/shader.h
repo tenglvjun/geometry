@@ -18,6 +18,7 @@ public:
   void SetBool(const std::string &name, bool value) const;
   void SetInt(const std::string &name, int value) const;
   void SetFloat(const std::string &name, float value) const;
+  void SetVector(const std::string &name, unsigned int dim, float *values) const;
   void SetMatrix(const std::string &name, bool transpose, float *values) const;
 
 protected:

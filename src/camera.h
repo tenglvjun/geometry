@@ -47,7 +47,7 @@ public:
   const GeoMatrix &GetViewMatrix() const;
   const GeoMatrix &GetProjectionMatrix() const;\
 
-  const GeoVector3D& CameraPosition() const;
+  const GeoVector3D& Position() const;
 
 public:
   SINGLETON_DECLARE(GeoCamera);

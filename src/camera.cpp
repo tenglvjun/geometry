@@ -136,7 +136,7 @@ void GeoCamera::Scale(bool enlarge)
     UpdateProjection();
 }
 
-const GeoVector3D& GeoCamera::CameraPosition() const
+const GeoVector3D& GeoCamera::Position() const
 {
     return m_pos;
 }

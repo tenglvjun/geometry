@@ -81,20 +81,40 @@ void GeoMesh::Setup()
 
 void GeoMesh::UpdateMatrix()
 {
-    std::vector<float> matrix;
+    std::vector<float> value;
     m_model[0][3] = m_pos[0];
     m_model[1][3] = m_pos[1];
     m_model[2][3] = m_pos[2];
-    m_model.Flatten(matrix);
-    m_shader.SetMatrix("model", false, &matrix[0]);
+    m_model.Flatten(value);
+    m_shader.SetMatrix("model", false, &value[0]);
 
     const GeoMatrix& view = GeoCamera::GetInstance()->GetViewMatrix();
-    matrix.clear();
-    view.Flatten(matrix);
-    m_shader.SetMatrix("view", false, &matrix[0]);
+    value.clear();
+    view.Flatten(value);
+    m_shader.SetMatrix("view", false, &value[0]);
 
     const GeoMatrix& projection = GeoCamera::GetInstance()->GetProjectionMatrix();
-    matrix.clear();
-    projection.Flatten(matrix);
-    m_shader.SetMatrix("projection", false, &matrix[0]);
+    value.clear();
+    projection.Flatten(value);
+    m_shader.SetMatrix("projection", false, &value[0]);
+
+    double ambientStrength = GeoLight::GetInstance()->AmbientStrength();
+    double specularStrength = GeoLight::GetInstance()->SpecularStrength();
+    m_shader.SetFloat("ambientStrength", (float)ambientStrength);
+    m_shader.SetFloat("specularStrength", (float)specularStrength);
+
+    const GeoVector3D& posLight = GeoLight::GetInstance()->Position();
+    value.clear();
+    posLight.Flatten(value);
+    m_shader.SetVector("lightPos", 3, &value[0]);
+
+    const GeoColor& color = GeoLight::GetInstance()->Color();
+    value.clear();
+    color.Flatten(value);
+    m_shader.SetVector("lightColor", 4, &value[0]);
+
+    const GeoVector3D& posCamera = GeoCamera::GetInstance()->Position();
+    value.clear();
+    posCamera.Flatten(value);
+    m_shader.SetVector("viewPos", 3, &value[0]);
 }

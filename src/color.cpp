@@ -117,6 +117,14 @@ void GeoColor::Scale(const double scale, bool applyAlpha)
     }
 }
 
+void GeoColor::Flatten(std::vector<float> &data) const
+{
+    for(size_t i = 0; i < GeoColor::Size(); i++)
+    {
+        data.push_back((float)m_rgba[i]);
+    }
+}
+
 unsigned int GeoColor::Size()
 {
     return 4;

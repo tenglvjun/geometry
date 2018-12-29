@@ -1,6 +1,8 @@
 #if !defined(__VECTOR_HEAD_FILE__)
 #define __VECTOR_HEAD_FILE__
 
+#include <vector>
+
 class GeoVector2D
 {
 public:
@@ -25,6 +27,7 @@ public:
 public:
   void Normalize();
   double Magnitude() const;
+  void Flatten(std::vector<float> &data) const;
 
 public:
   static unsigned int
@@ -59,6 +62,7 @@ public:
 public:
   void Normalize();
   double Magnitude() const;
+  void Flatten(std::vector<float> &data) const;
   void Dump() const;
 
 public:
@@ -91,6 +95,7 @@ public:
 public:
   void Normalize();
   double Magnitude() const;
+  void Flatten(std::vector<float> &data) const;
 
 public:
   static unsigned int Size();

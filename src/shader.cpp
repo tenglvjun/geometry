@@ -105,6 +105,37 @@ void Shader::SetFloat(const std::string &name, float value) const
     glUniform1f(glGetUniformLocation(m_programID, name.c_str()), value);
 }
 
+void Shader::SetVector(const std::string &name, unsigned int dim, float *values) const
+{
+    assert((dim >=2) && (dim <= 4));
+
+    Use();
+
+    switch (dim)
+    {
+        case 2:
+        {
+            glUniform2fv(glGetUniformLocation(m_programID, name.c_str()), 1, values);
+            break;
+        }
+            
+        case 3:
+        {
+            glUniform3fv(glGetUniformLocation(m_programID, name.c_str()), 1, values);
+            break;
+        }
+            
+        case 4:
+        {
+            glUniform4fv(glGetUniformLocation(m_programID, name.c_str()), 1, values);
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
 void Shader::SetMatrix(const std::string &name, bool transpose, float *values) const
 {
     Use();

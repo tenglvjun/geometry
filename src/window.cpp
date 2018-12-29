@@ -5,6 +5,7 @@
 #include "arcball.h"
 #include "camera.h"
 #include "tools.h"
+#include "light.h"
 
 #if !defined(DEFAULT_WINDOW_HEIGHT)
 #define DEFAULT_WINDOW_HEIGHT 480
@@ -146,10 +147,11 @@ bool GeoWindow::CreateGeoWindow()
     glViewport(0, 0, m_width, m_height);
     glEnable(GL_DEPTH_TEST);
 
-    GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 5.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
-
+    GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 10.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
     GeoFrustum frustum(-1.0f, 1.0f, -1.0f, 1.0f, 2.0f, -10.f);
     GeoCamera::GetInstance()->SetFrustum(frustum, PT_Persp);
+
+    GeoLight::GetInstance()->SetLight(GeoVector3D(1.0f, 1.0f, 5.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoColor(1.0f, 1.0f, 1.0f, 1.0f));
 
     return true;
 }
@@ -161,98 +163,77 @@ void GeoWindow::ShowGeoWindow()
     std::vector<GeoVertex> vertices;
     std::vector<unsigned int> indices;
 
+    float data[] = {
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+    };
+
     GeoColor red(1.0f, 0.0f, 0.0f, 1.0f);
-    GeoColor green(0.0f, 1.0f, 1.0f, 1.0f);
-    GeoColor blue(0.0f, 0.0f, 1.0f, 1.0f);
-
-    GeoVertex v0, v1, v2, v3, v4, v5, v6, v7;
-
-    v0.Position(GeoVector3D(-0.5f, -0.5f, 0.5f));
-    v0.Color(red);
-
-    v1.Position(GeoVector3D(0.5f, -0.5f,  0.5f));
-    v1.Color(green);
-
-    v2.Position(GeoVector3D(-0.5f,  0.5f,  0.5f));
-    v2.Color(blue);
-
-    v3.Position(GeoVector3D(0.5f, 0.5f, 0.5f));
-    v3.Color(red);
-
-    v4.Position(GeoVector3D(0.5f,  -0.5f, -0.5f));
-    v4.Color(green);
-
-    v5.Position(GeoVector3D(0.5f,  0.5f, -0.5f));
-    v5.Color(blue);
-
-    v6.Position(GeoVector3D(-0.5f, 0.5f, -0.5f));
-    v6.Color(red);
-
-    v7.Position(GeoVector3D(-0.5f, -0.5f,  -0.5f));
-    v7.Color(green);
-
-    vertices.push_back(v0);
-    vertices.push_back(v1);
-    vertices.push_back(v2);
-    vertices.push_back(v3);
-    vertices.push_back(v4);
-    vertices.push_back(v5);
-    vertices.push_back(v6);
-    vertices.push_back(v7);
     
+    for(unsigned int i = 0; i < 36; i++)
+    {
+        GeoVertex vertex;
 
-    //front
-    indices.push_back(0);
-    indices.push_back(1);
-    indices.push_back(2);
-    indices.push_back(2);
-    indices.push_back(3);
-    indices.push_back(1);
+        GeoVector3D pos, normal;
 
-    //left side
-    indices.push_back(3);
-    indices.push_back(1);
-    indices.push_back(4);
-    indices.push_back(3);
-    indices.push_back(5);
-    indices.push_back(4);
+        pos[0] = data[i*6];
+        pos[1] = data[i*6+1];
+        pos[2] = data[i*6+2];
 
-    //right side
-    indices.push_back(0);
-    indices.push_back(7);
-    indices.push_back(2);
-    indices.push_back(6);
-    indices.push_back(2);
-    indices.push_back(7);
+        normal[0] = data[i*6+3];
+        normal[1] = data[i*6+4];
+        normal[2] = data[i*6+5];
 
-    //back side
-    indices.push_back(6);
-    indices.push_back(7);
-    indices.push_back(4);
-    indices.push_back(5);
-    indices.push_back(6);
-    indices.push_back(4);
+        vertex.Position(pos);
+        vertex.Normal(normal);
+        vertex.Color(red);
 
-    //top side
-    indices.push_back(2);
-    indices.push_back(6);
-    indices.push_back(3);
-    indices.push_back(5);
-    indices.push_back(6);
-    indices.push_back(3);
-
-    //bottom side
-    indices.push_back(0);
-    indices.push_back(7);
-    indices.push_back(1);
-    indices.push_back(1);
-    indices.push_back(4);
-    indices.push_back(7);
+        vertices.push_back(vertex);
+        indices.push_back(i);
+    }
+    
 
     GeoVector3D pos(0.0f, 0.0f, 0.0f);
     m_mesh = new GeoMesh(vertices, indices, pos);
-
-    int a = sizeof(GeoVertex);
 
     while (!glfwWindowShouldClose(m_window))
     {

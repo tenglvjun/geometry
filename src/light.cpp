@@ -8,9 +8,16 @@
 
 SINGLETON_IMPLEMENT(GeoLight);
 
-GeoLight::GeoLight(const GeoVector3D& pos, const GeoVector3D& dir, const GeoColor& color)
-    : m_pos(pos), m_dir(dir), m_color(color), m_ambientStrength(DEFAULT_AMBIENT_STRENGTH), m_specularStrength(DEFAULT_SPECULAR_STRENGTH)
+GeoLight::GeoLight()
+    : m_ambientStrength(DEFAULT_AMBIENT_STRENGTH), m_specularStrength(DEFAULT_SPECULAR_STRENGTH)
 {
+
+}
+
+GeoLight::GeoLight(const GeoVector3D& pos, const GeoVector3D& origin, const GeoColor& color)
+    : m_pos(pos), m_color(color), m_ambientStrength(DEFAULT_AMBIENT_STRENGTH), m_specularStrength(DEFAULT_SPECULAR_STRENGTH)
+{
+    m_dir = pos - origin;
     m_dir.Normalize();
 }
 
@@ -20,6 +27,7 @@ GeoLight::GeoLight(const GeoLight& light)
     m_color = light.m_color;
     m_dir = light.m_dir;
     m_ambientStrength = light.m_ambientStrength;
+    m_specularStrength = light.m_specularStrength;
 }
 
 GeoLight::~GeoLight()
@@ -37,37 +45,48 @@ GeoLight& GeoLight::operator=(const GeoLight& light)
     m_color = light.m_color;
     m_dir = light.m_dir;
     m_ambientStrength = light.m_ambientStrength;
+    m_specularStrength = light.m_specularStrength;
     
     return *this;
 }
 
-const GeoVector3D& GeoLight::LightPosition() const
+void GeoLight::SetLight(const GeoVector3D& pos, const GeoVector3D& origin, const GeoColor& color)
+{
+    m_pos = pos;
+
+    m_dir = pos - origin;
+    m_dir.Normalize();
+
+    m_color = color;
+}
+
+const GeoVector3D& GeoLight::Position() const
 {
     return m_pos;
 }
 
-void GeoLight::LightPosition(const GeoVector3D& pos)
+void GeoLight::Position(const GeoVector3D& pos)
 {
     m_pos = pos;
 }
 
-const GeoVector3D& GeoLight::LightDirection() const
+const GeoVector3D& GeoLight::Direction() const
 {
     return m_dir;
 }
 
-void GeoLight::LightDirection(const GeoVector3D& dir)
+void GeoLight::Direction(const GeoVector3D& dir)
 {
     m_dir = dir;
     m_dir.Normalize();
 }
 
-const GeoColor& GeoLight::LightColor() const
+const GeoColor& GeoLight::Color() const
 {
     return m_color;
 }
 
-void GeoLight::LightColor(const GeoColor& color)
+void GeoLight::Color(const GeoColor& color)
 {
     m_color = color;
 }
@@ -119,7 +138,7 @@ GeoColor GeoLight::Specular(const GeoVector3D& normal, const GeoVector3D& objPos
     GeoVector3D n = normal;
     n.Normalize();
 
-    GeoVector3D viewDir = GeoCamera::GetInstance()->CameraPosition() - objPos;
+    GeoVector3D viewDir = GeoCamera::GetInstance()->Position() - objPos;
     viewDir.Normalize();
 
     GeoVector3D reflectDir = n * (n % m_dir) * 2 - m_dir;
