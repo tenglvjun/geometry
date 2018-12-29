@@ -1,5 +1,6 @@
 #include "color.h"
 #include <assert.h>
+#include <algorithm>
 
 GeoColor::GeoColor()
 {
@@ -56,6 +57,42 @@ double &GeoColor::operator[](const unsigned int idx)
     assert(idx < 4);
 
     return m_rgba[idx];
+}
+
+GeoColor GeoColor::operator*(const GeoColor& color)
+{
+    GeoColor ret;
+
+    ret[0] = m_rgba[0] * color[0];
+    ret[1] = m_rgba[1] * color[1];
+    ret[2] = m_rgba[2] * color[2];
+    ret[3] = m_rgba[3] * color[3];
+
+    return ret;
+}
+
+GeoColor &GeoColor::operator*=(const GeoColor& color)
+{
+    m_rgba[0] *= color[0];
+    m_rgba[1] *= color[1];
+    m_rgba[2] *= color[2];
+    m_rgba[3] *= color[3];
+
+    return *this;
+}
+
+void GeoColor::Scale(const double scale, bool applyAlpha)
+{
+    unsigned int count = GeoColor::Size();
+    
+    if (!applyAlpha) {
+        count--;
+    }
+    
+    for(size_t i = 0; i < count; i++)
+    {
+        m_rgba[i] = min(m_rgba[i]*scale, 1.0f);
+    }
 }
 
 unsigned int GeoColor::Size()

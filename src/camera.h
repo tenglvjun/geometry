@@ -45,7 +45,9 @@ public:
   void Scale(bool enlarge);
 
   const GeoMatrix &GetViewMatrix() const;
-  const GeoMatrix &GetProjectionMatrix() const;
+  const GeoMatrix &GetProjectionMatrix() const;\
+
+  const GeoVector3D& CameraPosition() const;
 
 public:
   SINGLETON_DECLARE(GeoCamera);
