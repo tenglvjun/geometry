@@ -8,7 +8,7 @@
 #include "light.h"
 
 #if !defined(DEFAULT_WINDOW_HEIGHT)
-#define DEFAULT_WINDOW_HEIGHT 480
+#define DEFAULT_WINDOW_HEIGHT 640
 #endif // DEFAULT_WINDOW_HEIGHT
 
 #if !defined(DEFAULT_WINDOW_WIDTH)
@@ -84,6 +84,14 @@ static void glfw_framebuffer_size_callback(GLFWwindow *window, int width, int he
     win->OnFrameBufferSize(width, height);
 }
 
+static void glfw_window_size_callback(GLFWwindow* window, int width, int height)
+{
+    GeoWindow *win = static_cast<GeoWindow *>(glfwGetWindowUserPointer(window));
+    assert(win);
+
+    win->OnWindowSize(width, height);
+}
+
 GeoWindow::GeoWindow(const std::string &title)
     : m_window(nullptr), m_title(title), m_mouseLBtnDown(false), m_mouseRBtnDown(false), m_mesh(nullptr)
 {
@@ -147,17 +155,11 @@ bool GeoWindow::CreateGeoWindow()
     glViewport(0, 0, m_width, m_height);
     glEnable(GL_DEPTH_TEST);
 
-    GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 10.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
-
-    double x, y, maximum;
-    maximum = Tools::GetInstance()->Maximum(m_width, m_height);
-    x = m_width / maximum;
-    y = m_height / maximum;
-    GeoFrustum frustum(-x, x, -1.0f, 1.0f, 2.0f, -10.f);
-    GeoCamera::GetInstance()->SetFrustum(frustum, PT_Persp);
-
+    GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 5.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
     GeoLight::GetInstance()->SetLight(GeoVector3D(1.0f, 1.0f, 10.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoColor(1.0f, 1.0f, 1.0f, 1.0f));
 
+    WindowSizeChange();
+    
     return true;
 }
 
@@ -392,17 +394,15 @@ void GeoWindow::OnFrameBufferSize(int width, int height)
     m_height = height;
     m_width = width;
 
-    m_origin[0] = m_width / 2;
-    m_origin[1] = m_height / 2;
+    WindowSizeChange();
+}
 
-    glViewport(0, 0, m_width, m_height);
+void GeoWindow::OnWindowSize(int width, int height)
+{
+    m_height = height;
+    m_width = width;
 
-    double x, y, maximum;
-    maximum = Tools::GetInstance()->Maximum(m_width, m_height);
-    x = m_width / maximum;
-    y = m_height / maximum;
-    GeoFrustum frustum(-x, x, -1.0f, 1.0f, 2.0f, -10.f);
-    GeoCamera::GetInstance()->SetFrustum(frustum, PT_Persp);
+    WindowSizeChange();
 }
 
 void GeoWindow::OnScroll(double xoffset, double yoffset)
@@ -425,4 +425,20 @@ void GeoWindow::SetCallback()
 
     glfwSetWindowRefreshCallback(m_window, glfw_window_refresh_callback);
     glfwSetFramebufferSizeCallback(m_window, glfw_framebuffer_size_callback);
+    glfwSetWindowSizeCallback(m_window, glfw_window_size_callback);
+}
+
+void GeoWindow::WindowSizeChange()
+{
+    m_origin[0] = m_width / 2;
+    m_origin[1] = m_height / 2;
+
+    glViewport(0, 0, m_width, m_height);
+
+    double x, y, minimum;
+    minimum = Tools::GetInstance()->Minimum(m_width, m_height);
+    x = m_width / minimum;
+    y = m_height / minimum;
+    GeoFrustum frustum(-x, x, -y, y, 2.0f, -10.f);
+    GeoCamera::GetInstance()->SetFrustum(frustum, PT_Persp);
 }

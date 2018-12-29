@@ -31,10 +31,12 @@ public:
   void OnClose();
   void OnPaint();
   void OnFrameBufferSize(int width, int height);
+  void OnWindowSize(int width, int height);
   void OnScroll(double xoffset, double yoffset);
 
 protected:
   void SetCallback();
+  void WindowSizeChange();
 
 private:
   GeoWindow();
