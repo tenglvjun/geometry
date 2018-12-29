@@ -72,6 +72,37 @@ void GeoVertex::Rotation(const GeoMatrix &m)
     m_pos = m * m_pos;
 }
 
+GeoVector3D GeoVertex::Position() const
+{
+    return m_pos;
+}
+
+void GeoVertex::Position(const GeoVector3D& pos)
+{
+    m_pos = pos;
+}
+
+GeoVector3D GeoVertex::Normal() const
+{
+    return m_normal;
+}
+
+void GeoVertex::Normal(const GeoVector3D& normal)
+{
+    m_normal = normal;
+    m_normal.Normalize();
+}
+
+GeoColor GeoVertex::Color() const
+{
+    return m_color;
+}
+
+void GeoVertex::Color(const GeoColor& color)
+{
+    m_color = color;
+}
+
 unsigned int GeoVertex::Size()
 {
     return (GeoVector3D::Size() + GeoVector3D::Size() + GeoColor::Size());

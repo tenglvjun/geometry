@@ -14,9 +14,11 @@ public:
 public:
   SINGLETON_DECLARE(Tools)
 public:
-  static double Radia2Degree(double r);
+  static double Radia2Degree(const double r);
   static std::string GetLocalTime();
-  static bool IsZero(double v);
+  static bool IsZero(const double v);
+  static double Maximum(const double a, const double b);
+  static double Minimum(const double a, const double b);
 };
 
 #endif // __TOOLS_HEAD_FILE__

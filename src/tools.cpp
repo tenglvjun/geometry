@@ -11,7 +11,7 @@ Tools::~Tools()
 {
 }
 
-double Tools::Radia2Degree(double r)
+double Tools::Radia2Degree(const  double r)
 {
     double pi = PI;
 
@@ -28,7 +28,17 @@ std::string Tools::GetLocalTime()
     return tmp;
 }
 
-bool Tools::IsZero(double v)
+bool Tools::IsZero(const double v)
 {
     return (fabs(v) < EPSILON) ? true : false;
+}
+
+double Tools::Maximum(const double a, const double b)
+{
+    return (a > b) ? a : b;
+}
+
+double Tools::Minimum(const double a, const double b)
+{
+    return (a < b) ? a : b;
 }

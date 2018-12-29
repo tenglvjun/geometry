@@ -26,6 +26,15 @@ public:
   void Translate(const GeoVector3D &v);
   void Rotation(const GeoMatrix &m);
 
+  GeoVector3D Position() const;
+  void Position(const GeoVector3D& pos);
+
+  GeoVector3D Normal() const;
+  void Normal(const GeoVector3D& normal);
+
+  GeoColor Color() const;
+  void Color(const GeoColor& color);
+
 public:
   static unsigned int Size();
   static void Offset(std::vector<int> &offset);

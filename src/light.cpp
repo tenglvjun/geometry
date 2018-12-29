@@ -1,7 +1,7 @@
 #include "light.h"
-#include <algorithm>
 #include <cmath>
 #include "camera.h"
+#include "tools.h"
 
 #define DEFAULT_AMBIENT_STRENGTH    0.1
 #define DEFAULT_SPECULAR_STRENGTH   0.5
@@ -15,7 +15,7 @@ GeoLight::GeoLight(const GeoVector3D& pos, const GeoVector3D& dir, const GeoColo
 GeoLight::GeoLight(const GeoLight& light)
 {
     m_pos = light.m_pos;
-    color = light.m_color;
+    m_color = light.m_color;
     m_dir = light.m_dir;
     m_ambientStrength = light.m_ambientStrength;
 }
@@ -32,14 +32,14 @@ GeoLight& GeoLight::operator=(const GeoLight& light)
     }
 
     m_pos = light.m_pos;
-    color = light.m_color;
+    m_color = light.m_color;
     m_dir = light.m_dir;
     m_ambientStrength = light.m_ambientStrength;
     
     return *this;
 }
 
-const GeoLight::GeoVector3D& LightPosition() const
+const GeoVector3D& GeoLight::LightPosition() const
 {
     return m_pos;
 }
@@ -107,7 +107,7 @@ GeoColor GeoLight::Diffuse(const GeoVector3D& normal, const GeoVector3D& objPos)
     lightDir.Normalize();
 
     GeoColor color = m_color;
-    color.Scale(max((n % lightDir), 0.0f), false);
+    color.Scale(Tools::GetInstance()->Maximum((n % lightDir), 0.0f), false);
 
     return color;
 }
@@ -120,13 +120,13 @@ GeoColor GeoLight::Specular(const GeoVector3D& normal, const GeoVector3D& objPos
     GeoVector3D viewDir = GeoCamera::GetInstance()->CameraPosition() - objPos;
     viewDir.Normalize();
 
-    GeoVector3D reflectDir = 2 * n * (n % m_dir) - m_dir;
+    GeoVector3D reflectDir = n * (n % m_dir) * 2 - m_dir;
     reflectDir.Normalize();
 
-    double spec = pow(max((viewDir % reflectDir), 0.0), 32);
+    double spec = pow(Tools::GetInstance()->Maximum((viewDir % reflectDir), 0.0), 32);
 
     GeoColor color = m_color;
-    color.Scale(specularStrength * spec, false);
+    color.Scale(m_specularStrength * spec, false);
 
     return color;
 }

@@ -1,6 +1,6 @@
 #include "color.h"
 #include <assert.h>
-#include <algorithm>
+#include "tools.h"
 
 GeoColor::GeoColor()
 {
@@ -59,24 +59,46 @@ double &GeoColor::operator[](const unsigned int idx)
     return m_rgba[idx];
 }
 
-GeoColor GeoColor::operator*(const GeoColor& color)
+GeoColor GeoColor::operator*(const GeoColor& color) const
 {
     GeoColor ret;
 
-    ret[0] = m_rgba[0] * color[0];
-    ret[1] = m_rgba[1] * color[1];
-    ret[2] = m_rgba[2] * color[2];
-    ret[3] = m_rgba[3] * color[3];
+    ret[0] = Tools::GetInstance()->Minimum((m_rgba[0] * color[0]), 1.0f);
+    ret[1] = Tools::GetInstance()->Minimum((m_rgba[1] * color[1]), 1.0f);
+    ret[2] = Tools::GetInstance()->Minimum((m_rgba[2] * color[2]), 1.0f);
+    ret[3] = Tools::GetInstance()->Minimum((m_rgba[3] * color[3]), 1.0f);
 
     return ret;
 }
 
 GeoColor &GeoColor::operator*=(const GeoColor& color)
 {
-    m_rgba[0] *= color[0];
-    m_rgba[1] *= color[1];
-    m_rgba[2] *= color[2];
-    m_rgba[3] *= color[3];
+    m_rgba[0] = Tools::GetInstance()->Minimum((m_rgba[0] * color[0]), 1.0f);
+    m_rgba[1] = Tools::GetInstance()->Minimum((m_rgba[1] * color[1]), 1.0f);
+    m_rgba[2] = Tools::GetInstance()->Minimum((m_rgba[2] * color[2]), 1.0f);
+    m_rgba[3] = Tools::GetInstance()->Minimum((m_rgba[3] * color[3]), 1.0f);
+
+    return *this;
+}
+
+GeoColor GeoColor::operator+(const GeoColor& color) const
+{
+    GeoColor ret;
+
+    ret[0] = Tools::GetInstance()->Minimum((m_rgba[0] + color[0]), 1.0f);
+    ret[1] = Tools::GetInstance()->Minimum((m_rgba[1] + color[1]), 1.0f);
+    ret[2] = Tools::GetInstance()->Minimum((m_rgba[2] + color[2]), 1.0f);
+    ret[3] = Tools::GetInstance()->Minimum((m_rgba[3] + color[3]), 1.0f);
+
+    return ret;
+}
+
+GeoColor &GeoColor::operator+=(const GeoColor& color)
+{
+    m_rgba[0] = Tools::GetInstance()->Minimum((m_rgba[0] + color[0]), 1.0f);
+    m_rgba[1] = Tools::GetInstance()->Minimum((m_rgba[1] + color[1]), 1.0f);
+    m_rgba[2] = Tools::GetInstance()->Minimum((m_rgba[2] + color[2]), 1.0f);
+    m_rgba[3] = Tools::GetInstance()->Minimum((m_rgba[3] + color[3]), 1.0f);
 
     return *this;
 }
@@ -91,7 +113,7 @@ void GeoColor::Scale(const double scale, bool applyAlpha)
     
     for(size_t i = 0; i < count; i++)
     {
-        m_rgba[i] = min(m_rgba[i]*scale, 1.0f);
+        m_rgba[i] = Tools::GetInstance()->Minimum(m_rgba[i]*scale, 1.0f);
     }
 }
 
