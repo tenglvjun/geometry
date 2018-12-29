@@ -161,29 +161,93 @@ void GeoWindow::ShowGeoWindow()
     std::vector<GeoVertex> vertices;
     std::vector<unsigned int> indices;
 
-    GeoVertex v1, v2, v3;
-    v1.GetPos()[0] = -0.5f;
-    v1.GetPos()[1] = -0.5f;
-    v1.GetPos()[2] = 0.0f;
-    v1.GetColor()[0] = 1.0f;
+    GeoColor red(1.0f, 0.0f, 0.0f, 1.0f);
+    GeoColor green(0.0f, 1.0f, 1.0f, 1.0f);
+    GeoColor blue(0.0f, 0.0f, 1.0f, 1.0f);
 
-    v2.GetPos()[0] = 0.5f;
-    v2.GetPos()[1] = -0.5f;
-    v2.GetPos()[2] = 0.0f;
-    v2.GetColor()[1] = 1.0f;
+    GeoVertex v0, v1, v2, v3, v4, v5, v6, v7;
 
-    v3.GetPos()[0] = 0.0f;
-    v3.GetPos()[1] = 0.5f;
-    v3.GetPos()[2] = 0.0f;
-    v3.GetColor()[2] = 1.0f;
+    v0.Position(GeoVector3D(-0.5f, -0.5f, 0.5f));
+    v0.Color(red);
 
+    v1.Position(GeoVector3D(0.5f, -0.5f,  0.5f));
+    v1.Color(green);
+
+    v2.Position(GeoVector3D(-0.5f,  0.5f,  0.5f));
+    v2.Color(blue);
+
+    v3.Position(GeoVector3D(0.5f, 0.5f, 0.5f));
+    v3.Color(red);
+
+    v4.Position(GeoVector3D(0.5f,  -0.5f, -0.5f));
+    v4.Color(green);
+
+    v5.Position(GeoVector3D(0.5f,  0.5f, -0.5f));
+    v5.Color(blue);
+
+    v6.Position(GeoVector3D(-0.5f, 0.5f, -0.5f));
+    v6.Color(red);
+
+    v7.Position(GeoVector3D(-0.5f, -0.5f,  -0.5f));
+    v7.Color(green);
+
+    vertices.push_back(v0);
     vertices.push_back(v1);
     vertices.push_back(v2);
     vertices.push_back(v3);
+    vertices.push_back(v4);
+    vertices.push_back(v5);
+    vertices.push_back(v6);
+    vertices.push_back(v7);
+    
 
+    //front
     indices.push_back(0);
     indices.push_back(1);
     indices.push_back(2);
+    indices.push_back(2);
+    indices.push_back(3);
+    indices.push_back(1);
+
+    //left side
+    indices.push_back(3);
+    indices.push_back(1);
+    indices.push_back(4);
+    indices.push_back(3);
+    indices.push_back(5);
+    indices.push_back(4);
+
+    //right side
+    indices.push_back(0);
+    indices.push_back(7);
+    indices.push_back(2);
+    indices.push_back(6);
+    indices.push_back(2);
+    indices.push_back(7);
+
+    //back side
+    indices.push_back(6);
+    indices.push_back(7);
+    indices.push_back(4);
+    indices.push_back(5);
+    indices.push_back(6);
+    indices.push_back(4);
+
+    //top side
+    indices.push_back(2);
+    indices.push_back(6);
+    indices.push_back(3);
+    indices.push_back(5);
+    indices.push_back(6);
+    indices.push_back(3);
+
+    //bottom side
+    indices.push_back(0);
+    indices.push_back(7);
+    indices.push_back(1);
+    indices.push_back(1);
+    indices.push_back(4);
+    indices.push_back(7);
 
     GeoVector3D pos(0.0f, 0.0f, 0.0f);
     m_mesh = new GeoMesh(vertices, indices, pos);
@@ -192,7 +256,7 @@ void GeoWindow::ShowGeoWindow()
 
     while (!glfwWindowShouldClose(m_window))
     {
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_mesh->Draw();

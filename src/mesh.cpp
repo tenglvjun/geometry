@@ -2,6 +2,7 @@
 #include "global_def.h"
 #include <iostream>
 #include "camera.h"
+#include "light.h"
 
 GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices, GeoVector3D& pos)
     : m_model(4, 4)

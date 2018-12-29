@@ -3,6 +3,7 @@
 
 #include "vector.h"
 #include "color.h"
+#include "global_def.h"
 
 class GeoLight
 {
@@ -35,6 +36,9 @@ public:
     GeoColor Specular(const GeoVector3D& normal, const GeoVector3D& objPos);
 
     GeoColor Illuminate(const GeoVector3D& normal, const GeoVector3D& objPos, const GeoColor& objClr);
+
+public:
+    SINGLETON_DECLARE(GeoLight);
 
 private:
     GeoLight();

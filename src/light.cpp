@@ -6,6 +6,8 @@
 #define DEFAULT_AMBIENT_STRENGTH    0.1
 #define DEFAULT_SPECULAR_STRENGTH   0.5
 
+SINGLETON_IMPLEMENT(GeoLight);
+
 GeoLight::GeoLight(const GeoVector3D& pos, const GeoVector3D& dir, const GeoColor& color)
     : m_pos(pos), m_dir(dir), m_color(color), m_ambientStrength(DEFAULT_AMBIENT_STRENGTH), m_specularStrength(DEFAULT_SPECULAR_STRENGTH)
 {
