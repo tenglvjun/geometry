@@ -1,0 +1,58 @@
+#if !defined(__SETTING_HEAD_FILE__)
+#define __SETTING_HEAD_FILE__
+
+#include <string>
+#include "global_def.h"
+
+struct MathConfig
+{
+    MathConfig();
+
+    double m_pi;
+    double m_epsilon;
+};
+
+struct OpenGLConfig
+{
+    OpenGLConfig();
+
+    double m_ambientStrength;
+    double m_specularStrength;
+};
+
+struct WindowConfig
+{
+    WindowConfig();
+
+    int m_width;
+    int m_height;
+};
+
+class GeoSetting final
+{
+  public:
+    GeoSetting();
+    ~GeoSetting();
+
+  public:
+    bool Init(const std::string &filename);
+    bool Save(const std::string &filename);
+
+    MathConfig &MathConfig();
+    OpenGLConfig &OpenGLConfig();
+    WindowConfig &WindowConfig();
+
+  public:
+    SINGLETON_DECLARE(GeoSetting)
+
+  private:
+    GeoSetting(const GeoSetting &setting);
+    GeoSetting &operator=(const GeoSetting &setting);
+
+  private:
+    struct MathConfig m_math;
+    struct OpenGLConfig m_openGL;
+    struct WindowConfig m_window;
+};
+
+#endif // __SETTING_HEAD_FILE__

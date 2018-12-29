@@ -9,7 +9,7 @@ class Shader final
 {
 public:
   Shader();
-  virtual ~Shader();
+  ~Shader();
 
 public:
   bool Init(const std::string &vertexPath, const std::string &fragmentPath);

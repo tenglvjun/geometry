@@ -1,0 +1,16 @@
+{
+  "setting": {
+    "math": {
+      "pi": 3.141592653,
+      "epsilon": 1e-7
+    },
+    "opengl": {
+      "ambient strength": 0.1,
+      "specular strength": 0.5
+    },
+    "window": {
+      "width": 800,
+      "height": 800
+    }
+  }
+}

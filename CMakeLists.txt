@@ -38,4 +38,10 @@ set(GLAD_SRC_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/glad)
 include_directories(${GLAD_SRC_DIRS}/include)
 add_subdirectory(${GLAD_SRC_DIRS})
 
+#json
+set(JSON_SRC_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/json)
+include_directories(${JSON_SRC_DIRS})
+add_subdirectory(${JSON_SRC_DIRS})
+
+
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)

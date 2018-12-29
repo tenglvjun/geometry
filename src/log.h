@@ -20,7 +20,7 @@ public:
 
 public:
   Log();
-  virtual ~Log();
+  ~Log();
 
 public:
   void OutputConsole(const std::string &msg, LogLevel_e level = Level_Info);

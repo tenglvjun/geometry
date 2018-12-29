@@ -1,14 +1,6 @@
 #if !defined(__GLOBAL_DEF_HEAD_FILE__)
 #define __GLOBAL_DEF_HEAD_FILE__
 
-#if !defined(PI)
-#define PI 3.14159265358979323846
-#endif // PI
-
-#if !defined(EPSILON)
-#define EPSILON 1e-7
-#endif // EPSILON
-
 #if !defined(SAFE_DELETE)
 #define SAFE_DELETE(p) \
     if (p)             \

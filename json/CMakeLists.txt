@@ -1,0 +1,5 @@
+set(MODULE_NAME json)
+
+AUX_SOURCE_DIRECTORY(. SRC_DIR)
+
+add_library(${MODULE_NAME} ${SRC_DIR})

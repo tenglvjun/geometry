@@ -6,14 +6,7 @@
 #include "camera.h"
 #include "tools.h"
 #include "light.h"
-
-#if !defined(DEFAULT_WINDOW_HEIGHT)
-#define DEFAULT_WINDOW_HEIGHT 640
-#endif // DEFAULT_WINDOW_HEIGHT
-
-#if !defined(DEFAULT_WINDOW_WIDTH)
-#define DEFAULT_WINDOW_WIDTH 640
-#endif // DEFAULT_WINDOW_WIDTH
+#include "setting.h"
 
 static void glfw_error_callback(int error, const char *description)
 {
@@ -84,7 +77,7 @@ static void glfw_framebuffer_size_callback(GLFWwindow *window, int width, int he
     win->OnFrameBufferSize(width, height);
 }
 
-static void glfw_window_size_callback(GLFWwindow* window, int width, int height)
+static void glfw_window_size_callback(GLFWwindow *window, int width, int height)
 {
     GeoWindow *win = static_cast<GeoWindow *>(glfwGetWindowUserPointer(window));
     assert(win);
@@ -95,8 +88,10 @@ static void glfw_window_size_callback(GLFWwindow* window, int width, int height)
 GeoWindow::GeoWindow(const std::string &title)
     : m_window(nullptr), m_title(title), m_mouseLBtnDown(false), m_mouseRBtnDown(false), m_mesh(nullptr)
 {
-    m_width = DEFAULT_WINDOW_WIDTH;
-    m_height = DEFAULT_WINDOW_HEIGHT;
+    WindowConfig &config = GeoSetting::GetInstance()->WindowConfig();
+
+    m_width = config.m_width;
+    m_height = config.m_height;
 }
 
 GeoWindow::~GeoWindow()
@@ -159,7 +154,7 @@ bool GeoWindow::CreateGeoWindow()
     GeoLight::GetInstance()->SetLight(GeoVector3D(1.0f, 1.0f, 10.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoColor(1.0f, 1.0f, 1.0f, 1.0f));
 
     WindowSizeChange();
-    
+
     return true;
 }
 
@@ -171,64 +166,63 @@ void GeoWindow::ShowGeoWindow()
     std::vector<unsigned int> indices;
 
     float data[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
 
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
 
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
 
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
 
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
 
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-    };
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f};
 
     GeoColor red(1.0f, 0.0f, 0.0f, 1.0f);
-    
-    for(unsigned int i = 0; i < 36; i++)
+
+    for (unsigned int i = 0; i < 36; i++)
     {
         GeoVertex vertex;
 
         GeoVector3D pos, normal;
 
-        pos[0] = data[i*6];
-        pos[1] = data[i*6+1];
-        pos[2] = data[i*6+2];
+        pos[0] = data[i * 6];
+        pos[1] = data[i * 6 + 1];
+        pos[2] = data[i * 6 + 2];
 
-        normal[0] = data[i*6+3];
-        normal[1] = data[i*6+4];
-        normal[2] = data[i*6+5];
+        normal[0] = data[i * 6 + 3];
+        normal[1] = data[i * 6 + 4];
+        normal[2] = data[i * 6 + 5];
 
         vertex.Position(pos);
         vertex.Normal(normal);
@@ -237,7 +231,6 @@ void GeoWindow::ShowGeoWindow()
         vertices.push_back(vertex);
         indices.push_back(i);
     }
-    
 
     GeoVector3D pos(0.0f, 0.0f, 0.0f);
     m_mesh = new GeoMesh(vertices, indices, pos);
