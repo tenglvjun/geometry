@@ -151,7 +151,7 @@ bool GeoWindow::CreateGeoWindow()
     glEnable(GL_DEPTH_TEST);
 
     GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 5.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
-    GeoLight::GetInstance()->SetLight(GeoVector3D(1.0f, 1.0f, 10.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoColor(1.0f, 1.0f, 1.0f, 1.0f));
+    GeoLight::GetInstance()->SetLight(GeoVector3D(1.0f, 1.0f, 10.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoColor(1.0f, 1.0f, 1.0f, 1.0f), POINT_LIGHT);
 
     WindowSizeChange();
 

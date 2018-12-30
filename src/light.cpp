@@ -57,7 +57,7 @@ GeoLight &GeoLight::operator=(const GeoLight &light)
     return *this;
 }
 
-void GeoLight::SetLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoColor &color)
+void GeoLight::SetLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoColor &color, const LightSource_e source)
 {
     m_pos = pos;
 
@@ -65,6 +65,7 @@ void GeoLight::SetLight(const GeoVector3D &pos, const GeoVector3D &origin, const
     m_dir.Normalize();
 
     m_color = color;
+    m_source = source;
 }
 
 void GeoLight::SetLightSource(const LightSource_e source)
@@ -128,12 +129,12 @@ void GeoLight::SpecularStrength(const double specularStrength)
     m_specularStrength = specularStrength;
 }
 
-GeoColor GeoLight::Ambient()
+GeoColor GeoLight::Ambient(const GeoVector3D &objPos)
 {
     GeoColor color = m_color;
     color.Scale(m_ambientStrength, false);
-
-    return color;
+    
+    return Attanuation(objPos, color);
 }
 
 GeoColor GeoLight::Diffuse(const GeoVector3D &normal, const GeoVector3D &objPos)
@@ -147,7 +148,7 @@ GeoColor GeoLight::Diffuse(const GeoVector3D &normal, const GeoVector3D &objPos)
     GeoColor color = m_color;
     color.Scale(Tools::GetInstance()->Maximum((n % lightDir), 0.0f), false);
 
-    return color;
+    return Attanuation(objPos, color);
 }
 
 GeoColor GeoLight::Specular(const GeoVector3D &normal, const GeoVector3D &objPos)
@@ -166,14 +167,40 @@ GeoColor GeoLight::Specular(const GeoVector3D &normal, const GeoVector3D &objPos
     GeoColor color = m_color;
     color.Scale(m_specularStrength * spec, false);
 
-    return color;
+    return Attanuation(objPos, color);
 }
 
 GeoColor GeoLight::Illuminate(const GeoVector3D &normal, const GeoVector3D &objPos, const GeoColor &objClr)
 {
-    GeoColor ambient = Ambient();
+    GeoColor ambient = Ambient(objPos);
     GeoColor diffuse = Diffuse(normal, objPos);
     GeoColor specular = Specular(normal, objPos);
 
     return (ambient + diffuse + specular) * objClr;
+}
+
+GeoColor GeoLight::Attanuation(const GeoVector3D &objPos, const GeoColor &color)
+{
+    GeoColor c = color;
+
+    if (m_source != POINT_LIGHT)
+    {
+        return c;
+    }
+
+    OpenGLConfig &config = GeoSetting::GetInstance()->OpenGLConfig();
+
+    double distance = (m_pos - objPos).Magnitude();
+
+    for (std::map<unsigned int, PointLightAttenuation>::iterator iter = config.m_pointAttenuation.begin();
+         iter != config.m_pointAttenuation.end(); iter++)
+    {
+        if (iter->first > distance)
+        {
+            double attenuation = 1.0 / (iter->second.m_constant + iter->second.m_linear * distance + iter->second.m_quadratic * (distance * distance));
+            c.Scale(attenuation, false);
+        }
+    }
+
+    return c;
 }

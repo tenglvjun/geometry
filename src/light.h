@@ -18,7 +18,7 @@ public:
   GeoLight &operator=(const GeoLight &light);
 
 public:
-  void SetLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoColor &color);
+  void SetLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoColor &color, const LightSource_e source);
 
   void SetLightSource(const LightSource_e source);
   LightSource_e GetLightSource();
@@ -38,7 +38,7 @@ public:
   double SpecularStrength() const;
   void SpecularStrength(const double specularStrength);
 
-  GeoColor Ambient();
+  GeoColor Ambient(const GeoVector3D &objPos);
   GeoColor Diffuse(const GeoVector3D &normal, const GeoVector3D &objPos);
   GeoColor Specular(const GeoVector3D &normal, const GeoVector3D &objPos);
 
@@ -46,6 +46,9 @@ public:
 
 public:
   SINGLETON_DECLARE(GeoLight);
+
+protected:
+  GeoColor Attanuation(const GeoVector3D &objPos, const GeoColor &color);
 
 protected:
   GeoVector3D m_pos;

@@ -4,7 +4,7 @@
 #include "camera.h"
 #include "light.h"
 
-GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices, GeoVector3D& pos)
+GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices, GeoVector3D &pos)
     : m_model(4, 4)
 {
     m_vertices = vertices;
@@ -88,12 +88,12 @@ void GeoMesh::UpdateMatrix()
     m_model.Flatten(value);
     m_shader.SetMatrix("model", false, &value[0]);
 
-    const GeoMatrix& view = GeoCamera::GetInstance()->GetViewMatrix();
+    const GeoMatrix &view = GeoCamera::GetInstance()->GetViewMatrix();
     value.clear();
     view.Flatten(value);
     m_shader.SetMatrix("view", false, &value[0]);
 
-    const GeoMatrix& projection = GeoCamera::GetInstance()->GetProjectionMatrix();
+    const GeoMatrix &projection = GeoCamera::GetInstance()->GetProjectionMatrix();
     value.clear();
     projection.Flatten(value);
     m_shader.SetMatrix("projection", false, &value[0]);
@@ -103,17 +103,17 @@ void GeoMesh::UpdateMatrix()
     m_shader.SetFloat("light.ambientStrength", (float)ambientStrength);
     m_shader.SetFloat("light.specularStrength", (float)specularStrength);
 
-    const GeoVector3D& posLight = GeoLight::GetInstance()->Position();
+    const GeoVector3D &posLight = GeoLight::GetInstance()->Position();
     value.clear();
     posLight.Flatten(value);
     m_shader.SetVector("light.pos", 3, &value[0]);
 
-    const GeoColor& color = GeoLight::GetInstance()->Color();
+    const GeoColor &color = GeoLight::GetInstance()->Color();
     value.clear();
     color.Flatten(value);
     m_shader.SetVector("light.color", 4, &value[0]);
 
-    const GeoVector3D& posCamera = GeoCamera::GetInstance()->Position();
+    const GeoVector3D &posCamera = GeoCamera::GetInstance()->Position();
     value.clear();
     posCamera.Flatten(value);
     m_shader.SetVector("viewPos", 3, &value[0]);
