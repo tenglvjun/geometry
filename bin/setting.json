@@ -7,7 +7,81 @@
     "opengl": {
       "ambient strength": 0.1,
       "specular strength": 0.5,
-      "light source": 0
+      "light source": 0,
+      "point light attenuation": [
+        {
+          "range": 3250,
+          "constant": 1.0,
+          "linear": 0.0014,
+          "quadratic": 0.000007
+        },
+        {
+          "range": 600,
+          "constant": 1.0,
+          "linear": 0.007,
+          "quadratic": 0.0002
+        },
+        {
+          "range": 325,
+          "constant": 1.0,
+          "linear": 0.014,
+          "quadratic": 0.0007
+        },
+        {
+          "range": 200,
+          "constant": 1.0,
+          "linear": 0.022,
+          "quadratic": 0.0019
+        },
+        {
+          "range": 160,
+          "constant": 1.0,
+          "linear": 0.027,
+          "quadratic": 0.0028
+        },
+        {
+          "range": 100,
+          "constant": 1.0,
+          "linear": 0.045,
+          "quadratic": 0.0075
+        },
+        {
+          "range": 65,
+          "constant": 1.0,
+          "linear": 0.07,
+          "quadratic": 0.017
+        },
+        {
+          "range": 50,
+          "constant": 1.0,
+          "linear": 0.09,
+          "quadratic": 0.032
+        },
+        {
+          "range": 32,
+          "constant": 1.0,
+          "linear": 0.14,
+          "quadratic": 0.07
+        },
+        {
+          "range": 20,
+          "constant": 1.0,
+          "linear": 0.22,
+          "quadratic": 0.2
+        },
+        {
+          "range": 13,
+          "constant": 1.0,
+          "linear": 0.35,
+          "quadratic": 0.44
+        },
+        {
+          "range": 7,
+          "constant": 1.0,
+          "linear": 0.7,
+          "quadratic": 1.8
+        }
+      ]
     },
     "window": {
       "width": 800,

@@ -100,18 +100,18 @@ void GeoMesh::UpdateMatrix()
 
     double ambientStrength = GeoLight::GetInstance()->AmbientStrength();
     double specularStrength = GeoLight::GetInstance()->SpecularStrength();
-    m_shader.SetFloat("ambientStrength", (float)ambientStrength);
-    m_shader.SetFloat("specularStrength", (float)specularStrength);
+    m_shader.SetFloat("light.ambientStrength", (float)ambientStrength);
+    m_shader.SetFloat("light.specularStrength", (float)specularStrength);
 
     const GeoVector3D& posLight = GeoLight::GetInstance()->Position();
     value.clear();
     posLight.Flatten(value);
-    m_shader.SetVector("lightPos", 3, &value[0]);
+    m_shader.SetVector("light.pos", 3, &value[0]);
 
     const GeoColor& color = GeoLight::GetInstance()->Color();
     value.clear();
     color.Flatten(value);
-    m_shader.SetVector("lightColor", 4, &value[0]);
+    m_shader.SetVector("light.color", 4, &value[0]);
 
     const GeoVector3D& posCamera = GeoCamera::GetInstance()->Position();
     value.clear();

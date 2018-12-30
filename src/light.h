@@ -20,6 +20,9 @@ public:
 public:
   void SetLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoColor &color);
 
+  void SetLightSource(const LightSource_e source);
+  LightSource_e GetLightSource();
+
   const GeoVector3D &Position() const;
   void Position(const GeoVector3D &pos);
 

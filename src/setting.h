@@ -2,6 +2,7 @@
 #define __SETTING_HEAD_FILE__
 
 #include <string>
+#include <map>
 #include "global_def.h"
 #include "global_enum.h"
 #include "json.h"
@@ -14,6 +15,15 @@ struct MathConfig
   double m_epsilon;
 };
 
+struct PointLightAttenuation
+{
+  PointLightAttenuation();
+
+  double m_constant;
+  double m_linear;
+  double m_quadratic;
+};
+
 struct OpenGLConfig
 {
   OpenGLConfig();
@@ -21,6 +31,7 @@ struct OpenGLConfig
   double m_ambientStrength;
   double m_specularStrength;
   LightSource_e m_source;
+  std::map<unsigned int, PointLightAttenuation> m_pointAttenuation;
 };
 
 struct WindowConfig

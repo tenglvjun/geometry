@@ -67,6 +67,16 @@ void GeoLight::SetLight(const GeoVector3D &pos, const GeoVector3D &origin, const
     m_color = color;
 }
 
+void GeoLight::SetLightSource(const LightSource_e source)
+{
+    m_source = source;
+}
+
+LightSource_e GeoLight::GetLightSource()
+{
+    return m_source;
+}
+
 const GeoVector3D &GeoLight::Position() const
 {
     return m_pos;
