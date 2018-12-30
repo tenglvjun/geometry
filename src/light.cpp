@@ -11,6 +11,7 @@ GeoLight::GeoLight()
     OpenGLConfig &config = GeoSetting::GetInstance()->OpenGLConfig();
     m_ambientStrength = config.m_ambientStrength;
     m_specularStrength = config.m_specularStrength;
+    m_source = config.m_source;
 }
 
 GeoLight::GeoLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoColor &color)
@@ -22,6 +23,7 @@ GeoLight::GeoLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoC
     OpenGLConfig &config = GeoSetting::GetInstance()->OpenGLConfig();
     m_ambientStrength = config.m_ambientStrength;
     m_specularStrength = config.m_specularStrength;
+    m_source = config.m_source;
 }
 
 GeoLight::GeoLight(const GeoLight &light)
@@ -31,6 +33,7 @@ GeoLight::GeoLight(const GeoLight &light)
     m_dir = light.m_dir;
     m_ambientStrength = light.m_ambientStrength;
     m_specularStrength = light.m_specularStrength;
+    m_source = light.m_source;
 }
 
 GeoLight::~GeoLight()
@@ -49,6 +52,7 @@ GeoLight &GeoLight::operator=(const GeoLight &light)
     m_dir = light.m_dir;
     m_ambientStrength = light.m_ambientStrength;
     m_specularStrength = light.m_specularStrength;
+    m_source = light.m_source;
 
     return *this;
 }

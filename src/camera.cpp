@@ -96,7 +96,7 @@ void GeoCamera::ResetCamera(const GeoVector3D &pos, const GeoVector3D &center, c
     m_view = m1 * m2;
 }
 
-void GeoCamera::SetFrustum(const GeoFrustum &frustum, ProjType pt)
+void GeoCamera::SetFrustum(const GeoFrustum &frustum, ProjType_e pt)
 {
     m_frustum = frustum;
     m_projType = pt;

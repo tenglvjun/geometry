@@ -3,6 +3,7 @@
 
 #include <string>
 #include "global_def.h"
+#include "global_enum.h"
 #include "json.h"
 
 struct MathConfig
@@ -19,6 +20,7 @@ struct OpenGLConfig
 
   double m_ambientStrength;
   double m_specularStrength;
+  LightSource_e m_source;
 };
 
 struct WindowConfig

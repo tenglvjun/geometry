@@ -6,7 +6,8 @@
     },
     "opengl": {
       "ambient strength": 0.1,
-      "specular strength": 0.5
+      "specular strength": 0.5,
+      "light source": 0
     },
     "window": {
       "width": 800,

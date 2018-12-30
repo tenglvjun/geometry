@@ -115,9 +115,11 @@ void GeoSetting::ParseMath(const Json::Value &math)
 void GeoSetting::ParseOpenGL(const Json::Value &openGL)
 {
     Json::Value ambientStrength, specularStrength;
+    Json::Value source;
 
     m_openGL.m_ambientStrength = openGL["ambient strength"].isNull() ? 0.1 : openGL["ambient strength"].asDouble();
     m_openGL.m_specularStrength = openGL["specular strength"].isNull() ? 0.5 : openGL["specular strength"].asDouble();
+    m_openGL.m_source = openGL["light source"].isNull() ? DIRECTION_LIGHT : (LightSource_e)(openGL["light source"].asInt());
 }
 
 void GeoSetting::ParseWindow(const Json::Value &window)

@@ -2,16 +2,9 @@
 #define __LOG_HEAD_FILE__
 
 #include "global_def.h"
+#include "global_enum.h"
 #include <string>
 #include <map>
-
-typedef enum LogLevel
-{
-  Level_Info = 0,
-  Level_Warning,
-  Level_Error,
-  Level_Fatal,
-} LogLevel_e;
 
 class Log final
 {

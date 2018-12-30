@@ -4,14 +4,7 @@
 #include "vector.h"
 #include "matrix.h"
 #include "global_def.h"
-
-typedef enum
-{
-  PT_None = 0,
-  PT_Persp,
-  PT_Persp_Infinite,
-  PT_Ortho
-} ProjType;
+#include "global_enum.h"
 
 struct GeoFrustum
 {
@@ -38,7 +31,7 @@ public:
 
 public:
   void ResetCamera(const GeoVector3D &pos, const GeoVector3D &center, const GeoVector3D &up);
-  void SetFrustum(const GeoFrustum &frustum, ProjType pt);
+  void SetFrustum(const GeoFrustum &frustum, ProjType_e pt);
 
   void Move(const GeoVector3D &v);
   void Rotate(const GeoMatrix &m);
@@ -69,7 +62,7 @@ protected:
 
   double m_sensitivity;
   GeoFrustum m_frustum;
-  ProjType m_projType;
+  ProjType_e m_projType;
 };
 
 #endif // __CAMERA_HEAD_FILE__
