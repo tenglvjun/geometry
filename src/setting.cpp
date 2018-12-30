@@ -1,5 +1,4 @@
 #include "setting.h"
-#include "json.h"
 #include "log.h"
 #include <fstream>
 
@@ -75,17 +74,9 @@ bool GeoSetting::Init(const std::string &filename)
         opengl = setting["opengl"];
         window = setting["window"];
 
-        //math node
-        m_math.m_pi = math["pi"].isNull() ? math["pi"].asDouble() : 3.1415926;
-        m_math.m_epsilon = math["epsilon"].isNull() ? math["epsilon"].asDouble() : 1e-7;
-
-        //opengl
-        m_openGL.m_ambientStrength = opengl["ambient strength"].isNull() ? opengl["ambient strength"].asDouble() : 0.1;
-        m_openGL.m_specularStrength = opengl["specular strength"].isNull() ? opengl["specular strength"].asDouble() : 0.5;
-
-        //window
-        m_window.m_width = window["width"].isNull() ? window["width"].asInt() : 640;
-        m_window.m_height = window["height"].isNull() ? window["height"].asInt() : 640;
+        ParseMath(math);
+        ParseOpenGL(opengl);
+        ParseWindow(window);
     }
 
     is.close();
@@ -111,4 +102,28 @@ OpenGLConfig &GeoSetting::OpenGLConfig()
 WindowConfig &GeoSetting::WindowConfig()
 {
     return m_window;
+}
+
+void GeoSetting::ParseMath(const Json::Value &math)
+{
+    Json::Value pi, epsilon;
+
+    m_math.m_pi = !math["pi"].isNull() ? 3.1415926 : math["pi"].asDouble();
+    m_math.m_epsilon = math["epsilon"].isNull() ? 1e-7 : math["epsilon"].asDouble();
+}
+
+void GeoSetting::ParseOpenGL(const Json::Value &openGL)
+{
+    Json::Value ambientStrength, specularStrength;
+
+    m_openGL.m_ambientStrength = openGL["ambient strength"].isNull() ? 0.1 : openGL["ambient strength"].asDouble();
+    m_openGL.m_specularStrength = openGL["specular strength"].isNull() ? 0.5 : openGL["specular strength"].asDouble();
+}
+
+void GeoSetting::ParseWindow(const Json::Value &window)
+{
+    Json::Value width, height;
+
+    m_window.m_width = window["width"].isNull() ? 640 : window["width"].asInt();
+    m_window.m_height = window["height"].isNull() ? 640 : window["height"].asInt();
 }
