@@ -13,6 +13,8 @@ GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &in
     m_model.SetIdentity();
     m_vao = m_vbo = m_ebo = 0;
 
+    
+
     Setup();
 }
 

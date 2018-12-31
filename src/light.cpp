@@ -184,8 +184,6 @@ void GeoLight::ApplyShader(const Shader &shader) const
 {
     std::vector<float> value;
 
-    Log::GetInstance()->OutputConsole(m_source);
-
     shader.SetUInt("light.source", (unsigned int)m_source);
     shader.SetFloat("light.ambientStrength", (float)m_ambientStrength);
     shader.SetFloat("light.specularStrength", (float)m_specularStrength);
@@ -194,24 +192,12 @@ void GeoLight::ApplyShader(const Shader &shader) const
     m_pos.Flatten(value);
     shader.SetVector("light.pos", 3, &value[0]);
 
-    value.clear();
-    m_color.Flatten(value);
-    shader.SetVector("light.color", 4, &value[0]);
-
     if (m_source == POINT_LIGHT)
     {
         OpenGLConfig &config = GeoSetting::GetInstance()->OpenGLConfig();
-
-        unsigned int index = 0;
-
-        for (std::map<unsigned int, PointLightAttenuation>::const_iterator iter = config.m_pointAttenuation.begin();
-             iter != config.m_pointAttenuation.end(); iter++, index++)
-        {
-            shader.SetUInt("pointLightAttenuation[i].range", iter->first);
-            shader.SetFloat("pointLightAttenuation[i].constant", (float)(iter->second.m_constant));
-            shader.SetFloat("pointLightAttenuation[i].linear", (float)(iter->second.m_linear));
-            shader.SetFloat("pointLightAttenuation[i].quadratic", (float)(iter->second.m_quadratic));
-        }
+        shader.SetFloat("pointLightAttenuation.constant", (float)(config.m_pointAttenuation[50].m_constant));
+        shader.SetFloat("pointLightAttenuation.linear", (float)(config.m_pointAttenuation[50].m_linear));
+        shader.SetFloat("pointLightAttenuation.quadratic", (float)(config.m_pointAttenuation[50].m_quadratic));
     }
 }
 

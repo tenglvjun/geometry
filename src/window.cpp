@@ -151,7 +151,7 @@ bool GeoWindow::CreateGeoWindow()
     glEnable(GL_DEPTH_TEST);
 
     GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 5.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
-    GeoLight::GetInstance()->SetLight(GeoVector3D(1.0f, 1.0f, 10.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoColor(1.0f, 1.0f, 1.0f, 1.0f), POINT_LIGHT);
+    GeoLight::GetInstance()->SetLight(GeoVector3D(1.0f, 1.0f, 5.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoColor(1.0f, 1.0f, 1.0f, 1.0f), POINT_LIGHT);
 
     WindowSizeChange();
 
@@ -232,7 +232,7 @@ void GeoWindow::ShowGeoWindow()
         indices.push_back(i);
     }
 
-    GeoVector3D pos(0.0f, 0.0f, 0.0f);
+    GeoVector3D pos(0.3f, 0.2f, -2.0f);
     m_mesh = new GeoMesh(vertices, indices, pos);
 
     while (!glfwWindowShouldClose(m_window))
