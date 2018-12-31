@@ -15,10 +15,16 @@ PointLightAttenuation::PointLightAttenuation()
     m_quadratic = 0.0f;
 }
 
-OpenGLConfig::OpenGLConfig()
+LightConfig::LightConfig()
 {
+    m_source = DIRECTION_LIGHT;
+    m_pointAttenuationRange = 0;
     m_ambientStrength = 0.0f;
     m_specularStrength = 0.0f;
+}
+
+OpenGLConfig::OpenGLConfig()
+{
 }
 
 WindowConfig::WindowConfig()
@@ -121,25 +127,31 @@ void GeoSetting::ParseMath(const Json::Value &math)
 
 void GeoSetting::ParseOpenGL(const Json::Value &openGL)
 {
+    if (openGL["light"].isNull())
+    {
+        Log::GetInstance()->OutputConsole("light's information is missed");
+        assert(0);
+        return;
+    }
+
+    Json::Value light = openGL["light"];
+
     Json::Value ambientStrength, specularStrength;
-    Json::Value source;
-    Json::Value attenuationArray;
+    m_openGL.m_light.m_ambientStrength = light["ambient strength"].isNull() ? 0.1 : light["ambient strength"].asDouble();
+    m_openGL.m_light.m_specularStrength = light["specular strength"].isNull() ? 0.5 : light["specular strength"].asDouble();
+    m_openGL.m_light.m_source = light["light source"].isNull() ? DIRECTION_LIGHT : (LightSource_e)(light["light source"].asInt());
+    m_openGL.m_light.m_pointAttenuationRange = light["point light range"].isNull() ? 0 : light["point light range"].asUInt();
 
-    m_openGL.m_ambientStrength = openGL["ambient strength"].isNull() ? 0.1 : openGL["ambient strength"].asDouble();
-    m_openGL.m_specularStrength = openGL["specular strength"].isNull() ? 0.5 : openGL["specular strength"].asDouble();
-    m_openGL.m_source = openGL["light source"].isNull() ? DIRECTION_LIGHT : (LightSource_e)(openGL["light source"].asInt());
-
-    if (openGL["point light attenuation"].isNull())
+    if (light["point light attenuation"].isNull())
     {
         Log::GetInstance()->OutputConsole("point light attenuation's information is missed");
         assert(0);
         return;
     }
 
-    attenuationArray = openGL["point light attenuation"];
+    Json::Value attenuationArray = light["point light attenuation"];
 
     unsigned int range;
-
     for (unsigned int i = 0; i < attenuationArray.size(); i++)
     {
         Json::Value attenuation = attenuationArray[i];
@@ -151,7 +163,7 @@ void GeoSetting::ParseOpenGL(const Json::Value &openGL)
         pla.m_linear = attenuation["linear"].asDouble();
         pla.m_quadratic = attenuation["quadratic"].asDouble();
 
-        m_openGL.m_pointAttenuation[range] = pla;
+        m_openGL.m_light.m_pointAttenuation[range] = pla;
     }
 }
 

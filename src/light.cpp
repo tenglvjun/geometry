@@ -10,9 +10,9 @@ SINGLETON_IMPLEMENT(GeoLight);
 GeoLight::GeoLight()
 {
     OpenGLConfig &config = GeoSetting::GetInstance()->OpenGLConfig();
-    m_ambientStrength = config.m_ambientStrength;
-    m_specularStrength = config.m_specularStrength;
-    m_source = config.m_source;
+    m_ambientStrength = config.m_light.m_ambientStrength;
+    m_specularStrength = config.m_light.m_specularStrength;
+    m_source = config.m_light.m_source;
 }
 
 GeoLight::GeoLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoColor &color)
@@ -22,9 +22,9 @@ GeoLight::GeoLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoC
     m_dir.Normalize();
 
     OpenGLConfig &config = GeoSetting::GetInstance()->OpenGLConfig();
-    m_ambientStrength = config.m_ambientStrength;
-    m_specularStrength = config.m_specularStrength;
-    m_source = config.m_source;
+    m_ambientStrength = config.m_light.m_ambientStrength;
+    m_specularStrength = config.m_light.m_specularStrength;
+    m_source = config.m_light.m_source;
 }
 
 GeoLight::GeoLight(const GeoLight &light)
@@ -195,9 +195,12 @@ void GeoLight::ApplyShader(const Shader &shader) const
     if (m_source == POINT_LIGHT)
     {
         OpenGLConfig &config = GeoSetting::GetInstance()->OpenGLConfig();
-        shader.SetFloat("pointLightAttenuation.constant", (float)(config.m_pointAttenuation[50].m_constant));
-        shader.SetFloat("pointLightAttenuation.linear", (float)(config.m_pointAttenuation[50].m_linear));
-        shader.SetFloat("pointLightAttenuation.quadratic", (float)(config.m_pointAttenuation[50].m_quadratic));
+
+        unsigned int range = config.m_light.m_pointAttenuationRange;
+
+        shader.SetFloat("pointLightAttenuation.constant", (float)(config.m_light.m_pointAttenuation[range].m_constant));
+        shader.SetFloat("pointLightAttenuation.linear", (float)(config.m_light.m_pointAttenuation[range].m_linear));
+        shader.SetFloat("pointLightAttenuation.quadratic", (float)(config.m_light.m_pointAttenuation[range].m_quadratic));
     }
 }
 
@@ -214,8 +217,8 @@ GeoColor GeoLight::Attanuation(const GeoVector3D &objPos, const GeoColor &color)
 
     double distance = (m_pos - objPos).Magnitude();
 
-    for (std::map<unsigned int, PointLightAttenuation>::iterator iter = config.m_pointAttenuation.begin();
-         iter != config.m_pointAttenuation.end(); iter++)
+    for (std::map<unsigned int, PointLightAttenuation>::iterator iter = config.m_light.m_pointAttenuation.begin();
+         iter != config.m_light.m_pointAttenuation.end(); iter++)
     {
         if (iter->first > distance)
         {
