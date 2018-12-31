@@ -33,6 +33,9 @@ public:
   const GeoColor &Color() const;
   void Color(const GeoColor &color);
 
+  const unsigned int PointLightAttenuationRange() const;
+  void SetPointLightAttenuationRange(const unsigned int range);
+
   double AmbientStrength() const;
   void AmbientStrength(const double ambientStrength);
 
@@ -52,6 +55,7 @@ public:
 
 protected:
   GeoColor Attanuation(const GeoVector3D &objPos, const GeoColor &color);
+  void RestoreFromSetting();
 
 protected:
   GeoVector3D m_pos;
@@ -62,6 +66,7 @@ protected:
   double m_specularStrength;
 
   LightSource_e m_source;
+  unsigned int m_pointAttenuationRange;
 };
 
 #endif // __LIGHT_HEAD_FILE__
