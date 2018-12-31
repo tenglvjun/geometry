@@ -79,7 +79,13 @@ void Shader::Use() const
 {
     assert(m_programID != 0);
 
-    glUseProgram(m_programID);
+    GLint programID;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &programID);
+
+    if (programID != m_programID)
+    {
+        glUseProgram(m_programID);
+    }
 }
 
 GLuint Shader::GetID() const
@@ -99,6 +105,12 @@ void Shader::SetInt(const std::string &name, int value) const
     glUniform1i(glGetUniformLocation(m_programID, name.c_str()), value);
 }
 
+void Shader::SetUInt(const std::string &name, unsigned int value) const
+{
+    Use();
+    glUniform1ui(glGetUniformLocation(m_programID, name.c_str()), value);
+}
+
 void Shader::SetFloat(const std::string &name, float value) const
 {
     Use();
@@ -107,32 +119,32 @@ void Shader::SetFloat(const std::string &name, float value) const
 
 void Shader::SetVector(const std::string &name, unsigned int dim, float *values) const
 {
-    assert((dim >=2) && (dim <= 4));
+    assert((dim >= 2) && (dim <= 4));
 
     Use();
 
     switch (dim)
     {
-        case 2:
-        {
-            glUniform2fv(glGetUniformLocation(m_programID, name.c_str()), 1, values);
-            break;
-        }
-            
-        case 3:
-        {
-            glUniform3fv(glGetUniformLocation(m_programID, name.c_str()), 1, values);
-            break;
-        }
-            
-        case 4:
-        {
-            glUniform4fv(glGetUniformLocation(m_programID, name.c_str()), 1, values);
-            break;
-        }
-            
-        default:
-            break;
+    case 2:
+    {
+        glUniform2fv(glGetUniformLocation(m_programID, name.c_str()), 1, values);
+        break;
+    }
+
+    case 3:
+    {
+        glUniform3fv(glGetUniformLocation(m_programID, name.c_str()), 1, values);
+        break;
+    }
+
+    case 4:
+    {
+        glUniform4fv(glGetUniformLocation(m_programID, name.c_str()), 1, values);
+        break;
+    }
+
+    default:
+        break;
     }
 }
 

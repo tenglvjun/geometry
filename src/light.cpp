@@ -3,6 +3,7 @@
 #include "camera.h"
 #include "tools.h"
 #include "setting.h"
+#include "log.h"
 
 SINGLETON_IMPLEMENT(GeoLight);
 
@@ -133,7 +134,7 @@ GeoColor GeoLight::Ambient(const GeoVector3D &objPos)
 {
     GeoColor color = m_color;
     color.Scale(m_ambientStrength, false);
-    
+
     return Attanuation(objPos, color);
 }
 
@@ -177,6 +178,41 @@ GeoColor GeoLight::Illuminate(const GeoVector3D &normal, const GeoVector3D &objP
     GeoColor specular = Specular(normal, objPos);
 
     return (ambient + diffuse + specular) * objClr;
+}
+
+void GeoLight::ApplyShader(const Shader &shader) const
+{
+    std::vector<float> value;
+
+    Log::GetInstance()->OutputConsole(m_source);
+
+    shader.SetUInt("light.source", (unsigned int)m_source);
+    shader.SetFloat("light.ambientStrength", (float)m_ambientStrength);
+    shader.SetFloat("light.specularStrength", (float)m_specularStrength);
+
+    value.clear();
+    m_pos.Flatten(value);
+    shader.SetVector("light.pos", 3, &value[0]);
+
+    value.clear();
+    m_color.Flatten(value);
+    shader.SetVector("light.color", 4, &value[0]);
+
+    if (m_source == POINT_LIGHT)
+    {
+        OpenGLConfig &config = GeoSetting::GetInstance()->OpenGLConfig();
+
+        unsigned int index = 0;
+
+        for (std::map<unsigned int, PointLightAttenuation>::const_iterator iter = config.m_pointAttenuation.begin();
+             iter != config.m_pointAttenuation.end(); iter++, index++)
+        {
+            shader.SetUInt("pointLightAttenuation[i].range", iter->first);
+            shader.SetFloat("pointLightAttenuation[i].constant", (float)(iter->second.m_constant));
+            shader.SetFloat("pointLightAttenuation[i].linear", (float)(iter->second.m_linear));
+            shader.SetFloat("pointLightAttenuation[i].quadratic", (float)(iter->second.m_quadratic));
+        }
+    }
 }
 
 GeoColor GeoLight::Attanuation(const GeoVector3D &objPos, const GeoColor &color)

@@ -5,6 +5,7 @@
 #include "matrix.h"
 #include "global_def.h"
 #include "global_enum.h"
+#include "shader.h"
 
 struct GeoFrustum
 {
@@ -40,7 +41,9 @@ public:
   const GeoMatrix &GetViewMatrix() const;
   const GeoMatrix &GetProjectionMatrix() const;
 
-  const GeoVector3D& Position() const;
+  const GeoVector3D &Position() const;
+
+  void ApplyShader(const Shader &shader) const;
 
 public:
   SINGLETON_DECLARE(GeoCamera);

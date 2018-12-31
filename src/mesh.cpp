@@ -88,33 +88,6 @@ void GeoMesh::UpdateMatrix()
     m_model.Flatten(value);
     m_shader.SetMatrix("model", false, &value[0]);
 
-    const GeoMatrix &view = GeoCamera::GetInstance()->GetViewMatrix();
-    value.clear();
-    view.Flatten(value);
-    m_shader.SetMatrix("view", false, &value[0]);
-
-    const GeoMatrix &projection = GeoCamera::GetInstance()->GetProjectionMatrix();
-    value.clear();
-    projection.Flatten(value);
-    m_shader.SetMatrix("projection", false, &value[0]);
-
-    double ambientStrength = GeoLight::GetInstance()->AmbientStrength();
-    double specularStrength = GeoLight::GetInstance()->SpecularStrength();
-    m_shader.SetFloat("light.ambientStrength", (float)ambientStrength);
-    m_shader.SetFloat("light.specularStrength", (float)specularStrength);
-
-    const GeoVector3D &posLight = GeoLight::GetInstance()->Position();
-    value.clear();
-    posLight.Flatten(value);
-    m_shader.SetVector("light.pos", 3, &value[0]);
-
-    const GeoColor &color = GeoLight::GetInstance()->Color();
-    value.clear();
-    color.Flatten(value);
-    m_shader.SetVector("light.color", 4, &value[0]);
-
-    const GeoVector3D &posCamera = GeoCamera::GetInstance()->Position();
-    value.clear();
-    posCamera.Flatten(value);
-    m_shader.SetVector("viewPos", 3, &value[0]);
+    GeoCamera::GetInstance()->ApplyShader(m_shader);
+    GeoLight::GetInstance()->ApplyShader(m_shader);
 }

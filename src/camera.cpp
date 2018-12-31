@@ -136,9 +136,24 @@ void GeoCamera::Scale(bool enlarge)
     UpdateProjection();
 }
 
-const GeoVector3D& GeoCamera::Position() const
+const GeoVector3D &GeoCamera::Position() const
 {
     return m_pos;
+}
+
+void GeoCamera::ApplyShader(const Shader &shader) const
+{
+    std::vector<float> value;
+    m_view.Flatten(value);
+    shader.SetMatrix("view", false, &value[0]);
+
+    value.clear();
+    m_pos.Flatten(value);
+    shader.SetVector("cameraPos", 3, &value[0]);
+
+    value.clear();
+    m_projection.Flatten(value);
+    shader.SetMatrix("projection", false, &value[0]);
 }
 
 void GeoCamera::UpdateProjection()
