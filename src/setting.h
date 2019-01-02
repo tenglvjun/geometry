@@ -39,6 +39,7 @@ struct OpenGLConfig
 {
   OpenGLConfig();
   
+  std::string m_shaderVersion;
   LightConfig m_light;
 };
 

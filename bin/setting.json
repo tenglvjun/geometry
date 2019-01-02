@@ -5,6 +5,7 @@
       "epsilon": 1e-7
     },
     "opengl": {
+      "shader version": "#version 410 core",
       "light": {
         "ambient strength": 0.1,
         "specular strength": 0.5,

@@ -128,6 +128,15 @@ void GeoSetting::ParseMath(const Json::Value &math)
 
 void GeoSetting::ParseOpenGL(const Json::Value &openGL)
 {
+    if (openGL["shader version"].isNull())
+    {
+        Log::GetInstance()->OutputConsole("shader version is missed");
+        assert(0);
+        return;
+    }
+
+    m_openGL.m_shaderVersion = openGL["shader version"].asString();
+
     if (openGL["light"].isNull())
     {
         Log::GetInstance()->OutputConsole("light's information is missed");

@@ -2,6 +2,7 @@
 #include "log.h"
 #include <iostream>
 #include <assert.h>
+#include "setting.h"
 
 Shader::Shader()
     : m_programID(0)
@@ -15,8 +16,9 @@ Shader::~Shader()
 
 void Shader::SetShaderCodes(const std::vector<std::string>& vertexCodes, const std::vector<std::string>& fragmentCodes)
 {
-    std::string version = "#version 410 core\n";
+    OpenGLConfig& config = GeoSetting::GetInstance()->OpenGLConfig();
 
+    std::string version = config.m_shaderVersion + "\n";
     m_vertexCodes = version;
     for(size_t i = 0; i < vertexCodes.size(); i++)
     {
