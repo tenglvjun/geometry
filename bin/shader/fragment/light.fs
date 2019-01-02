@@ -1,20 +1,19 @@
 struct Light
 {
     uint source;
+
     vec3 pos;
+
     float ambientStrength;
     float specularStrength;
-};
 
-struct PointLightAttenuation
-{
+    // point light source attenuation parameters
     float constant;
     float linear;
     float quadratic;
 };
 
 uniform Light light;
-uniform PointLightAttenuation pointLightAttenuation;
 
 vec3 AmbientLight(vec4 objColor)
 {
@@ -45,9 +44,9 @@ vec3 ApplyPointLightAttenuation(vec3 color, vec3 pos)
         return vec3(1.0, 1.0, 1.0);
 
     float distance = length(light.pos - pos);
-    float constant = pointLightAttenuation.constant;
-    float linear = pointLightAttenuation.linear;
-    float quadratic = pointLightAttenuation.quadratic;
+    float constant = light.constant;
+    float linear = light.linear;
+    float quadratic = light.quadratic;
 
     float attenuation = 1.0 / (constant + linear * distance + quadratic * (distance * distance));
 

@@ -211,9 +211,9 @@ void GeoLight::ApplyShader(const Shader &shader) const
         float linear = (float)(config.m_light.m_pointAttenuation[m_pointAttenuationRange].m_linear);
         float quadratic = (float)(config.m_light.m_pointAttenuation[m_pointAttenuationRange].m_quadratic);
 
-        shader.SetFloat("pointLightAttenuation.constant", constant);
-        shader.SetFloat("pointLightAttenuation.linear", linear);
-        shader.SetFloat("pointLightAttenuation.quadratic", quadratic);
+        shader.SetFloat("light.constant", constant);
+        shader.SetFloat("light.linear", linear);
+        shader.SetFloat("light.quadratic", quadratic);
     }
 }
 
