@@ -6,6 +6,7 @@
 #include "log.h"
 
 std::string GeoLight::m_shaderFragmentCode = "";
+std::string GeoLight::m_shaderVertexCode = "";
 
 SINGLETON_IMPLEMENT(GeoLight);
 
@@ -255,4 +256,9 @@ void GeoLight::InitShaderCode()
 const std::string& GeoLight::GetFragmentCode()
 {
     return m_shaderFragmentCode;
+}
+
+const std::string& GeoLight::GetVertexCode()
+{
+    return m_shaderVertexCode;
 }

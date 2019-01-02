@@ -45,11 +45,16 @@ public:
 
   void ApplyShader(const Shader &shader) const;
 
+protected:
+  void UpdateProjection();
+
 public:
   SINGLETON_DECLARE(GeoCamera);
 
-protected:
-  void UpdateProjection();
+public:
+  static void InitShaderCode();
+  static const std::string& GetVertexCode();
+  static const std::string& GetFragmentCode();
 
 protected:
   GeoVector3D m_pos;
@@ -66,6 +71,10 @@ protected:
   double m_sensitivity;
   GeoFrustum m_frustum;
   ProjType_e m_projType;
+
+protected:
+  static std::string m_shaderVertexCode;
+  static std::string m_shaderFragmentCode;
 };
 
 #endif // __CAMERA_HEAD_FILE__

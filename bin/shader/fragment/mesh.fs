@@ -3,14 +3,13 @@ out vec4 FragColor;
 in vec4 objectColor;
 in vec3 Normal;
 in vec3 FragPos;
-
-uniform vec3 viewPos; 
+in vec3 eyePos;
 
 void main()
 {
     vec3 ambient = AmbientLight(objectColor);
     vec3 diffuse = DiffuseLight(Normal, FragPos, objectColor);
-    vec3 specular = SpecularLight(Normal, viewPos, FragPos, objectColor);
+    vec3 specular = SpecularLight(Normal, eyePos, FragPos, objectColor);
 
     ambient = ApplyPointLightAttenuation(ambient, FragPos);
     diffuse = ApplyPointLightAttenuation(diffuse, FragPos);

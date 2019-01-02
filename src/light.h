@@ -59,6 +59,7 @@ protected:
 
 public:
   static void InitShaderCode();
+  static const std::string& GetVertexCode();
   static const std::string& GetFragmentCode();
 
 protected:
@@ -72,6 +73,8 @@ protected:
   LightSource_e m_source;
   unsigned int m_pointAttenuationRange;
 
+protected:
+  static std::string m_shaderVertexCode;
   static std::string m_shaderFragmentCode;
 };
 

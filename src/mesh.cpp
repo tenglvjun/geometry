@@ -78,6 +78,7 @@ void GeoMesh::Setup()
     glBindVertexArray(0);
 
     std::vector<std::string> vcVertex, vcFragment;
+    vcVertex.push_back(GeoCamera::GetInstance()->GetVertexCode());
     vcVertex.push_back(Tools::GetInstance()->ReadFile("shader/vertex/mesh.vs"));
     vcFragment.push_back(GeoLight::GetFragmentCode());
     vcFragment.push_back(Tools::GetInstance()->ReadFile("shader/fragment/mesh.fs"));
