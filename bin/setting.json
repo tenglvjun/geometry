@@ -7,6 +7,7 @@
     "opengl": {
       "shader version": "#version 410 core",
       "light": {
+        "position": "0.0, 0.0, 2.0",
         "ambient strength": 0.2,
         "diffuse strength": 0.5,
         "specular strength": 1.0,

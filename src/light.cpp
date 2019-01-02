@@ -215,4 +215,5 @@ void GeoLight::RestoreFromSetting()
     m_diffuseStrength = GeoVector3D(value, value, value);
     m_source = config.m_light.m_source;
     m_pointAttenuationRange = config.m_light.m_pointAttenuationRange;
+    m_pos = config.m_light.m_pos;
 }

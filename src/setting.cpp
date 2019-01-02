@@ -2,6 +2,8 @@
 #include "log.h"
 #include <fstream>
 #include <assert.h>
+#include "tools.h"
+#include <vector>
 
 MathConfig::MathConfig()
 {
@@ -140,12 +142,34 @@ void GeoSetting::ParseOpenGL(const Json::Value &openGL)
 
     if (openGL["light"].isNull())
     {
-        Log::GetInstance()->OutputConsole("light's information is missed");
+        Log::GetInstance()->OutputConsole("light information is missed");
         assert(0);
         return;
     }
 
     Json::Value light = openGL["light"];
+
+    if (light["position"].isNull())
+    {
+        Log::GetInstance()->OutputConsole("light position information is missed");
+        m_openGL.m_light.m_pos = GeoVector3D(0.0f, 0.0f, 0.0f);
+    }
+    else
+    {
+        std::string pos = light["position"].asString();
+        std::vector<std::string> ret;
+
+        Tools::GetInstance()->SplitString(pos, ret, ",", " ");
+
+        assert(ret.size() == 3);
+        
+        double x, y, z;
+        x = atof(ret[0].c_str());
+        y = atof(ret[1].c_str());
+        z = atof(ret[2].c_str());
+
+        m_openGL.m_light.m_pos = GeoVector3D(x, y, z);
+    }
 
     m_openGL.m_light.m_ambientStrength = light["ambient strength"].isNull() ? 0.1 : light["ambient strength"].asDouble();
     m_openGL.m_light.m_specularStrength = light["specular strength"].isNull() ? 1.0 : light["specular strength"].asDouble();

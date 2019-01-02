@@ -88,3 +88,52 @@ std::string Tools::ReadFile(const std::string &filePath)
 
     return content;
 }
+
+void Tools::SplitString(const std::string &s, std::vector<std::string> &ret, const std::string &sep, const std::string &trimMark)
+{
+    if (s.empty())
+    {
+        return;
+    }
+
+    std::string str = s;
+
+    if (!trimMark.empty())
+    {
+        TrimMark(str, trimMark);
+    }
+
+    unsigned int size = sep.size();
+    unsigned int length = 0;
+    while (!str.empty())
+    {
+        std::string::size_type pos = str.find(sep);
+        if (pos == std::string::npos)
+        {
+            ret.push_back(str);
+            length = str.length();
+        }
+        else
+        {
+            ret.push_back(str.substr(0, pos));
+            length = pos + size;
+        }
+
+        str.erase(0, length);
+    }
+}
+
+void Tools::TrimMark(std::string &s, const std::string &mark)
+{
+    unsigned int size = mark.size();
+    while (true)
+    {
+        std::string::size_type pos = s.find(mark);
+        if (pos == std::string::npos)
+        {
+            break;
+        }
+
+        s.erase(pos, size);
+    }
+}
