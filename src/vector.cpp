@@ -139,8 +139,8 @@ double GeoVector2D::Magnitude() const
 
 void GeoVector2D::Flatten(std::vector<float> &data) const
 {
-    data.push_back((double)m_coord[0]);
-    data.push_back((double)m_coord[1]);
+    data.push_back((float)m_coord[0]);
+    data.push_back((float)m_coord[1]);
 }
 
 unsigned int GeoVector2D::Size()
@@ -306,9 +306,9 @@ double GeoVector3D::Magnitude() const
 
 void GeoVector3D::Flatten(std::vector<float> &data) const
 {
-    data.push_back((double)m_coord[0]);
-    data.push_back((double)m_coord[1]);
-    data.push_back((double)m_coord[2]);
+    data.push_back((float)m_coord[0]);
+    data.push_back((float)m_coord[1]);
+    data.push_back((float)m_coord[2]);
 }
 
 void GeoVector3D::Dump() const
@@ -475,10 +475,10 @@ double GeoVector4D::Magnitude() const
 
 void GeoVector4D::Flatten(std::vector<float> &data) const
 {
-    data.push_back((double)m_coord[0]);
-    data.push_back((double)m_coord[1]);
-    data.push_back((double)m_coord[2]);
-    data.push_back((double)m_coord[3]);
+    data.push_back((float)m_coord[0]);
+    data.push_back((float)m_coord[1]);
+    data.push_back((float)m_coord[2]);
+    data.push_back((float)m_coord[3]);
 }
 
 unsigned int GeoVector4D::Size()

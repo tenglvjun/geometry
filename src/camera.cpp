@@ -6,14 +6,14 @@ GeoFrustum::GeoFrustum()
     m_left = m_right = m_top = m_bottom = m_near = m_far = 0.0f;
 }
 
-GeoFrustum::GeoFrustum(const double left, const double right, const double bottom, const double top, const double near, const double far)
+GeoFrustum::GeoFrustum(const double l, const double r, const double b, const double t, const double n, const double f)
 {
-    m_left = left;
-    m_right = right;
-    m_top = top;
-    m_bottom = bottom;
-    m_near = near;
-    m_far = far;
+    m_left = l;
+    m_right = r;
+    m_top = t;
+    m_bottom = b;
+    m_near = n;
+    m_far = f;
 }
 
 SINGLETON_IMPLEMENT(GeoCamera);

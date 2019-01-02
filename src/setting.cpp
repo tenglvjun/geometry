@@ -1,6 +1,7 @@
 #include "setting.h"
 #include "log.h"
 #include <fstream>
+#include <assert.h>
 
 MathConfig::MathConfig()
 {

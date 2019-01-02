@@ -10,7 +10,7 @@
 struct GeoFrustum
 {
   GeoFrustum();
-  GeoFrustum(const double left, const double right, const double bottom, const double top, const double near, const double far);
+  GeoFrustum(const double l, const double r, const double b, const double t, const double n, const double f);
 
   double m_left;
   double m_right;
