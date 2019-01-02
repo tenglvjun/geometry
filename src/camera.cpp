@@ -154,7 +154,7 @@ void GeoCamera::ApplyShader(const Shader &shader) const
 
     value.clear();
     m_pos.Flatten(value);
-    shader.SetVector("cameraPos", 3, &value[0]);
+    shader.SetVector("viewPos", 3, &value[0]);
 
     value.clear();
     m_projection.Flatten(value);

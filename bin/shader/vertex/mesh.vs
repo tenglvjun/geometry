@@ -11,8 +11,8 @@ void main()
 {
     objectColor = color;
 
-    FragPos = vec3(ApplyModelMatrix(vec4(aPos, 1.0)).xyz);
-    Normal = vec3(TranslateNormal(vec4(aNormal, 1.0)).xyz);
+    FragPos = vec3(ApplyModelMatrix(vec4(aPos, 1.0)));
+    Normal = TranslateNormal(aNormal);
     gl_Position = ApplyCameraTransformation(vec4(aPos, 1.0));
     eyePos = GetViewPos();
 }

@@ -13,9 +13,9 @@ vec4 ApplyCameraTransformation(vec4 pos)
     return projection * view * model * pos;
 }
 
-vec4 TranslateNormal(vec4 normal)
+vec3 TranslateNormal(vec3 normal)
 {
-    return transpose(inverse(view * model)) * normal;
+    return mat3(transpose(inverse(model))) * normal;
 }
 
 vec3 GetViewPos()

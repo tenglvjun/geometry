@@ -37,7 +37,17 @@ vec3 SpecularLight(vec3 norm, vec3 eye, vec3 pos, vec4 objColor)
 {
     vec3 lightDir = normalize(light.pos - pos);
     vec3 viewDir = normalize(eye - pos);
-    vec3 reflectDir = reflect(-lightDir, normalize(norm));  
+    vec3 reflectDir;
+    
+    if (dot(lightDir, norm) < 0)
+    {
+        reflectDir = vec3(0, 0, 0);
+    }
+    else
+    {
+        reflect(lightDir, normalize(norm));  
+    }
+
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
 
     return light.specularStrength * spec * vec3(objColor.rgb);
@@ -68,7 +78,7 @@ vec4 ApplyLight(vec3 norm, vec3 eye, vec3 pos, vec4 objColor)
 
     if (light.source == 2)
     {
-        float theta = dot(normalize(light.pos - pos), normalize(light.pos)); 
+        float theta = dot(normalize(pos - light.pos), normalize(-light.pos)); 
         float epsilon = (light.cutOff - light.outerCutOff);
         float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
 
