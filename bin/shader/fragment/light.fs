@@ -16,6 +16,29 @@ struct PointLightAttenuation
 uniform Light light;
 uniform PointLightAttenuation pointLightAttenuation;
 
+vec3 AmbientLight(vec4 objColor)
+{
+    return light.ambientStrength * vec3(objColor.rgb);
+}
+
+vec3 DiffuseLight(vec3 norm, vec3 pos, vec4 objColor)
+{
+    vec3 lightDir = normalize(light.pos - pos);
+    float diff = max(dot(normalize(norm), lightDir), 0.0);
+
+    return diff * vec3(objColor.rgb);
+}
+
+vec3 SpecularLight(vec3 norm, vec3 eye, vec3 pos, vec4 objColor)
+{
+    vec3 lightDir = normalize(light.pos - pos);
+    vec3 viewDir = normalize(eye - pos);
+    vec3 reflectDir = reflect(-lightDir, normalize(norm));  
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+
+    return light.specularStrength * spec * vec3(objColor.rgb);
+}
+
 vec3 ApplyPointLightAttenuation(vec3 color, vec3 pos)
 {
     if (light.source != 1)
