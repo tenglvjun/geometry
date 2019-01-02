@@ -1,6 +1,9 @@
 #include "tools.h"
 #include <time.h>
 #include <cmath>
+#include <fstream>
+#include <sstream>
+#include "log.h"
 #include "setting.h"
 
 SINGLETON_IMPLEMENT(Tools)
@@ -46,4 +49,33 @@ double Tools::Maximum(const double a, const double b)
 double Tools::Minimum(const double a, const double b)
 {
     return (a < b) ? a : b;
+}
+
+std::string Tools::ReadFile(const std::string& filePath)
+{
+    std::string content;
+
+    std::ifstream file;
+
+    file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try
+    {
+        // open files
+        file.open(filePath);
+        std::stringstream stream;
+        // read file's buffer contents into streams
+        stream << file.rdbuf();
+        // close file handlers
+        file.close();
+        // convert stream into string
+        content = stream.str();
+    }
+    catch (std::ifstream::failure e)
+    {
+        std::string error = "open file failed, file path is ";
+        error += filePath;
+        Log::GetInstance()->OutputConsole(error, Level_Fatal);
+    }
+
+    return content;
 }

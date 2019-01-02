@@ -5,11 +5,14 @@
 #include "setting.h"
 #include "log.h"
 
+std::string GeoLight::m_shaderFragmentCode = "";
+
 SINGLETON_IMPLEMENT(GeoLight);
 
 GeoLight::GeoLight()
 {
     RestoreFromSetting();
+    GeoLight::InitShaderCode();
 }
 
 GeoLight::GeoLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoColor &color)
@@ -19,6 +22,7 @@ GeoLight::GeoLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoC
     m_dir.Normalize();
 
     RestoreFromSetting();
+    GeoLight::InitShaderCode();
 }
 
 GeoLight::GeoLight(const GeoLight &light)
@@ -241,4 +245,14 @@ void GeoLight::RestoreFromSetting()
     m_specularStrength = config.m_light.m_specularStrength;
     m_source = config.m_light.m_source;
     m_pointAttenuationRange = config.m_light.m_pointAttenuationRange;
+}
+
+void GeoLight::InitShaderCode()
+{
+    m_shaderFragmentCode = Tools::ReadFile("shader/fragment/light.fs");
+}
+
+const std::string& GeoLight::GetFragmentCode()
+{
+    return m_shaderFragmentCode;
 }

@@ -1,9 +1,7 @@
 #include "shader.h"
 #include "log.h"
-
-#include <fstream>
-#include <sstream>
 #include <iostream>
+#include <assert.h>
 
 Shader::Shader()
     : m_programID(0)
@@ -15,51 +13,43 @@ Shader::~Shader()
     DeleteProgram();
 }
 
-bool Shader::Init(const std::string &vertexPath, const std::string &fragmentPath)
+void Shader::SetShaderCodes(const std::vector<std::string>& vertexCodes, const std::vector<std::string>& fragmentCodes)
+{
+    std::string version = "#version 410 core\n";
+
+    m_vertexCodes = version;
+    for(size_t i = 0; i < vertexCodes.size(); i++)
+    {
+        m_vertexCodes += vertexCodes[i];
+    }
+
+    m_fragmentCodes = version;
+    for(size_t i = 0; i < fragmentCodes.size(); i++)
+    {
+        m_fragmentCodes += fragmentCodes[i];
+    }
+}
+
+bool Shader::Complie()
 {
     DeleteProgram();
 
-    std::string vertexCode;
-    std::string fragmentCode;
-    std::ifstream vShaderFile;
-    std::ifstream fShaderFile;
-
-    vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-    fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-    try
-    {
-        // open files
-        vShaderFile.open(vertexPath);
-        fShaderFile.open(fragmentPath);
-        std::stringstream vShaderStream, fShaderStream;
-        // read file's buffer contents into streams
-        vShaderStream << vShaderFile.rdbuf();
-        fShaderStream << fShaderFile.rdbuf();
-        // close file handlers
-        vShaderFile.close();
-        fShaderFile.close();
-        // convert stream into string
-        vertexCode = vShaderStream.str();
-        fragmentCode = fShaderStream.str();
-    }
-    catch (std::ifstream::failure e)
-    {
-        Log::GetInstance()->OutputConsole("open shader file failed", Level_Fatal);
-        return false;
-    }
-
-    const char *vShaderCode = vertexCode.c_str();
-    const char *fShaderCode = fragmentCode.c_str();
-
     GLuint vertex, fragment;
 
+    GLint vSourceLength = (GLint)m_vertexCodes.length();
+    GLint fSourceLength = (GLint)m_fragmentCodes.length();
+
+    const char* buf = nullptr;
+
     vertex = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex, 1, &vShaderCode, nullptr);
+    buf = m_vertexCodes.c_str();
+    glShaderSource(vertex, 1, &buf, &vSourceLength);
     glCompileShader(vertex);
     CheckCompileErrors(vertex, "VERTEX");
 
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment, 1, &fShaderCode, nullptr);
+    buf = m_fragmentCodes.c_str();
+    glShaderSource(fragment, 1, &buf, &fSourceLength);
     glCompileShader(fragment);
     CheckCompileErrors(fragment, "FRAGMENT");
 

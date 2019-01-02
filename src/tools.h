@@ -19,6 +19,7 @@ public:
   static bool IsZero(const double v);
   static double Maximum(const double a, const double b);
   static double Minimum(const double a, const double b);
+  static std::string ReadFile(const std::string& filePath);
 };
 
 #endif // __TOOLS_HEAD_FILE__

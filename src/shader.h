@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 #include <string>
-#include <assert.h>
+#include <vector>
 
 class Shader final
 {
@@ -12,7 +12,8 @@ public:
   ~Shader();
 
 public:
-  bool Init(const std::string &vertexPath, const std::string &fragmentPath);
+  void SetShaderCodes(const std::vector<std::string>& vertexCodes, const std::vector<std::string>& fragmentCodes);
+  bool Complie();
   void Use() const;
   GLuint GetID() const;
   void SetBool(const std::string &name, bool value) const;
@@ -26,8 +27,12 @@ protected:
   void DeleteProgram();
   void CheckCompileErrors(unsigned int shader, std::string type);
 
+public:
+
 protected:
   GLuint m_programID;
+  std::string m_vertexCodes;
+  std::string m_fragmentCodes;
 };
 
 #endif // __SHADER_HEAD_FILE__

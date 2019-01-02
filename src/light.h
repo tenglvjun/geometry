@@ -57,6 +57,10 @@ protected:
   GeoColor Attanuation(const GeoVector3D &objPos, const GeoColor &color);
   void RestoreFromSetting();
 
+public:
+  static void InitShaderCode();
+  static const std::string& GetFragmentCode();
+
 protected:
   GeoVector3D m_pos;
   GeoVector3D m_dir;
@@ -67,6 +71,8 @@ protected:
 
   LightSource_e m_source;
   unsigned int m_pointAttenuationRange;
+
+  static std::string m_shaderFragmentCode;
 };
 
 #endif // __LIGHT_HEAD_FILE__

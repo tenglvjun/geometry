@@ -3,6 +3,7 @@
 #include <iostream>
 #include "camera.h"
 #include "light.h"
+#include "tools.h"
 
 GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices, GeoVector3D &pos)
     : m_model(4, 4)
@@ -76,7 +77,13 @@ void GeoMesh::Setup()
 
     glBindVertexArray(0);
 
-    m_shader.Init("shader/vertex/mesh.vs", "shader/fragment/mesh.fs");
+    std::vector<std::string> vcVertex, vcFragment;
+    vcVertex.push_back(Tools::GetInstance()->ReadFile("shader/vertex/mesh.vs"));
+    vcFragment.push_back(GeoLight::GetFragmentCode());
+    vcFragment.push_back(Tools::GetInstance()->ReadFile("shader/fragment/mesh.fs"));
+
+    m_shader.SetShaderCodes(vcVertex, vcFragment);
+    m_shader.Complie();
 
     UpdateMatrix();
 }
