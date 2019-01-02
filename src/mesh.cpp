@@ -4,6 +4,7 @@
 #include "camera.h"
 #include "light.h"
 #include "tools.h"
+#include "shader_code_manage.h"
 
 GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices, GeoVector3D &pos)
     : m_model(4, 4)
@@ -77,10 +78,15 @@ void GeoMesh::Setup()
     glBindVertexArray(0);
 
     std::vector<std::string> vcVertex, vcFragment;
-    vcVertex.push_back(GeoCamera::GetInstance()->GetVertexCode());
-    vcVertex.push_back(Tools::GetInstance()->ReadFile("shader/vertex/mesh.vs"));
-    vcFragment.push_back(GeoLight::GetFragmentCode());
-    vcFragment.push_back(Tools::GetInstance()->ReadFile("shader/fragment/mesh.fs"));
+
+    const GeoShaderCode& meshShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Mesh);
+    const GeoShaderCode& lightShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Light);
+    const GeoShaderCode& cameraShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Camera);
+
+    vcVertex.push_back(cameraShaderCode.m_vertex);
+    vcVertex.push_back(meshShaderCode.m_vertex);
+    vcFragment.push_back(lightShaderCode.m_fragment);
+    vcFragment.push_back(meshShaderCode.m_fragment);
 
     m_shader.SetShaderCodes(vcVertex, vcFragment);
     m_shader.Complie();

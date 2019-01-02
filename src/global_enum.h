@@ -18,10 +18,19 @@ typedef enum
 
 typedef enum
 {
-  PT_None = 0,
+  PT_Invalid = 0,
   PT_Persp,
   PT_Persp_Infinite,
   PT_Ortho
 } ProjType_e;
+
+typedef enum
+{
+  SCT_Invalid = 0,
+  SCT_Light,
+  SCT_Camera,
+  SCT_Mesh,
+  SCT_Count,
+} ShaderCodeType_e;
 
 #endif // __GLOBAL_ENUM_HEAD_FILE__

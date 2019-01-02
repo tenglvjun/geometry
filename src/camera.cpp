@@ -16,18 +16,13 @@ GeoFrustum::GeoFrustum(const double l, const double r, const double b, const dou
     m_far = f;
 }
 
-std::string GeoCamera::m_shaderFragmentCode = "";
-std::string GeoCamera::m_shaderVertexCode = "";
-
 SINGLETON_IMPLEMENT(GeoCamera);
 
 GeoCamera::GeoCamera()
-    : m_view(4, 4), m_projection(4, 4), m_sensitivity(0.1f), m_projType(PT_None)
+    : m_view(4, 4), m_projection(4, 4), m_sensitivity(0.1f), m_projType(PT_Invalid)
 {
     m_view.SetIdentity();
     m_projection.SetIdentity();
-
-    GeoCamera::InitShaderCode();
 }
 
 GeoCamera::GeoCamera(const GeoCamera &camera)
@@ -208,19 +203,4 @@ void GeoCamera::UpdateProjection()
     default:
         break;
     }
-}
-
-void GeoCamera::InitShaderCode()
-{
-    m_shaderVertexCode = Tools::ReadFile("shader/vertex/camera.vs");
-}
-
-const std::string &GeoCamera::GetVertexCode()
-{
-    return m_shaderVertexCode;
-}
-
-const std::string &GeoCamera::GetFragmentCode()
-{
-    return m_shaderFragmentCode;
 }

@@ -7,7 +7,7 @@
 #include "global_enum.h"
 #include "shader.h"
 
-class GeoLight
+class GeoLight final
 {
 public:
   GeoLight();
@@ -70,10 +70,6 @@ protected:
 
   LightSource_e m_source;
   unsigned int m_pointAttenuationRange;
-
-protected:
-  static std::string m_shaderVertexCode;
-  static std::string m_shaderFragmentCode;
 };
 
 #endif // __LIGHT_HEAD_FILE__
