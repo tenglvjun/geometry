@@ -24,6 +24,15 @@ double Tools::Radia2Degree(const  double r)
     return r * 180 / pi;
 }
 
+double Tools::Degree2dRadia(const double d)
+{
+    MathConfig &config = GeoSetting::GetInstance()->MathConfig();
+
+    double pi = config.m_pi;
+
+    return ((d * pi) / (double)180);
+}
+
 std::string Tools::GetLocalTime()
 {
     time_t timep;

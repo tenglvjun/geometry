@@ -8,8 +8,11 @@
       "shader version": "#version 410 core",
       "light": {
         "ambient strength": 0.1,
-        "specular strength": 0.5,
-        "light source": 1,
+        "diffuse strength": 0.8,
+        "specular strength": 1.0,
+        "light source": 2,
+        "cutOff": 12.5,
+        "outerCutOff": 17.5,
         "point light range": 50,
         "point light attenuation": [
           {

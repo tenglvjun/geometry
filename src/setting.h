@@ -30,9 +30,12 @@ struct LightConfig
 
   double m_ambientStrength;
   double m_specularStrength;
+  double m_diffuseStrength;
   LightSource_e m_source;
   unsigned int m_pointAttenuationRange;
   std::map<unsigned int, PointLightAttenuation> m_pointAttenuation;
+  double m_cutOff;
+  double m_outerCutOff;
 };
 
 struct OpenGLConfig

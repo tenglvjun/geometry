@@ -4,13 +4,18 @@ struct Light
 
     vec3 pos;
 
-    float ambientStrength;
-    float specularStrength;
+    vec3 ambientStrength;
+    vec3 diffuseStrength;
+    vec3 specularStrength;
 
-    // point light source attenuation parameters
+    // point light source parameters
     float constant;
     float linear;
     float quadratic;
+
+    // spot light source parameters
+    float cutOff;
+    float outerCutOff;
 };
 
 uniform Light light;
@@ -23,9 +28,9 @@ vec3 AmbientLight(vec4 objColor)
 vec3 DiffuseLight(vec3 norm, vec3 pos, vec4 objColor)
 {
     vec3 lightDir = normalize(light.pos - pos);
-    float diff = max(dot(normalize(norm), lightDir), 0.0);
+    float diffuse = max(dot(normalize(norm), lightDir), 0.0);
 
-    return diff * vec3(objColor.rgb);
+    return light.diffuseStrength * diffuse * vec3(objColor.rgb);
 }
 
 vec3 SpecularLight(vec3 norm, vec3 eye, vec3 pos, vec4 objColor)
@@ -40,9 +45,6 @@ vec3 SpecularLight(vec3 norm, vec3 eye, vec3 pos, vec4 objColor)
 
 vec3 ApplyPointLightAttenuation(vec3 color, vec3 pos)
 {
-    if (light.source != 1)
-        return vec3(1.0, 1.0, 1.0);
-
     float distance = length(light.pos - pos);
     float constant = light.constant;
     float linear = light.linear;
@@ -53,4 +55,30 @@ vec3 ApplyPointLightAttenuation(vec3 color, vec3 pos)
     color *= attenuation;  
 
     return color;
+}
+
+vec4 ApplyLight(vec3 norm, vec3 eye, vec3 pos, vec4 objColor)
+{
+    vec3 ambient = AmbientLight(objColor);
+    vec3 diffuse = DiffuseLight(norm, pos, objColor);
+    vec3 specular = SpecularLight(norm, eye, pos, objColor);
+
+    if (light.source == 0) 
+        return vec4(ambient + diffuse + specular, 1.0);
+
+    if (light.source == 2)
+    {
+        float theta = dot(normalize(light.pos - pos), normalize(light.pos)); 
+        float epsilon = (light.cutOff - light.outerCutOff);
+        float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+
+        diffuse *= intensity;
+        specular *= intensity;
+    }
+
+    ambient = ApplyPointLightAttenuation(ambient, pos);
+    diffuse = ApplyPointLightAttenuation(diffuse, pos);
+    specular = ApplyPointLightAttenuation(specular, pos);
+
+    return vec4(ambient + diffuse + specular, 1.0);
 }

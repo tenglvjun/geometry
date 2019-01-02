@@ -19,7 +19,7 @@ public:
   GeoLight &operator=(const GeoLight &light);
 
 public:
-  void SetLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoColor &color, const LightSource_e source);
+  void SetLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoColor &color);
 
   void SetLightSource(const LightSource_e source);
   LightSource_e GetLightSource();
@@ -36,17 +36,14 @@ public:
   const unsigned int PointLightAttenuationRange() const;
   void SetPointLightAttenuationRange(const unsigned int range);
 
-  double AmbientStrength() const;
-  void AmbientStrength(const double ambientStrength);
+  GeoVector3D AmbientStrength() const;
+  void AmbientStrength(const GeoVector3D& ambientStrength);
 
-  double SpecularStrength() const;
-  void SpecularStrength(const double specularStrength);
+  GeoVector3D SpecularStrength() const;
+  void SpecularStrength(const GeoVector3D& specularStrength);
 
-  GeoColor Ambient(const GeoVector3D &objPos);
-  GeoColor Diffuse(const GeoVector3D &normal, const GeoVector3D &objPos);
-  GeoColor Specular(const GeoVector3D &normal, const GeoVector3D &objPos);
-
-  GeoColor Illuminate(const GeoVector3D &normal, const GeoVector3D &objPos, const GeoColor &objClr);
+  GeoVector3D DiffuseStrength() const;
+  void DiffuseStrength(const GeoVector3D& diffuseStrength);
 
   void ApplyShader(const Shader &shader) const;
 
@@ -67,8 +64,9 @@ protected:
   GeoVector3D m_dir;
   GeoColor m_color;
 
-  double m_ambientStrength;
-  double m_specularStrength;
+  GeoVector3D m_ambientStrength;
+  GeoVector3D m_specularStrength;
+  GeoVector3D m_diffuseStrength;
 
   LightSource_e m_source;
   unsigned int m_pointAttenuationRange;
