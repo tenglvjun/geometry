@@ -127,7 +127,7 @@ GeoVector3D GeoLight::AmbientStrength() const
     return m_ambientStrength;
 }
 
-void GeoLight::AmbientStrength(const GeoVector3D& ambientStrength)
+void GeoLight::AmbientStrength(const GeoVector3D &ambientStrength)
 {
     m_ambientStrength = ambientStrength;
 }
@@ -137,7 +137,7 @@ GeoVector3D GeoLight::SpecularStrength() const
     return m_specularStrength;
 }
 
-void GeoLight::SpecularStrength(const GeoVector3D& specularStrength)
+void GeoLight::SpecularStrength(const GeoVector3D &specularStrength)
 {
     m_specularStrength = specularStrength;
 }
@@ -147,7 +147,7 @@ GeoVector3D GeoLight::DiffuseStrength() const
     return m_diffuseStrength;
 }
 
-void GeoLight::DiffuseStrength(const GeoVector3D& diffuseStrength)
+void GeoLight::DiffuseStrength(const GeoVector3D &diffuseStrength)
 {
     m_diffuseStrength = diffuseStrength;
 }
@@ -162,7 +162,7 @@ void GeoLight::ApplyShader(const Shader &shader) const
     shader.SetVector("light.ambientStrength", 3, &value[0]);
     value.clear();
     m_diffuseStrength.Flatten(value);
-    shader.SetVector("light.diffuseStrength",  3, &value[0]);
+    shader.SetVector("light.diffuseStrength", 3, &value[0]);
     value.clear();
     m_specularStrength.Flatten(value);
     shader.SetVector("light.specularStrength", 3, &value[0]);
@@ -180,7 +180,7 @@ void GeoLight::ApplyShader(const Shader &shader) const
     shader.SetFloat("light.constant", constant);
     shader.SetFloat("light.linear", linear);
     shader.SetFloat("light.quadratic", quadratic);
-    
+
     double cutOff = Tools::GetInstance()->Degree2dRadia(config.m_light.m_cutOff);
     double outerCutOff = Tools::GetInstance()->Degree2dRadia(config.m_light.m_outerCutOff);
     shader.SetFloat("light.cutOff", (float)cos(cutOff));
@@ -228,12 +228,12 @@ void GeoLight::InitShaderCode()
     m_shaderFragmentCode = Tools::ReadFile("shader/fragment/light.fs");
 }
 
-const std::string& GeoLight::GetFragmentCode()
+const std::string &GeoLight::GetFragmentCode()
 {
     return m_shaderFragmentCode;
 }
 
-const std::string& GeoLight::GetVertexCode()
+const std::string &GeoLight::GetVertexCode()
 {
     return m_shaderVertexCode;
 }

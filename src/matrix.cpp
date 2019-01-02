@@ -217,7 +217,7 @@ void GeoMatrix::Init(const unsigned int row, const unsigned int col)
         m_data[row] = new double[m_col];
         for (unsigned int col = 0; col < m_col; col++)
         {
-                m_data[row][col] = 0.0f;
+            m_data[row][col] = 0.0f;
         }
     }
 }

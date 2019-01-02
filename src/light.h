@@ -37,13 +37,13 @@ public:
   void SetPointLightAttenuationRange(const unsigned int range);
 
   GeoVector3D AmbientStrength() const;
-  void AmbientStrength(const GeoVector3D& ambientStrength);
+  void AmbientStrength(const GeoVector3D &ambientStrength);
 
   GeoVector3D SpecularStrength() const;
-  void SpecularStrength(const GeoVector3D& specularStrength);
+  void SpecularStrength(const GeoVector3D &specularStrength);
 
   GeoVector3D DiffuseStrength() const;
-  void DiffuseStrength(const GeoVector3D& diffuseStrength);
+  void DiffuseStrength(const GeoVector3D &diffuseStrength);
 
   void ApplyShader(const Shader &shader) const;
 
@@ -56,8 +56,8 @@ protected:
 
 public:
   static void InitShaderCode();
-  static const std::string& GetVertexCode();
-  static const std::string& GetFragmentCode();
+  static const std::string &GetVertexCode();
+  static const std::string &GetFragmentCode();
 
 protected:
   GeoVector3D m_pos;

@@ -12,7 +12,7 @@ public:
   ~Shader();
 
 public:
-  void SetShaderCodes(const std::vector<std::string>& vertexCodes, const std::vector<std::string>& fragmentCodes);
+  void SetShaderCodes(const std::vector<std::string> &vertexCodes, const std::vector<std::string> &fragmentCodes);
   bool Complie();
   void Use() const;
   GLuint GetID() const;
@@ -28,7 +28,6 @@ protected:
   void CheckCompileErrors(unsigned int shader, std::string type);
 
 public:
-
 protected:
   GLuint m_programID;
   std::string m_vertexCodes;

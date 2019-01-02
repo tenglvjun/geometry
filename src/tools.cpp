@@ -15,7 +15,7 @@ Tools::~Tools()
 {
 }
 
-double Tools::Radia2Degree(const  double r)
+double Tools::Radia2Degree(const double r)
 {
     MathConfig &config = GeoSetting::GetInstance()->MathConfig();
 
@@ -60,7 +60,7 @@ double Tools::Minimum(const double a, const double b)
     return (a < b) ? a : b;
 }
 
-std::string Tools::ReadFile(const std::string& filePath)
+std::string Tools::ReadFile(const std::string &filePath)
 {
     std::string content;
 

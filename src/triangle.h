@@ -5,22 +5,22 @@
 
 class GeoTriangle
 {
-public:
-    GeoTriangle(const GeoVector3D& a, const GeoVector3D& b, const GeoVector3D& c);
-    GeoTriangle(const GeoTriangle& triangle);
+  public:
+    GeoTriangle(const GeoVector3D &a, const GeoVector3D &b, const GeoVector3D &c);
+    GeoTriangle(const GeoTriangle &triangle);
     virtual ~GeoTriangle();
 
-public:
-    GeoTriangle &operator=(const GeoTriangle& triangle);
-    GeoVector3D& operator[](const unsigned int idx);
+  public:
+    GeoTriangle &operator=(const GeoTriangle &triangle);
+    GeoVector3D &operator[](const unsigned int idx);
 
-public:
-    bool PointInside(const GeoVector3D& point);
+  public:
+    bool PointInside(const GeoVector3D &point);
 
-private:
+  private:
     GeoTriangle();
 
-protected:
+  protected:
     GeoVector3D m_vertices[3];
 };
 

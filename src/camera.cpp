@@ -215,12 +215,12 @@ void GeoCamera::InitShaderCode()
     m_shaderVertexCode = Tools::ReadFile("shader/vertex/camera.vs");
 }
 
-const std::string& GeoCamera::GetVertexCode()
+const std::string &GeoCamera::GetVertexCode()
 {
     return m_shaderVertexCode;
 }
 
-const std::string& GeoCamera::GetFragmentCode()
+const std::string &GeoCamera::GetFragmentCode()
 {
     return m_shaderFragmentCode;
 }

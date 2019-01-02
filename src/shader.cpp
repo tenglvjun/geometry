@@ -14,19 +14,19 @@ Shader::~Shader()
     DeleteProgram();
 }
 
-void Shader::SetShaderCodes(const std::vector<std::string>& vertexCodes, const std::vector<std::string>& fragmentCodes)
+void Shader::SetShaderCodes(const std::vector<std::string> &vertexCodes, const std::vector<std::string> &fragmentCodes)
 {
-    OpenGLConfig& config = GeoSetting::GetInstance()->OpenGLConfig();
+    OpenGLConfig &config = GeoSetting::GetInstance()->OpenGLConfig();
 
     std::string version = config.m_shaderVersion + "\n";
     m_vertexCodes = version;
-    for(size_t i = 0; i < vertexCodes.size(); i++)
+    for (size_t i = 0; i < vertexCodes.size(); i++)
     {
         m_vertexCodes += vertexCodes[i];
     }
 
     m_fragmentCodes = version;
-    for(size_t i = 0; i < fragmentCodes.size(); i++)
+    for (size_t i = 0; i < fragmentCodes.size(); i++)
     {
         m_fragmentCodes += fragmentCodes[i];
     }
@@ -41,7 +41,7 @@ bool Shader::Complie()
     GLint vSourceLength = (GLint)m_vertexCodes.length();
     GLint fSourceLength = (GLint)m_fragmentCodes.length();
 
-    const char* buf = nullptr;
+    const char *buf = nullptr;
 
     vertex = glCreateShader(GL_VERTEX_SHADER);
     buf = m_vertexCodes.c_str();

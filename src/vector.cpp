@@ -109,19 +109,19 @@ GeoVector2D &GeoVector2D::operator-=(const GeoVector2D &v)
 
 bool GeoVector2D::operator==(const GeoVector2D &v)
 {
-    
-    if (Tools::GetInstance()->IsZero(m_coord[0] - v[0]) && 
-        Tools::GetInstance()->IsZero(m_coord[1] - v[1])) 
+
+    if (Tools::GetInstance()->IsZero(m_coord[0] - v[0]) &&
+        Tools::GetInstance()->IsZero(m_coord[1] - v[1]))
     {
         return true;
     }
-    
+
     return false;
 }
 
 double GeoVector2D::operator%(const GeoVector2D &v) const
 {
-    return m_coord[0]*v[0] + m_coord[1]*v[1];
+    return m_coord[0] * v[0] + m_coord[1] * v[1];
 }
 
 void GeoVector2D::Normalize()
@@ -279,14 +279,14 @@ GeoVector3D GeoVector3D::operator*(const GeoVector3D &v) const
 
 bool GeoVector3D::operator==(const GeoVector3D &v)
 {
-    
-    if (Tools::GetInstance()->IsZero(m_coord[0] - v[0]) && 
-        Tools::GetInstance()->IsZero(m_coord[1] - v[1]) && 
-        Tools::GetInstance()->IsZero(m_coord[2] - v[2])) 
+
+    if (Tools::GetInstance()->IsZero(m_coord[0] - v[0]) &&
+        Tools::GetInstance()->IsZero(m_coord[1] - v[1]) &&
+        Tools::GetInstance()->IsZero(m_coord[2] - v[2]))
     {
         return true;
     }
-    
+
     return false;
 }
 
@@ -446,15 +446,15 @@ GeoVector4D &GeoVector4D::operator-=(const GeoVector4D &v)
 
 bool GeoVector4D::operator==(const GeoVector4D &v)
 {
-    
-    if (Tools::GetInstance()->IsZero(m_coord[0] - v[0]) && 
-        Tools::GetInstance()->IsZero(m_coord[1] - v[1]) && 
-        Tools::GetInstance()->IsZero(m_coord[2] - v[2]) && 
-        Tools::GetInstance()->IsZero(m_coord[3] - v[3])) 
+
+    if (Tools::GetInstance()->IsZero(m_coord[0] - v[0]) &&
+        Tools::GetInstance()->IsZero(m_coord[1] - v[1]) &&
+        Tools::GetInstance()->IsZero(m_coord[2] - v[2]) &&
+        Tools::GetInstance()->IsZero(m_coord[3] - v[3]))
     {
         return true;
     }
-    
+
     return false;
 }
 

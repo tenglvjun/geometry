@@ -53,8 +53,8 @@ public:
 
 public:
   static void InitShaderCode();
-  static const std::string& GetVertexCode();
-  static const std::string& GetFragmentCode();
+  static const std::string &GetVertexCode();
+  static const std::string &GetFragmentCode();
 
 protected:
   GeoVector3D m_pos;

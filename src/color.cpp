@@ -59,7 +59,7 @@ double &GeoColor::operator[](const unsigned int idx)
     return m_rgba[idx];
 }
 
-GeoColor GeoColor::operator*(const GeoColor& color) const
+GeoColor GeoColor::operator*(const GeoColor &color) const
 {
     GeoColor ret;
 
@@ -71,7 +71,7 @@ GeoColor GeoColor::operator*(const GeoColor& color) const
     return ret;
 }
 
-GeoColor &GeoColor::operator*=(const GeoColor& color)
+GeoColor &GeoColor::operator*=(const GeoColor &color)
 {
     m_rgba[0] = Tools::GetInstance()->Minimum((m_rgba[0] * color[0]), 1.0f);
     m_rgba[1] = Tools::GetInstance()->Minimum((m_rgba[1] * color[1]), 1.0f);
@@ -81,7 +81,7 @@ GeoColor &GeoColor::operator*=(const GeoColor& color)
     return *this;
 }
 
-GeoColor GeoColor::operator+(const GeoColor& color) const
+GeoColor GeoColor::operator+(const GeoColor &color) const
 {
     GeoColor ret;
 
@@ -93,7 +93,7 @@ GeoColor GeoColor::operator+(const GeoColor& color) const
     return ret;
 }
 
-GeoColor &GeoColor::operator+=(const GeoColor& color)
+GeoColor &GeoColor::operator+=(const GeoColor &color)
 {
     m_rgba[0] = Tools::GetInstance()->Minimum((m_rgba[0] + color[0]), 1.0f);
     m_rgba[1] = Tools::GetInstance()->Minimum((m_rgba[1] + color[1]), 1.0f);
@@ -106,20 +106,21 @@ GeoColor &GeoColor::operator+=(const GeoColor& color)
 void GeoColor::Scale(const double scale, bool applyAlpha)
 {
     unsigned int count = GeoColor::Size();
-    
-    if (!applyAlpha) {
+
+    if (!applyAlpha)
+    {
         count--;
     }
-    
-    for(size_t i = 0; i < count; i++)
+
+    for (size_t i = 0; i < count; i++)
     {
-        m_rgba[i] = Tools::GetInstance()->Minimum(m_rgba[i]*scale, 1.0f);
+        m_rgba[i] = Tools::GetInstance()->Minimum(m_rgba[i] * scale, 1.0f);
     }
 }
 
 void GeoColor::Flatten(std::vector<float> &data) const
 {
-    for(size_t i = 0; i < GeoColor::Size(); i++)
+    for (size_t i = 0; i < GeoColor::Size(); i++)
     {
         data.push_back((float)m_rgba[i]);
     }

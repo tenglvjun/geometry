@@ -15,10 +15,10 @@ public:
   GeoColor &operator=(const GeoColor &color);
   double operator[](const unsigned int idx) const;
   double &operator[](const unsigned int idx);
-  GeoColor operator*(const GeoColor& color) const;
-  GeoColor &operator*=(const GeoColor& color);
-  GeoColor operator+(const GeoColor& color) const;
-  GeoColor &operator+=(const GeoColor& color);
+  GeoColor operator*(const GeoColor &color) const;
+  GeoColor &operator*=(const GeoColor &color);
+  GeoColor operator+(const GeoColor &color) const;
+  GeoColor &operator+=(const GeoColor &color);
 
 public:
   void Scale(const double scale, bool applyAlpha);
