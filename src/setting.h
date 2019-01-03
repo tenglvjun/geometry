@@ -32,10 +32,9 @@ struct LightConfig
 
   GeoVector3D m_pos;
   GeoVector3D m_dir;
-  GeoColor m_color;
-  double m_ambientStrength;
-  double m_specularStrength;
-  double m_diffuseStrength;
+  double m_ambient;
+  double m_specular;
+  double m_diffuse;
   LightSource_e m_source;
   unsigned int m_pointAttenuationRange;
   std::map<unsigned int, PointLightAttenuation> m_pointAttenuation;

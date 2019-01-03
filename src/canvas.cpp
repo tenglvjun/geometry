@@ -59,7 +59,7 @@ void GeoCanvas::Clear()
 {
     if (m_fbo > 0)
     {
-        glDeleteFramebuffers(1, &m_fbo); 
+        glDeleteFramebuffers(1, &m_fbo);
     }
 
     if (m_inerFBO)
@@ -72,7 +72,8 @@ void GeoCanvas::Clear()
         glDeleteTextures(1, &m_multiText);
     }
 
-    if (m_screenTexture > 0) {
+    if (m_screenTexture > 0)
+    {
         glDeleteTextures(1, &m_screenTexture);
     }
 
@@ -96,14 +97,13 @@ void GeoCanvas::SetupVertices()
 {
     float vertices[] = {
         // positions   // texCoords
-        -1.0f,  1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f,  0.0f, 0.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
+        -1.0f, 1.0f, 0.0f, 1.0f,
+        -1.0f, -1.0f, 0.0f, 0.0f,
+        1.0f, -1.0f, 1.0f, 0.0f,
 
-        -1.0f,  1.0f,  0.0f, 1.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f,  1.0f, 1.0f
-    };
+        -1.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, -1.0f, 1.0f, 0.0f,
+        1.0f, 1.0f, 1.0f, 1.0f};
 
     glGenVertexArrays(1, &m_vao);
     assert(m_vao > 0);
@@ -115,9 +115,9 @@ void GeoCanvas::SetupVertices()
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *)(2 * sizeof(float)));
 }
 
 void GeoCanvas::SetupFrameBuffer(const unsigned int width, const unsigned int height)
@@ -165,14 +165,13 @@ void GeoCanvas::SetupFrameBuffer(const unsigned int width, const unsigned int he
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         Log::GetInstance()->OutputConsole("ERROR::FRAMEBUFFER:: Intermediate Framebuffer is not complete!", Level_Fatal);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 }
 
 void GeoCanvas::SetupShader()
 {
     std::vector<std::string> vcVertex, vcFragment;
 
-    const GeoShaderCode& shaderCodes = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Screen);
+    const GeoShaderCode &shaderCodes = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Screen);
 
     vcVertex.push_back(shaderCodes.m_vertex);
     vcFragment.push_back(shaderCodes.m_fragment);

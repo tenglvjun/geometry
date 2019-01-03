@@ -29,20 +29,17 @@ public:
   const GeoVector3D &Direction() const;
   void Direction(const GeoVector3D &dir);
 
-  const GeoColor &Color() const;
-  void Color(const GeoColor &color);
-
   const unsigned int PointLightAttenuationRange() const;
   void SetPointLightAttenuationRange(const unsigned int range);
 
-  GeoVector3D AmbientStrength() const;
-  void AmbientStrength(const GeoVector3D &ambientStrength);
+  GeoVector3D Ambient() const;
+  void Ambient(const GeoVector3D &ambient);
 
-  GeoVector3D SpecularStrength() const;
-  void SpecularStrength(const GeoVector3D &specularStrength);
+  GeoVector3D Specular() const;
+  void Specular(const GeoVector3D &specular);
 
-  GeoVector3D DiffuseStrength() const;
-  void DiffuseStrength(const GeoVector3D &diffuseStrength);
+  GeoVector3D Diffuse() const;
+  void Diffuse(const GeoVector3D &diffuse);
 
   void ApplyShader(const Shader &shader) const;
 
@@ -61,11 +58,10 @@ public:
 protected:
   GeoVector3D m_pos;
   GeoVector3D m_dir;
-  GeoColor m_color;
 
-  GeoVector3D m_ambientStrength;
-  GeoVector3D m_specularStrength;
-  GeoVector3D m_diffuseStrength;
+  GeoVector3D m_ambient;
+  GeoVector3D m_specular;
+  GeoVector3D m_diffuse;
 
   LightSource_e m_source;
   unsigned int m_pointAttenuationRange;

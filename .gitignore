@@ -49,3 +49,5 @@ build
 bin/geometry
 bin/Debug
 bin/Release
+bin/assimp*
+bin/unit

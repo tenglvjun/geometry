@@ -4,9 +4,9 @@ struct Light
 
     vec3 pos;
 
-    vec3 ambientStrength;
-    vec3 diffuseStrength;
-    vec3 specularStrength;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
 
     // point light source parameters
     float constant;
@@ -22,7 +22,7 @@ uniform Light light;
 
 vec3 AmbientLight(vec4 objColor)
 {
-    return light.ambientStrength * vec3(objColor.rgb);
+    return light.ambient * vec3(objColor.rgb);
 }
 
 vec3 DiffuseLight(vec3 norm, vec3 pos, vec4 objColor)
@@ -30,7 +30,7 @@ vec3 DiffuseLight(vec3 norm, vec3 pos, vec4 objColor)
     vec3 lightDir = normalize(light.pos - pos);
     float diffuse = max(dot(normalize(norm), lightDir), 0.0);
 
-    return light.diffuseStrength * diffuse * vec3(objColor.rgb);
+    return light.diffuse * diffuse * vec3(objColor.rgb);
 }
 
 vec3 SpecularLight(vec3 norm, vec3 eye, vec3 pos, vec4 objColor)
@@ -41,7 +41,7 @@ vec3 SpecularLight(vec3 norm, vec3 eye, vec3 pos, vec4 objColor)
 
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
 
-    return light.specularStrength * spec * vec3(objColor.rgb);
+    return light.specular * spec * vec3(objColor.rgb);
 }
 
 vec3 ApplyPointLightAttenuation(vec3 color, vec3 pos)

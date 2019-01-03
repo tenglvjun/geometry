@@ -7,15 +7,15 @@
 
 class GeoCanvas
 {
-public:
+  public:
     GeoCanvas(const unsigned int width, const unsigned int height);
     virtual ~GeoCanvas();
 
-public:
+  public:
     void Active();
     void Deactive();
 
-protected:
+  protected:
     void Init(const unsigned int width, const unsigned int height);
     void Clear();
 
@@ -23,11 +23,11 @@ protected:
     void SetupFrameBuffer(const unsigned int width, const unsigned int height);
     void SetupShader();
 
-private:
-    GeoCanvas(const GeoCanvas& canvas);
-    GeoCanvas& operator=(const GeoCanvas& canvas);
+  private:
+    GeoCanvas(const GeoCanvas &canvas);
+    GeoCanvas &operator=(const GeoCanvas &canvas);
 
-protected:
+  protected:
     unsigned int m_fbo;
     unsigned int m_inerFBO;
     unsigned int m_multiText;

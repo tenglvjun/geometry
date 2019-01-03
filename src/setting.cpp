@@ -22,9 +22,9 @@ LightConfig::LightConfig()
 {
     m_source = DIRECTION_LIGHT;
     m_pointAttenuationRange = 0;
-    m_ambientStrength = 0.0f;
-    m_diffuseStrength = 0.0f;
-    m_specularStrength = 0.0f;
+    m_ambient = 0.0f;
+    m_diffuse = 0.0f;
+    m_specular = 0.0f;
 }
 
 OpenGLConfig::OpenGLConfig()
@@ -171,29 +171,6 @@ void GeoSetting::ParseOpenGL(const Json::Value &openGL)
         m_openGL.m_light.m_pos = GeoVector3D(x, y, z);
     }
 
-    if (light["color"].isNull())
-    {
-        Log::GetInstance()->OutputConsole("light color information is missed");
-        m_openGL.m_light.m_color = GeoColor(1.0f, 1.0f, 1.0f, 1.0f);
-    }
-    else
-    {
-        std::string pos = light["color"].asString();
-        std::vector<std::string> ret;
-
-        Tools::GetInstance()->SplitString(pos, ret, ",", " ");
-
-        assert(ret.size() == GeoColor::Size());
-        
-        double r, g, b, a;
-        r = atof(ret[0].c_str());
-        g = atof(ret[1].c_str());
-        b = atof(ret[2].c_str());
-        a = atof(ret[3].c_str());
-
-        m_openGL.m_light.m_color = GeoColor(r, g, b, a);
-    }
-
     if (light["direction"].isNull())
     {
         Log::GetInstance()->OutputConsole("light direction information is missed");
@@ -218,9 +195,9 @@ void GeoSetting::ParseOpenGL(const Json::Value &openGL)
         m_openGL.m_light.m_dir.Normalize();
     }
 
-    m_openGL.m_light.m_ambientStrength = light["ambient strength"].isNull() ? 0.1 : light["ambient strength"].asDouble();
-    m_openGL.m_light.m_specularStrength = light["specular strength"].isNull() ? 1.0 : light["specular strength"].asDouble();
-    m_openGL.m_light.m_diffuseStrength = light["diffuse strength"].isNull() ? 0.5 : light["diffuse strength"].asDouble();
+    m_openGL.m_light.m_ambient = light["ambient"].isNull() ? 0.1 : light["ambient"].asDouble();
+    m_openGL.m_light.m_specular = light["specular"].isNull() ? 1.0 : light["specular"].asDouble();
+    m_openGL.m_light.m_diffuse = light["diffuse"].isNull() ? 0.5 : light["diffuse"].asDouble();
     m_openGL.m_light.m_source = light["light source"].isNull() ? DIRECTION_LIGHT : (LightSource_e)(light["light source"].asInt());
     m_openGL.m_light.m_pointAttenuationRange = light["point light range"].isNull() ? 0 : light["point light range"].asUInt();
     m_openGL.m_light.m_cutOff = light["cutOff"].isNull() ? 12.5f : light["cutOff"].asDouble();

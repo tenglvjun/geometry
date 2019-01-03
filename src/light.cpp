@@ -14,11 +14,10 @@ GeoLight::GeoLight()
 GeoLight::GeoLight(const GeoLight &light)
 {
     m_pos = light.m_pos;
-    m_color = light.m_color;
     m_dir = light.m_dir;
-    m_ambientStrength = light.m_ambientStrength;
-    m_specularStrength = light.m_specularStrength;
-    m_diffuseStrength = light.m_diffuseStrength;
+    m_ambient = light.m_ambient;
+    m_specular = light.m_specular;
+    m_diffuse = light.m_diffuse;
     m_source = light.m_source;
     m_pointAttenuationRange = light.m_pointAttenuationRange;
 }
@@ -35,11 +34,10 @@ GeoLight &GeoLight::operator=(const GeoLight &light)
     }
 
     m_pos = light.m_pos;
-    m_color = light.m_color;
     m_dir = light.m_dir;
-    m_ambientStrength = light.m_ambientStrength;
-    m_specularStrength = light.m_specularStrength;
-    m_diffuseStrength = light.m_diffuseStrength;
+    m_ambient = light.m_ambient;
+    m_specular = light.m_specular;
+    m_diffuse = light.m_diffuse;
     m_source = light.m_source;
     m_pointAttenuationRange = light.m_pointAttenuationRange;
 
@@ -52,8 +50,6 @@ void GeoLight::SetLight(const GeoVector3D &pos, const GeoVector3D &origin, const
 
     m_dir = pos - origin;
     m_dir.Normalize();
-
-    m_color = color;
 }
 
 void GeoLight::SetLightSource(const LightSource_e source)
@@ -87,16 +83,6 @@ void GeoLight::Direction(const GeoVector3D &dir)
     m_dir.Normalize();
 }
 
-const GeoColor &GeoLight::Color() const
-{
-    return m_color;
-}
-
-void GeoLight::Color(const GeoColor &color)
-{
-    m_color = color;
-}
-
 const unsigned int GeoLight::PointLightAttenuationRange() const
 {
     return m_pointAttenuationRange;
@@ -107,34 +93,34 @@ void GeoLight::SetPointLightAttenuationRange(const unsigned int range)
     m_pointAttenuationRange = range;
 }
 
-GeoVector3D GeoLight::AmbientStrength() const
+GeoVector3D GeoLight::Ambient() const
 {
-    return m_ambientStrength;
+    return m_ambient;
 }
 
-void GeoLight::AmbientStrength(const GeoVector3D &ambientStrength)
+void GeoLight::Ambient(const GeoVector3D &ambient)
 {
-    m_ambientStrength = ambientStrength;
+    m_ambient = ambient;
 }
 
-GeoVector3D GeoLight::SpecularStrength() const
+GeoVector3D GeoLight::Specular() const
 {
-    return m_specularStrength;
+    return m_specular;
 }
 
-void GeoLight::SpecularStrength(const GeoVector3D &specularStrength)
+void GeoLight::Specular(const GeoVector3D &specular)
 {
-    m_specularStrength = specularStrength;
+    m_specular = specular;
 }
 
-GeoVector3D GeoLight::DiffuseStrength() const
+GeoVector3D GeoLight::Diffuse() const
 {
-    return m_diffuseStrength;
+    return m_diffuse;
 }
 
-void GeoLight::DiffuseStrength(const GeoVector3D &diffuseStrength)
+void GeoLight::Diffuse(const GeoVector3D &diffuse)
 {
-    m_diffuseStrength = diffuseStrength;
+    m_diffuse = diffuse;
 }
 
 void GeoLight::ApplyShader(const Shader &shader) const
@@ -143,14 +129,14 @@ void GeoLight::ApplyShader(const Shader &shader) const
 
     shader.SetUInt("light.source", (unsigned int)m_source);
     value.clear();
-    m_ambientStrength.Flatten(value);
-    shader.SetVector("light.ambientStrength", 3, &value[0]);
+    m_ambient.Flatten(value);
+    shader.SetVector("light.ambient", 3, &value[0]);
     value.clear();
-    m_diffuseStrength.Flatten(value);
-    shader.SetVector("light.diffuseStrength", 3, &value[0]);
+    m_diffuse.Flatten(value);
+    shader.SetVector("light.diffuse", 3, &value[0]);
     value.clear();
-    m_specularStrength.Flatten(value);
-    shader.SetVector("light.specularStrength", 3, &value[0]);
+    m_specular.Flatten(value);
+    shader.SetVector("light.specular", 3, &value[0]);
 
     value.clear();
     m_pos.Flatten(value);
@@ -198,15 +184,14 @@ void GeoLight::RestoreFromSetting()
 {
     OpenGLConfig &config = GeoSetting::GetInstance()->OpenGLConfig();
 
-    double value = config.m_light.m_ambientStrength;
-    m_ambientStrength = GeoVector3D(value, value, value);
-    value = config.m_light.m_specularStrength;
-    m_specularStrength = GeoVector3D(value, value, value);
-    value = config.m_light.m_diffuseStrength;
-    m_diffuseStrength = GeoVector3D(value, value, value);
+    double value = config.m_light.m_ambient;
+    m_ambient = GeoVector3D(value, value, value);
+    value = config.m_light.m_specular;
+    m_specular = GeoVector3D(value, value, value);
+    value = config.m_light.m_diffuse;
+    m_diffuse = GeoVector3D(value, value, value);
     m_source = config.m_light.m_source;
     m_pointAttenuationRange = config.m_light.m_pointAttenuationRange;
     m_pos = config.m_light.m_pos;
-    m_color = config.m_light.m_color;
     m_dir = config.m_light.m_dir;
 }
