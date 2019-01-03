@@ -144,21 +144,15 @@ bool GeoWindow::CreateGeoWindow()
 
     glfwSwapInterval(1);
 
-    m_origin[0] = m_width / 2;
-    m_origin[1] = m_height / 2;
-
-    glViewport(0, 0, m_width, m_height);
-    glEnable(GL_DEPTH_TEST);
-
-    GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 5.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
-    WindowSizeChange();
-
     return true;
 }
 
 void GeoWindow::ShowGeoWindow()
 {
     assert(m_window);
+
+    GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 5.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
+    WindowSizeChange();
 
     std::vector<GeoVertex> vertices;
     std::vector<unsigned int> indices;
@@ -396,8 +390,7 @@ void GeoWindow::OnFrameBufferSize(int width, int height)
 
 void GeoWindow::OnWindowSize(int width, int height)
 {
-    m_height = height;
-    m_width = width;
+    glfwGetFramebufferSize(m_window, (int*)&m_width, (int*)&m_height);
 
     WindowSizeChange();
 }
