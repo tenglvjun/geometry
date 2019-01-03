@@ -43,5 +43,9 @@ set(JSON_SRC_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/json)
 include_directories(${JSON_SRC_DIRS})
 add_subdirectory(${JSON_SRC_DIRS})
 
+#assimp
+add_subdirectory(assimp)
+include_directories(assimp/include)
+
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)

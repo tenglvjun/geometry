@@ -36,6 +36,9 @@
 # glfw
 glfw
 
+# assimp
+assimp
+
 # build
 build
 
