@@ -103,7 +103,7 @@ void Tools::SplitString(const std::string &s, std::vector<std::string> &ret, con
         TrimMark(str, trimMark);
     }
 
-    unsigned int size = sep.size();
+    unsigned int size = (unsigned int)sep.size();
     unsigned int length = 0;
     while (!str.empty())
     {
@@ -111,12 +111,12 @@ void Tools::SplitString(const std::string &s, std::vector<std::string> &ret, con
         if (pos == std::string::npos)
         {
             ret.push_back(str);
-            length = str.length();
+            length = (unsigned int)str.length();
         }
         else
         {
             ret.push_back(str.substr(0, pos));
-            length = pos + size;
+            length = (unsigned int)(pos + size);
         }
 
         str.erase(0, length);
@@ -125,7 +125,7 @@ void Tools::SplitString(const std::string &s, std::vector<std::string> &ret, con
 
 void Tools::TrimMark(std::string &s, const std::string &mark)
 {
-    unsigned int size = mark.size();
+    unsigned int size = (unsigned int)mark.size();
     while (true)
     {
         std::string::size_type pos = s.find(mark);

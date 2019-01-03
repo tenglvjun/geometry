@@ -7,6 +7,7 @@
 #include "global_enum.h"
 #include "json.h"
 #include "vector.h"
+#include "color.h"
 
 struct MathConfig
 {
@@ -30,6 +31,8 @@ struct LightConfig
   LightConfig();
 
   GeoVector3D m_pos;
+  GeoVector3D m_dir;
+  GeoColor m_color;
   double m_ambientStrength;
   double m_specularStrength;
   double m_diffuseStrength;

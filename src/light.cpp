@@ -11,15 +11,6 @@ GeoLight::GeoLight()
     RestoreFromSetting();
 }
 
-GeoLight::GeoLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoColor &color)
-    : m_pos(pos), m_color(color)
-{
-    m_dir = pos - origin;
-    m_dir.Normalize();
-
-    RestoreFromSetting();
-}
-
 GeoLight::GeoLight(const GeoLight &light)
 {
     m_pos = light.m_pos;
@@ -216,4 +207,6 @@ void GeoLight::RestoreFromSetting()
     m_source = config.m_light.m_source;
     m_pointAttenuationRange = config.m_light.m_pointAttenuationRange;
     m_pos = config.m_light.m_pos;
+    m_color = config.m_light.m_color;
+    m_dir = config.m_light.m_dir;
 }

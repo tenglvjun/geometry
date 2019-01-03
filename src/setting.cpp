@@ -161,7 +161,7 @@ void GeoSetting::ParseOpenGL(const Json::Value &openGL)
 
         Tools::GetInstance()->SplitString(pos, ret, ",", " ");
 
-        assert(ret.size() == 3);
+        assert(ret.size() == GeoVector3D::Size());
         
         double x, y, z;
         x = atof(ret[0].c_str());
@@ -169,6 +169,53 @@ void GeoSetting::ParseOpenGL(const Json::Value &openGL)
         z = atof(ret[2].c_str());
 
         m_openGL.m_light.m_pos = GeoVector3D(x, y, z);
+    }
+
+    if (light["color"].isNull())
+    {
+        Log::GetInstance()->OutputConsole("light color information is missed");
+        m_openGL.m_light.m_color = GeoColor(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+    else
+    {
+        std::string pos = light["color"].asString();
+        std::vector<std::string> ret;
+
+        Tools::GetInstance()->SplitString(pos, ret, ",", " ");
+
+        assert(ret.size() == GeoColor::Size());
+        
+        double r, g, b, a;
+        r = atof(ret[0].c_str());
+        g = atof(ret[1].c_str());
+        b = atof(ret[2].c_str());
+        a = atof(ret[3].c_str());
+
+        m_openGL.m_light.m_color = GeoColor(r, g, b, a);
+    }
+
+    if (light["direction"].isNull())
+    {
+        Log::GetInstance()->OutputConsole("light direction information is missed");
+        m_openGL.m_light.m_dir = m_openGL.m_light.m_pos;
+        m_openGL.m_light.m_dir.Normalize();
+    }
+    else
+    {
+        std::string pos = light["direction"].asString();
+        std::vector<std::string> ret;
+
+        Tools::GetInstance()->SplitString(pos, ret, ",", " ");
+
+        assert(ret.size() == GeoVector3D::Size());
+        
+        double x, y, z;
+        x = atof(ret[0].c_str());
+        y = atof(ret[1].c_str());
+        z = atof(ret[2].c_str());
+
+        m_openGL.m_light.m_dir = GeoVector3D(x, y, z);
+        m_openGL.m_light.m_dir.Normalize();
     }
 
     m_openGL.m_light.m_ambientStrength = light["ambient strength"].isNull() ? 0.1 : light["ambient strength"].asDouble();

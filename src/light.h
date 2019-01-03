@@ -11,7 +11,6 @@ class GeoLight final
 {
 public:
   GeoLight();
-  GeoLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoColor &color);
   GeoLight(const GeoLight &light);
   virtual ~GeoLight();
 
