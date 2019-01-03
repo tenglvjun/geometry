@@ -6,6 +6,7 @@
 #include <string>
 #include "mesh.h"
 #include "vector.h"
+#include "canvas.h"
 
 class GeoWindow
 {
@@ -51,6 +52,7 @@ protected:
   GeoVector3D m_lastPt;
   GeoVector3D m_origin;
   GeoMesh *m_mesh;
+  GeoCanvas *m_canvas;
 };
 
 #endif // __GeoWindow_HEAD_FILE__

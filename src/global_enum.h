@@ -30,6 +30,7 @@ typedef enum
   SCT_Light,
   SCT_Camera,
   SCT_Mesh,
+  SCT_Screen,
   SCT_Count,
 } ShaderCodeType_e;
 

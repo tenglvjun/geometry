@@ -35,6 +35,8 @@ void GeoMesh::Draw()
 {
     UpdateMatrix();
 
+    m_shader.Use();
+
     // draw mesh
     glBindVertexArray(m_vao);
     glDrawElements(GL_TRIANGLES, (GLsizei)m_indices.size(), GL_UNSIGNED_INT, 0);
