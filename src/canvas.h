@@ -29,11 +29,15 @@ private:
 
 protected:
     unsigned int m_fbo;
-    unsigned int m_tcb;
+    unsigned int m_inerFBO;
+    unsigned int m_multiText;
+    unsigned int m_screenTexture;
     unsigned int m_rbo;
     unsigned int m_vao;
     unsigned int m_vbo;
     Shader m_shader;
+    unsigned int m_height;
+    unsigned int m_width;
 };
 
 #endif // __CANVAS_HEAD_FILE__
