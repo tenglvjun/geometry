@@ -2,7 +2,6 @@
 #define __VERTEX_HEAD_FILE__
 
 #include "vector.h"
-#include "color.h"
 #include "matrix.h"
 #include <vector>
 
@@ -19,7 +18,6 @@ public:
 public:
   GeoVector3D &GetPos();
   GeoVector3D &GetNormal();
-  GeoColor &GetColor();
 
   void Flatten(std::vector<double> &buf);
 
@@ -32,9 +30,6 @@ public:
   GeoVector3D Normal() const;
   void Normal(const GeoVector3D &normal);
 
-  GeoColor Color() const;
-  void Color(const GeoColor &color);
-
 public:
   static unsigned int Size();
   static void Offset(std::vector<int> &offset);
@@ -42,7 +37,6 @@ public:
 protected:
   GeoVector3D m_pos;
   GeoVector3D m_normal;
-  GeoColor m_color;
 };
 
 #endif // __VERTEX_HEAD_FILE__

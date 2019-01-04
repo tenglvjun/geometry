@@ -73,9 +73,6 @@ void GeoMesh::Setup()
     // vertex normals
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_DOUBLE, GL_FALSE, size * sizeof(double), (void *)(offset[1] * sizeof(double)));
-    // vertex colors
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 4, GL_DOUBLE, GL_FALSE, size * sizeof(double), (void *)(offset[2] * sizeof(double)));
 
     glBindVertexArray(0);
 

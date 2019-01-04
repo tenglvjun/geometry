@@ -22,9 +22,9 @@ LightConfig::LightConfig()
 {
     m_source = DIRECTION_LIGHT;
     m_pointAttenuationRange = 0;
-    m_ambient = 0.0f;
-    m_diffuse = 0.0f;
-    m_specular = 0.0f;
+    m_ambient = GeoVector3D(0.0f, 0.0f, 0.0f);
+    m_diffuse = GeoVector3D(0.0f, 0.0f, 0.0f);
+    m_specular = GeoVector3D(0.0f, 0.0f, 0.0f);
 }
 
 OpenGLConfig::OpenGLConfig()
@@ -195,9 +195,91 @@ void GeoSetting::ParseOpenGL(const Json::Value &openGL)
         m_openGL.m_light.m_dir.Normalize();
     }
 
-    m_openGL.m_light.m_ambient = light["ambient"].isNull() ? 0.1 : light["ambient"].asDouble();
-    m_openGL.m_light.m_specular = light["specular"].isNull() ? 1.0 : light["specular"].asDouble();
-    m_openGL.m_light.m_diffuse = light["diffuse"].isNull() ? 0.5 : light["diffuse"].asDouble();
+    if (light["color"].isNull())
+    {
+        Log::GetInstance()->OutputConsole("light color information is missed");
+        m_openGL.m_light.m_color = GeoColor(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+    else
+    {
+        std::string color = light["color"].asString();
+        std::vector<std::string> ret;
+
+        Tools::GetInstance()->SplitString(color, ret, ",", " ");
+
+        assert(ret.size() == GeoColor::Size());
+        
+        double r = atof(ret[0].c_str());
+        double g = atof(ret[1].c_str());
+        double b = atof(ret[2].c_str());
+        double a = atof(ret[3].c_str());
+
+        m_openGL.m_light.m_color = GeoColor(r, g, b, a);
+    }
+
+    if (light["ambient"].isNull())
+    {
+        Log::GetInstance()->OutputConsole("light ambient information is missed");
+        m_openGL.m_light.m_ambient = GeoVector3D(0.2f, 0.2f, 0.2f);
+    }
+    else
+    {
+        std::string ambient = light["ambient"].asString();
+        std::vector<std::string> ret;
+
+        Tools::GetInstance()->SplitString(ambient, ret, ",", " ");
+
+        assert(ret.size() == GeoVector3D::Size());
+        
+        double x = atof(ret[0].c_str());
+        double y = atof(ret[1].c_str());
+        double z = atof(ret[2].c_str());
+
+        m_openGL.m_light.m_ambient = GeoVector3D(x, y, z);
+    }
+
+    if (light["specular"].isNull())
+    {
+        Log::GetInstance()->OutputConsole("light specular information is missed");
+        m_openGL.m_light.m_specular = GeoVector3D(1.0f, 1.0f, 1.0f);
+    }
+    else
+    {
+        std::string specular = light["specular"].asString();
+        std::vector<std::string> ret;
+
+        Tools::GetInstance()->SplitString(specular, ret, ",", " ");
+
+        assert(ret.size() == GeoVector3D::Size());
+        
+        double x = atof(ret[0].c_str());
+        double y = atof(ret[1].c_str());
+        double z = atof(ret[2].c_str());
+
+        m_openGL.m_light.m_specular = GeoVector3D(x, y, z);
+    }
+
+    if (light["diffuse"].isNull())
+    {
+        Log::GetInstance()->OutputConsole("light diffuse information is missed");
+        m_openGL.m_light.m_diffuse = GeoVector3D(0.5f, 0.5f, 0.5f);
+    }
+    else
+    {
+        std::string diffuse = light["diffuse"].asString();
+        std::vector<std::string> ret;
+
+        Tools::GetInstance()->SplitString(diffuse, ret, ",", " ");
+
+        assert(ret.size() == GeoVector3D::Size());
+        
+        double x = atof(ret[0].c_str());
+        double y = atof(ret[1].c_str());
+        double z = atof(ret[2].c_str());
+
+        m_openGL.m_light.m_diffuse = GeoVector3D(x, y, z);
+    }
+
     m_openGL.m_light.m_source = light["light source"].isNull() ? DIRECTION_LIGHT : (LightSource_e)(light["light source"].asInt());
     m_openGL.m_light.m_pointAttenuationRange = light["point light range"].isNull() ? 0 : light["point light range"].asUInt();
     m_openGL.m_light.m_cutOff = light["cutOff"].isNull() ? 12.5f : light["cutOff"].asDouble();

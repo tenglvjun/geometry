@@ -200,9 +200,7 @@ void GeoWindow::ShowGeoWindow()
          0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
         -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,};
-
-    GeoColor red(1.0f, 0.0f, 0.0f, 1.0f);
-
+        
     for (unsigned int i = 0; i < 36; i++)
     {
         GeoVertex vertex;
@@ -219,7 +217,6 @@ void GeoWindow::ShowGeoWindow()
 
         vertex.Position(pos);
         vertex.Normal(normal);
-        vertex.Color(red);
 
         vertices.push_back(vertex);
         indices.push_back(i);

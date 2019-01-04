@@ -8,6 +8,8 @@ struct Light
     vec3 diffuse;
     vec3 specular;
 
+    vec4 color;
+
     // point light source parameters
     float constant;
     float linear;
@@ -20,20 +22,20 @@ struct Light
 
 uniform Light light;
 
-vec3 AmbientLight(vec4 objColor)
+vec3 AmbientLight()
 {
-    return light.ambient * vec3(objColor.rgb);
+    return light.ambient * vec3(light.color.rgb);
 }
 
-vec3 DiffuseLight(vec3 norm, vec3 pos, vec4 objColor)
+vec3 DiffuseLight(vec3 norm, vec3 pos)
 {
     vec3 lightDir = normalize(light.pos - pos);
     float diffuse = max(dot(normalize(norm), lightDir), 0.0);
 
-    return light.diffuse * diffuse * vec3(objColor.rgb);
+    return light.diffuse * diffuse * vec3(light.color.rgb);
 }
 
-vec3 SpecularLight(vec3 norm, vec3 eye, vec3 pos, vec4 objColor)
+vec3 SpecularLight(vec3 norm, vec3 eye, vec3 pos)
 {
     vec3 lightDir = normalize(light.pos - pos);
     vec3 viewDir = normalize(eye - pos);
@@ -41,7 +43,7 @@ vec3 SpecularLight(vec3 norm, vec3 eye, vec3 pos, vec4 objColor)
 
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
 
-    return light.specular * spec * vec3(objColor.rgb);
+    return light.specular * spec * vec3(light.color.rgb);
 }
 
 vec3 ApplyPointLightAttenuation(vec3 color, vec3 pos)
@@ -58,11 +60,11 @@ vec3 ApplyPointLightAttenuation(vec3 color, vec3 pos)
     return color;
 }
 
-vec4 ApplyLight(vec3 norm, vec3 eye, vec3 pos, vec4 objColor)
+vec4 ApplyLight(vec3 norm, vec3 eye, vec3 pos)
 {
-    vec3 ambient = AmbientLight(objColor);
-    vec3 diffuse = DiffuseLight(norm, pos, objColor);
-    vec3 specular = SpecularLight(norm, eye, pos, objColor);
+    vec3 ambient = AmbientLight();
+    vec3 diffuse = DiffuseLight(norm, pos);
+    vec3 specular = SpecularLight(norm, eye, pos);
 
     if (light.source == 0) 
         return vec4(ambient + diffuse + specular, 1.0);

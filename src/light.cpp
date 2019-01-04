@@ -19,6 +19,7 @@ GeoLight::GeoLight(const GeoLight &light)
     m_specular = light.m_specular;
     m_diffuse = light.m_diffuse;
     m_source = light.m_source;
+    m_color = light.m_color;
     m_pointAttenuationRange = light.m_pointAttenuationRange;
 }
 
@@ -39,6 +40,7 @@ GeoLight &GeoLight::operator=(const GeoLight &light)
     m_specular = light.m_specular;
     m_diffuse = light.m_diffuse;
     m_source = light.m_source;
+    m_color = light.m_color;
     m_pointAttenuationRange = light.m_pointAttenuationRange;
 
     return *this;
@@ -50,6 +52,7 @@ void GeoLight::SetLight(const GeoVector3D &pos, const GeoVector3D &origin, const
 
     m_dir = pos - origin;
     m_dir.Normalize();
+    m_color = color;
 }
 
 void GeoLight::SetLightSource(const LightSource_e source)
@@ -123,6 +126,16 @@ void GeoLight::Diffuse(const GeoVector3D &diffuse)
     m_diffuse = diffuse;
 }
 
+GeoColor GeoLight::Color() const
+{
+    return m_color;
+}
+
+void GeoLight::Color(const GeoColor &color)
+{
+    m_color = color;
+}
+
 void GeoLight::ApplyShader(const Shader &shader) const
 {
     std::vector<float> value;
@@ -141,6 +154,10 @@ void GeoLight::ApplyShader(const Shader &shader) const
     value.clear();
     m_pos.Flatten(value);
     shader.SetVector("light.pos", 3, &value[0]);
+
+    value.clear();
+    m_color.Flatten(value);
+    shader.SetVector("light.color", 4, &value[0]);
 
     OpenGLConfig &config = GeoSetting::GetInstance()->OpenGLConfig();
 
@@ -184,14 +201,12 @@ void GeoLight::RestoreFromSetting()
 {
     OpenGLConfig &config = GeoSetting::GetInstance()->OpenGLConfig();
 
-    double value = config.m_light.m_ambient;
-    m_ambient = GeoVector3D(value, value, value);
-    value = config.m_light.m_specular;
-    m_specular = GeoVector3D(value, value, value);
-    value = config.m_light.m_diffuse;
-    m_diffuse = GeoVector3D(value, value, value);
+    m_ambient = config.m_light.m_ambient;
+    m_specular = config.m_light.m_specular;
+    m_diffuse = config.m_light.m_diffuse;
     m_source = config.m_light.m_source;
     m_pointAttenuationRange = config.m_light.m_pointAttenuationRange;
     m_pos = config.m_light.m_pos;
     m_dir = config.m_light.m_dir;
+    m_color = config.m_light.m_color;
 }

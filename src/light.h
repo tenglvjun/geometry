@@ -41,6 +41,9 @@ public:
   GeoVector3D Diffuse() const;
   void Diffuse(const GeoVector3D &diffuse);
 
+  GeoColor Color() const;
+  void Color(const GeoColor &color);
+
   void ApplyShader(const Shader &shader) const;
 
 public:
@@ -58,10 +61,12 @@ public:
 protected:
   GeoVector3D m_pos;
   GeoVector3D m_dir;
-
+ 
   GeoVector3D m_ambient;
   GeoVector3D m_specular;
   GeoVector3D m_diffuse;
+
+  GeoColor m_color;
 
   LightSource_e m_source;
   unsigned int m_pointAttenuationRange;
