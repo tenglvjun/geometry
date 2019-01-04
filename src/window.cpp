@@ -397,7 +397,7 @@ void GeoWindow::OnWindowSize(int width, int height)
 
 void GeoWindow::OnScroll(double xoffset, double yoffset)
 {
-    GeoCamera::GetInstance()->Scale(Tools::GetInstance()->IsZero(1.0f + yoffset));
+    GeoCamera::GetInstance()->Scale(yoffset < 0 ? false : true);
 }
 
 void GeoWindow::SetCallback()
