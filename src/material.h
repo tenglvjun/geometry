@@ -26,7 +26,7 @@ public:
     void Diffuse(const GeoVector3D &diffuse);
 
     double Shininess() const;
-    void Shininess(const double &shininess);
+    void Shininess(const double shininess);
 
     void ApplyShader(const Shader &shader) const;
 

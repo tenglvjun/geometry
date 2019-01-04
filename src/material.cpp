@@ -76,7 +76,7 @@ double GeoMaterial::Shininess() const
     return m_shininess;
 }
 
-void GeoMaterial::Shininess(const double &shininess)
+void GeoMaterial::Shininess(const double shininess)
 {
     m_shininess = shininess;
 }
@@ -95,6 +95,6 @@ void GeoMaterial::ApplyShader(const Shader &shader) const
     value.clear();
     m_specular.Flatten(value);
     shader.SetVector("material.specular", 3, &value[0]);
-    
+
     shader.SetFloat("material.shininess", (float)m_shininess);
 }

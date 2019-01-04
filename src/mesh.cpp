@@ -44,6 +44,7 @@ void GeoMesh::Draw()
 void GeoMesh::Setup()
 {
     SetupVertices();
+    SetupMaterial();
     SetupShaderCode();
     ApplyShader();
 }
