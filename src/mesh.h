@@ -5,8 +5,8 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include "vertex.h"
-#include "shader.h"
 #include "matrix.h"
+#include "material.h"
 
 class GeoMesh
 {
@@ -22,7 +22,10 @@ private:
   GeoMesh &operator=(const GeoMesh &mesh);
 
   void Setup();
-  void UpdateMatrix();
+  void SetupVertices();
+  void SetupShaderCode();
+  void SetupMaterial();
+  void ApplyShader();
 
 protected:
   std::vector<GeoVertex> m_vertices;
@@ -32,6 +35,7 @@ protected:
   GeoMatrix m_model;
   unsigned int m_vao, m_vbo, m_ebo;
   Shader m_shader;
+  GeoMaterial m_material;
 };
 
 #endif // __MESH_HEAD_FILE__

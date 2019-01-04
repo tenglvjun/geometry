@@ -1,3 +1,11 @@
+struct Material 
+{
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;    
+    float shininess;
+};
+
 struct Light
 {
     uint source;
@@ -21,10 +29,11 @@ struct Light
 };
 
 uniform Light light;
+uniform Material material;
 
 vec3 AmbientLight()
 {
-    return light.ambient * vec3(light.color.rgb);
+    return light.ambient * material.ambient * vec3(light.color.rgb);
 }
 
 vec3 DiffuseLight(vec3 norm, vec3 pos)
@@ -32,7 +41,7 @@ vec3 DiffuseLight(vec3 norm, vec3 pos)
     vec3 lightDir = normalize(light.pos - pos);
     float diffuse = max(dot(normalize(norm), lightDir), 0.0);
 
-    return light.diffuse * diffuse * vec3(light.color.rgb);
+    return light.diffuse * diffuse * material.diffuse * vec3(light.color.rgb);
 }
 
 vec3 SpecularLight(vec3 norm, vec3 eye, vec3 pos)
@@ -41,9 +50,9 @@ vec3 SpecularLight(vec3 norm, vec3 eye, vec3 pos)
     vec3 viewDir = normalize(eye - pos);
     vec3 reflectDir = reflect(lightDir, normalize(norm));  
 
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
-    return light.specular * spec * vec3(light.color.rgb);
+    return light.specular * spec * material.specular * vec3(light.color.rgb);
 }
 
 vec3 ApplyPointLightAttenuation(vec3 color, vec3 pos)

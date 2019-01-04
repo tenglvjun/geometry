@@ -1,6 +1,12 @@
 #include "material.h"
 
 
+GeoMaterial::GeoMaterial()
+    : m_ambient(1.0f, 1.0f, 1.0f), m_diffuse(1.0f, 1.0f, 1.0f), m_specular(1.0f, 1.0f, 1.0f), m_shininess(1.0f)
+{
+
+}
+
 GeoMaterial::GeoMaterial(const GeoVector3D& ambient, const GeoVector3D& diffuse, const GeoVector3D& specular, const double shininess)
     : m_ambient(ambient), m_diffuse(diffuse), m_specular(specular), m_shininess(shininess)
 {
@@ -81,11 +87,14 @@ void GeoMaterial::ApplyShader(const Shader &shader) const
 
     m_ambient.Flatten(value);
     shader.SetVector("material.ambient", 3, &value[0]);
+
     value.clear();
     m_diffuse.Flatten(value);
     shader.SetVector("material.diffuse", 3, &value[0]);
+
     value.clear();
     m_specular.Flatten(value);
     shader.SetVector("material.specular", 3, &value[0]);
+    
     shader.SetFloat("material.shininess", (float)m_shininess);
 }

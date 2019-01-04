@@ -33,9 +33,7 @@ GeoMesh::~GeoMesh()
 
 void GeoMesh::Draw()
 {
-    UpdateMatrix();
-
-    m_shader.Use();
+    ApplyShader();
 
     // draw mesh
     glBindVertexArray(m_vao);
@@ -44,6 +42,13 @@ void GeoMesh::Draw()
 }
 
 void GeoMesh::Setup()
+{
+    SetupVertices();
+    SetupShaderCode();
+    ApplyShader();
+}
+
+void GeoMesh::SetupVertices()
 {
     unsigned int size = GeoVertex::Size();
     std::vector<double> buf;
@@ -75,7 +80,10 @@ void GeoMesh::Setup()
     glVertexAttribPointer(1, 3, GL_DOUBLE, GL_FALSE, size * sizeof(double), (void *)(offset[1] * sizeof(double)));
 
     glBindVertexArray(0);
+}
 
+void GeoMesh::SetupShaderCode()
+{
     std::vector<std::string> vcVertex, vcFragment;
 
     const GeoShaderCode& meshShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Mesh);
@@ -89,11 +97,17 @@ void GeoMesh::Setup()
 
     m_shader.SetShaderCodes(vcVertex, vcFragment);
     m_shader.Complie();
-
-    UpdateMatrix();
 }
 
-void GeoMesh::UpdateMatrix()
+void GeoMesh::SetupMaterial()
+{
+    m_material.Ambient(GeoVector3D(1.0f, 0.5f, 0.31f));
+    m_material.Specular(GeoVector3D(0.5f, 0.5f, 0.5f));
+    m_material.Diffuse(GeoVector3D(1.0f, 0.5f, 0.31f));
+    m_material.Shininess(32.0f);
+}
+
+void GeoMesh::ApplyShader()
 {
     std::vector<float> value;
     m_model[0][3] = m_pos[0];
@@ -104,4 +118,5 @@ void GeoMesh::UpdateMatrix()
 
     GeoCamera::GetInstance()->ApplyShader(m_shader);
     GeoLight::GetInstance()->ApplyShader(m_shader);
+    m_material.ApplyShader(m_shader);
 }
