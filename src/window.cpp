@@ -152,6 +152,8 @@ void GeoWindow::ShowGeoWindow()
     assert(m_window);
 
     GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 5.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
+
+    glfwGetFramebufferSize(m_window, &m_width, &m_height);
     WindowSizeChange();
 
     std::vector<GeoVertex> vertices;

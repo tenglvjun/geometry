@@ -44,8 +44,8 @@ private:
 
 protected:
   GLFWwindow *m_window;
-  unsigned int m_height;
-  unsigned int m_width;
+  int m_height;
+  int m_width;
   std::string m_title;
   bool m_mouseRBtnDown;
   bool m_mouseLBtnDown;
