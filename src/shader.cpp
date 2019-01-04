@@ -69,15 +69,20 @@ bool Shader::Complie()
 
 void Shader::Use() const
 {
+    if (!IsUsing())
+    {
+        glUseProgram(m_programID);
+    }
+}
+
+bool Shader::IsUsing() const
+{
     assert(m_programID != 0);
 
     GLint programID;
     glGetIntegerv(GL_CURRENT_PROGRAM, &programID);
 
-    if (programID != m_programID)
-    {
-        glUseProgram(m_programID);
-    }
+    return (programID == m_programID);
 }
 
 GLuint Shader::GetID() const

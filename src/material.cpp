@@ -1,44 +1,40 @@
 #include "material.h"
 
-
 GeoMaterial::GeoMaterial()
     : m_ambient(1.0f, 1.0f, 1.0f), m_diffuse(1.0f, 1.0f, 1.0f), m_specular(1.0f, 1.0f, 1.0f), m_shininess(1.0f)
 {
-
 }
 
-GeoMaterial::GeoMaterial(const GeoVector3D& ambient, const GeoVector3D& diffuse, const GeoVector3D& specular, const double shininess)
+GeoMaterial::GeoMaterial(const GeoVector3D &ambient, const GeoVector3D &diffuse, const GeoVector3D &specular, const double shininess)
     : m_ambient(ambient), m_diffuse(diffuse), m_specular(specular), m_shininess(shininess)
 {
-
 }
 
-GeoMaterial::GeoMaterial(const GeoMaterial& material)
+GeoMaterial::GeoMaterial(const GeoMaterial &material)
 {
     m_ambient = material.m_ambient;
     m_diffuse = material.m_diffuse;
-    m_specular = material.m_specular;    
+    m_specular = material.m_specular;
     m_shininess = material.m_shininess;
 }
 
 GeoMaterial::~GeoMaterial()
 {
-
 }
 
-GeoMaterial& GeoMaterial::operator=(const GeoMaterial& material)
+GeoMaterial &GeoMaterial::operator=(const GeoMaterial &material)
 {
-    if (&material == this) {
+    if (&material == this)
+    {
         return *this;
     }
 
     m_ambient = material.m_ambient;
     m_diffuse = material.m_diffuse;
-    m_specular = material.m_specular;    
+    m_specular = material.m_specular;
     m_shininess = material.m_shininess;
 
     return *this;
-    
 }
 
 GeoVector3D GeoMaterial::Ambient() const

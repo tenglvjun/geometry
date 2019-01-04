@@ -6,16 +6,16 @@
 
 class GeoMaterial
 {
-public:
+  public:
     GeoMaterial();
-    GeoMaterial(const GeoVector3D& ambient, const GeoVector3D& diffuse, const GeoVector3D& specular, const double shininess);
-    GeoMaterial(const GeoMaterial& material);
+    GeoMaterial(const GeoVector3D &ambient, const GeoVector3D &diffuse, const GeoVector3D &specular, const double shininess);
+    GeoMaterial(const GeoMaterial &material);
     virtual ~GeoMaterial();
 
-public:
-    GeoMaterial& operator=(const GeoMaterial& material);
+  public:
+    GeoMaterial &operator=(const GeoMaterial &material);
 
-public:
+  public:
     GeoVector3D Ambient() const;
     void Ambient(const GeoVector3D &ambient);
 
@@ -30,10 +30,10 @@ public:
 
     void ApplyShader(const Shader &shader) const;
 
-protected:
+  protected:
     GeoVector3D m_ambient;
     GeoVector3D m_diffuse;
-    GeoVector3D m_specular;    
+    GeoVector3D m_specular;
     double m_shininess;
 };
 

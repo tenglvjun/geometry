@@ -110,6 +110,9 @@ void GeoMesh::SetupMaterial()
 
 void GeoMesh::ApplyShader()
 {
+    if (m_shader.IsUsing())
+        return;
+
     std::vector<float> value;
     m_model[0][3] = m_pos[0];
     m_model[1][3] = m_pos[1];

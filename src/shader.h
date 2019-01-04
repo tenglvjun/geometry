@@ -15,6 +15,7 @@ public:
   void SetShaderCodes(const std::vector<std::string> &vertexCodes, const std::vector<std::string> &fragmentCodes);
   bool Complie();
   void Use() const;
+  bool IsUsing() const;
   GLuint GetID() const;
   void SetBool(const std::string &name, bool value) const;
   void SetInt(const std::string &name, int value) const;
