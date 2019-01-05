@@ -32,8 +32,8 @@ void GeoShaderCodeMgr::Init()
 
     for (unsigned int i = SCT_Invalid + 1; i < SCT_Count; i++)
     {
-        vertex = "shader/vertex/";
-        fragment = "shader/fragment/";
+        vertex = "shader/";
+        fragment = "shader/";
 
         switch (i)
         {
