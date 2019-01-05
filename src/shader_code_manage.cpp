@@ -61,6 +61,18 @@ void GeoShaderCodeMgr::Init()
             fragment += "screen.fs";
         }
         break;
+        case SCT_VertFunc:
+        {
+            vertex += "vert_func.vs";
+            fragment = "";
+        }
+        break;
+        case SCT_FragFunc:
+        {
+            vertex = "";
+            fragment += "frag_func.fs";
+        }
+        break;
         default:
             break;
         }

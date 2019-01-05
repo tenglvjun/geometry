@@ -90,10 +90,14 @@ void GeoMesh::SetupShaderCode()
     const GeoShaderCode& meshShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Mesh);
     const GeoShaderCode& lightShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Light);
     const GeoShaderCode& cameraShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Camera);
+    const GeoShaderCode& vertFuncCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_VertFunc);
+    const GeoShaderCode& fragFuncCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_FragFunc);
 
     vcVertex.push_back(cameraShaderCode.m_vertex);
+    vcVertex.push_back(vertFuncCode.m_vertex);
     vcVertex.push_back(meshShaderCode.m_vertex);
     vcFragment.push_back(lightShaderCode.m_fragment);
+    vcFragment.push_back(fragFuncCode.m_fragment);
     vcFragment.push_back(meshShaderCode.m_fragment);
 
     m_shader.SetShaderCodes(vcVertex, vcFragment);
