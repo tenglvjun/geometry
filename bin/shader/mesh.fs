@@ -3,10 +3,9 @@ out vec4 FragColor;
 in MESHVS_OUT {
     vec3 Normal;
     vec3 FragPos;
-    vec3 eyePos;
 } MeshFrag_in;
 
 void main()
 {
-    FragColor = ApplyLight(MeshFrag_in.Normal, MeshFrag_in.eyePos, MeshFrag_in.FragPos);
+    FragColor = ApplyLight(MeshFrag_in.Normal, MeshFrag_in.FragPos);
 }

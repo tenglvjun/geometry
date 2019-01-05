@@ -1,3 +1,10 @@
+layout (std140) uniform CameraBlock
+{
+    uniform mat4 view;
+    uniform mat4 projection;
+    uniform vec3 viewPos;
+};
+
 vec3 AmbientLight()
 {
     return light.ambient * material.ambient * vec3(light.color.rgb);
@@ -11,10 +18,10 @@ vec3 DiffuseLight(vec3 norm, vec3 pos)
     return light.diffuse * diffuse * material.diffuse * vec3(light.color.rgb);
 }
 
-vec3 SpecularLight(vec3 norm, vec3 eye, vec3 pos)
+vec3 SpecularLight(vec3 norm, vec3 pos)
 {
     vec3 lightDir = normalize(light.pos - pos);
-    vec3 viewDir = normalize(eye - pos);
+    vec3 viewDir = normalize(viewPos - pos);
     vec3 reflectDir = reflect(lightDir, normalize(norm));  
 
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
@@ -36,11 +43,11 @@ vec3 ApplyPointLightAttenuation(vec3 color, vec3 pos)
     return color;
 }
 
-vec4 ApplyLight(vec3 norm, vec3 eye, vec3 pos)
+vec4 ApplyLight(vec3 norm, vec3 pos)
 {
     vec3 ambient = AmbientLight();
     vec3 diffuse = DiffuseLight(norm, pos);
-    vec3 specular = SpecularLight(norm, eye, pos);
+    vec3 specular = SpecularLight(norm, pos);
 
     if (light.source == 0) 
         return vec4(ambient + diffuse + specular, 1.0);

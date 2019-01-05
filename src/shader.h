@@ -16,7 +16,9 @@ public:
   bool Complie();
   void Use() const;
   bool IsUsing() const;
-  GLuint GetID() const;
+  unsigned int GetID() const;
+  unsigned int GetUniformBlockIndex(const std::string &name) const;
+  void UniformBlockBinding(unsigned int blockIndex) const;
   void SetBool(const std::string &name, bool value) const;
   void SetInt(const std::string &name, int value) const;
   void SetUInt(const std::string &name, unsigned int value) const;
@@ -30,7 +32,7 @@ protected:
 
 public:
 protected:
-  GLuint m_programID;
+  unsigned int m_programID;
   std::string m_vertexCodes;
   std::string m_fragmentCodes;
 };

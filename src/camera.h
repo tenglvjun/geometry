@@ -24,11 +24,7 @@ class GeoCamera final
 {
 public:
   GeoCamera();
-  GeoCamera(const GeoCamera &camera);
   virtual ~GeoCamera();
-
-public:
-  GeoCamera &operator=(const GeoCamera &camera);
 
 public:
   void ResetCamera(const GeoVector3D &pos, const GeoVector3D &center, const GeoVector3D &up);
@@ -43,13 +39,21 @@ public:
 
   const GeoVector3D &Position() const;
 
-  void ApplyShader(const Shader &shader) const;
+  unsigned int GetCameraUniformBlockIndex() const;
 
 protected:
+  void ClearUBO();
   void UpdateProjection();
+  void InitShader();
+  void InitUniformBuffer();
+  void UpdateUniformBuffer();
 
 public:
   SINGLETON_DECLARE(GeoCamera);
+
+private:
+  GeoCamera(const GeoCamera &camera);
+  GeoCamera &operator=(const GeoCamera &camera);
 
 protected:
   GeoVector3D m_pos;
@@ -66,6 +70,10 @@ protected:
   double m_sensitivity;
   GeoFrustum m_frustum;
   ProjType_e m_projType;
+
+  Shader m_shader;
+  unsigned int m_ubo;
+  unsigned int m_bindingPoint;
 };
 
 #endif // __CAMERA_HEAD_FILE__

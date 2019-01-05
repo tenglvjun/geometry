@@ -15,7 +15,6 @@ GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &in
     m_model.SetIdentity();
     m_vao = m_vbo = m_ebo = 0;
 
-    
     Setup();
 }
 
@@ -87,13 +86,12 @@ void GeoMesh::SetupShaderCode()
 {
     std::vector<std::string> vcVertex, vcFragment;
 
-    const GeoShaderCode& meshShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Mesh);
-    const GeoShaderCode& lightShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Light);
-    const GeoShaderCode& cameraShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Camera);
-    const GeoShaderCode& vertFuncCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_VertFunc);
-    const GeoShaderCode& fragFuncCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_FragFunc);
+    const GeoShaderCode &meshShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Mesh);
+    const GeoShaderCode &lightShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Light);
+    const GeoShaderCode &vertFuncCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_VertFunc);
+    const GeoShaderCode &fragFuncCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_FragFunc);
+    const GeoShaderCode &cameraShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Camera);
 
-    vcVertex.push_back(cameraShaderCode.m_vertex);
     vcVertex.push_back(vertFuncCode.m_vertex);
     vcVertex.push_back(meshShaderCode.m_vertex);
     vcFragment.push_back(lightShaderCode.m_fragment);
@@ -102,6 +100,9 @@ void GeoMesh::SetupShaderCode()
 
     m_shader.SetShaderCodes(vcVertex, vcFragment);
     m_shader.Complie();
+
+    unsigned int cameraBlockIndex = GeoCamera::GetInstance()->GetCameraUniformBlockIndex();
+    m_shader.UniformBlockBinding(cameraBlockIndex);
 }
 
 void GeoMesh::SetupMaterial()
@@ -124,7 +125,6 @@ void GeoMesh::ApplyShader()
     m_model.Flatten(value);
     m_shader.SetMatrix("model", false, &value[0]);
 
-    GeoCamera::GetInstance()->ApplyShader(m_shader);
     GeoLight::GetInstance()->ApplyShader(m_shader);
     m_material.ApplyShader(m_shader);
 }

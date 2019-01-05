@@ -1,5 +1,8 @@
 #include "camera.h"
 #include "tools.h"
+#include "shader_code_manage.h"
+#include <vector>
+#include "opengl_helper.h"
 
 GeoFrustum::GeoFrustum()
 {
@@ -19,44 +22,20 @@ GeoFrustum::GeoFrustum(const double l, const double r, const double b, const dou
 SINGLETON_IMPLEMENT(GeoCamera);
 
 GeoCamera::GeoCamera()
-    : m_view(4, 4), m_projection(4, 4), m_sensitivity(0.1f), m_projType(PT_Invalid)
+    : m_view(4, 4), m_projection(4, 4), m_sensitivity(0.1f), m_projType(PT_Invalid), m_ubo(0)
 {
     m_view.SetIdentity();
     m_projection.SetIdentity();
-}
+    m_bindingPoint = GeoOpenGLHelper::GetInstance()->RequestBindingPoint();
 
-GeoCamera::GeoCamera(const GeoCamera &camera)
-    : m_view(4, 4), m_projection(4, 4)
-{
-    m_pos = camera.m_pos;
-    m_front = camera.m_front;
-    m_upOrtho = camera.m_upOrtho;
-    m_side = camera.m_side;
-    m_view = camera.m_view;
-    m_projection = camera.m_projection;
-    m_frustum = camera.m_frustum;
+    InitShader();
+    InitUniformBuffer();
+    UpdateUniformBuffer();
 }
 
 GeoCamera::~GeoCamera()
 {
-}
-
-GeoCamera &GeoCamera::operator=(const GeoCamera &camera)
-{
-    if (&camera == this)
-    {
-        return *this;
-    }
-
-    m_pos = camera.m_pos;
-    m_front = camera.m_front;
-    m_upOrtho = camera.m_upOrtho;
-    m_side = camera.m_side;
-    m_view = camera.m_view;
-    m_projection = camera.m_projection;
-    m_frustum = camera.m_frustum;
-
-    return *this;
+    ClearUBO();
 }
 
 void GeoCamera::ResetCamera(const GeoVector3D &pos, const GeoVector3D &center, const GeoVector3D &up)
@@ -119,6 +98,8 @@ void GeoCamera::Move(const GeoVector3D &v)
     m_view[0][3] += v[0];
     m_view[1][3] += v[1];
     m_view[2][3] += v[2];
+
+    UpdateUniformBuffer();
 }
 
 void GeoCamera::Rotate(const GeoMatrix &m)
@@ -127,6 +108,8 @@ void GeoCamera::Rotate(const GeoMatrix &m)
     subMatrix = m * subMatrix;
 
     m_view.Replace(0, 0, subMatrix);
+
+    UpdateUniformBuffer();
 }
 
 void GeoCamera::Scale(bool enlarge)
@@ -141,19 +124,18 @@ const GeoVector3D &GeoCamera::Position() const
     return m_pos;
 }
 
-void GeoCamera::ApplyShader(const Shader &shader) const
+unsigned int GeoCamera::GetCameraUniformBlockIndex() const
 {
-    std::vector<float> value;
-    m_view.Flatten(value);
-    shader.SetMatrix("view", false, &value[0]);
+    return m_shader.GetUniformBlockIndex("CameraBlock");
+}
 
-    value.clear();
-    m_pos.Flatten(value);
-    shader.SetVector("viewPos", 3, &value[0]);
-
-    value.clear();
-    m_projection.Flatten(value);
-    shader.SetMatrix("projection", false, &value[0]);
+void GeoCamera::ClearUBO()
+{
+    if (m_ubo > 0)
+    {
+        glDeleteBuffers(1, &m_ubo);
+        m_ubo = 0;
+    }
 }
 
 void GeoCamera::UpdateProjection()
@@ -203,4 +185,47 @@ void GeoCamera::UpdateProjection()
     default:
         break;
     }
+
+    UpdateUniformBuffer();
+}
+
+void GeoCamera::InitShader()
+{
+    const GeoShaderCode &shaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Camera);
+
+    std::vector<std::string> vert;
+    std::vector<std::string> frag;
+
+    vert.push_back(shaderCode.m_vertex);
+
+    m_shader.SetShaderCodes(vert, frag);
+    m_shader.Complie();
+}
+
+void GeoCamera::InitUniformBuffer()
+{
+    ClearUBO();
+
+    std::vector<float> data;
+
+    unsigned int size = sizeof(float) * 16 * 2 + sizeof(float) * 3;
+
+    glGenBuffers(1, &m_ubo);
+    glBindBuffer(GL_UNIFORM_BUFFER, m_ubo);
+    glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_STATIC_DRAW);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    glBindBufferRange(GL_UNIFORM_BUFFER, m_bindingPoint, m_ubo, 0, size);
+}
+
+void GeoCamera::UpdateUniformBuffer()
+{
+    std::vector<float> data;
+
+    m_view.Flatten(data);
+    m_projection.Flatten(data);
+    m_pos.Flatten(data);
+
+    glBindBuffer(GL_UNIFORM_BUFFER, m_ubo);
+    glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float) * data.size(), &data[0]);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }

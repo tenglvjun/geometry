@@ -16,19 +16,29 @@ Shader::~Shader()
 
 void Shader::SetShaderCodes(const std::vector<std::string> &vertexCodes, const std::vector<std::string> &fragmentCodes)
 {
+    m_fragmentCodes = "";
+    m_vertexCodes = "";
+
     OpenGLConfig &config = GeoSetting::GetInstance()->OpenGLConfig();
 
     std::string version = config.m_shaderVersion + "\n";
-    m_vertexCodes = version;
-    for (size_t i = 0; i < vertexCodes.size(); i++)
+
+    if (!vertexCodes.empty())
     {
-        m_vertexCodes += vertexCodes[i];
+        m_vertexCodes = version;
+        for (size_t i = 0; i < vertexCodes.size(); i++)
+        {
+            m_vertexCodes += vertexCodes[i];
+        }
     }
 
-    m_fragmentCodes = version;
-    for (size_t i = 0; i < fragmentCodes.size(); i++)
+    if (!fragmentCodes.empty())
     {
-        m_fragmentCodes += fragmentCodes[i];
+        m_fragmentCodes = version;
+        for (size_t i = 0; i < fragmentCodes.size(); i++)
+        {
+            m_fragmentCodes += fragmentCodes[i];
+        }
     }
 }
 
@@ -36,33 +46,44 @@ bool Shader::Complie()
 {
     DeleteProgram();
 
-    GLuint vertex, fragment;
+    unsigned int vertex, fragment;
+    vertex = fragment = 0;
 
     GLint vSourceLength = (GLint)m_vertexCodes.length();
     GLint fSourceLength = (GLint)m_fragmentCodes.length();
 
     const char *buf = nullptr;
 
-    vertex = glCreateShader(GL_VERTEX_SHADER);
-    buf = m_vertexCodes.c_str();
-    glShaderSource(vertex, 1, &buf, &vSourceLength);
-    glCompileShader(vertex);
-    CheckCompileErrors(vertex, "VERTEX");
+    if (vSourceLength > 0)
+    {
+        vertex = glCreateShader(GL_VERTEX_SHADER);
+        buf = m_vertexCodes.c_str();
+        glShaderSource(vertex, 1, &buf, &vSourceLength);
+        glCompileShader(vertex);
+        CheckCompileErrors(vertex, "VERTEX");
+    }
 
-    fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    buf = m_fragmentCodes.c_str();
-    glShaderSource(fragment, 1, &buf, &fSourceLength);
-    glCompileShader(fragment);
-    CheckCompileErrors(fragment, "FRAGMENT");
+    if (fSourceLength > 0)
+    {
+        fragment = glCreateShader(GL_FRAGMENT_SHADER);
+        buf = m_fragmentCodes.c_str();
+        glShaderSource(fragment, 1, &buf, &fSourceLength);
+        glCompileShader(fragment);
+        CheckCompileErrors(fragment, "FRAGMENT");
+    }
 
     m_programID = glCreateProgram();
-    glAttachShader(m_programID, vertex);
-    glAttachShader(m_programID, fragment);
+    if (vertex > 0)
+        glAttachShader(m_programID, vertex);
+    if (fragment > 0)
+        glAttachShader(m_programID, fragment);
     glLinkProgram(m_programID);
     CheckCompileErrors(m_programID, "PROGRAM");
 
-    glDeleteShader(vertex);
-    glDeleteShader(fragment);
+    if (vertex > 0)
+        glDeleteShader(vertex);
+    if (fragment > 0)
+        glDeleteShader(fragment);
 
     return true;
 }
@@ -85,9 +106,21 @@ bool Shader::IsUsing() const
     return (programID == m_programID);
 }
 
-GLuint Shader::GetID() const
+unsigned int Shader::GetID() const
 {
     return m_programID;
+}
+
+unsigned int Shader::GetUniformBlockIndex(const std::string &name) const
+{
+    unsigned int uniformBlockIndex = glGetUniformBlockIndex(m_programID, name.c_str());
+    return uniformBlockIndex;
+}
+
+void Shader::UniformBlockBinding(unsigned int blockIndex) const
+{
+    assert(m_programID > 0);
+    glUniformBlockBinding(m_programID, blockIndex, 0);
 }
 
 void Shader::SetBool(const std::string &name, bool value) const

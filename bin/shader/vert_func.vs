@@ -1,3 +1,12 @@
+layout (std140) uniform CameraBlock
+{
+    uniform mat4 view;
+    uniform mat4 projection;
+    uniform vec3 viewPos;
+};
+
+uniform mat4 model;
+
 vec4 ApplyModelMatrix(vec4 pos)
 {
     return model * pos;
