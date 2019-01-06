@@ -87,22 +87,22 @@ void GeoMesh::SetupShaderCode()
     std::vector<std::string> vcVertex, vcFragment;
 
     const GeoShaderCode &meshShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Mesh);
-    const GeoShaderCode &lightShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Light);
     const GeoShaderCode &vertFuncCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_VertFunc);
     const GeoShaderCode &fragFuncCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_FragFunc);
-    const GeoShaderCode &cameraShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Camera);
-
+ 
     vcVertex.push_back(vertFuncCode.m_vertex);
     vcVertex.push_back(meshShaderCode.m_vertex);
-    vcFragment.push_back(lightShaderCode.m_fragment);
     vcFragment.push_back(fragFuncCode.m_fragment);
     vcFragment.push_back(meshShaderCode.m_fragment);
 
     m_shader.SetShaderCodes(vcVertex, vcFragment);
     m_shader.Complie();
 
-    unsigned int cameraBlockIndex = GeoCamera::GetInstance()->GetCameraUniformBlockIndex();
-    m_shader.UniformBlockBinding(cameraBlockIndex);
+    unsigned int blockIndex = GeoCamera::GetInstance()->GetUniformBlockIndex();
+    m_shader.UniformBlockBinding(blockIndex);
+
+    blockIndex = GeoLight::GetInstance()->GetUniformBlockIndex();
+    m_shader.UniformBlockBinding(blockIndex);
 }
 
 void GeoMesh::SetupMaterial()
@@ -125,6 +125,5 @@ void GeoMesh::ApplyShader()
     m_model.Flatten(value);
     m_shader.SetMatrix("model", false, &value[0]);
 
-    GeoLight::GetInstance()->ApplyShader(m_shader);
     m_material.ApplyShader(m_shader);
 }

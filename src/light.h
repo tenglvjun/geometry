@@ -11,11 +11,8 @@ class GeoLight final
 {
 public:
   GeoLight();
-  GeoLight(const GeoLight &light);
-  virtual ~GeoLight();
 
-public:
-  GeoLight &operator=(const GeoLight &light);
+  virtual ~GeoLight();
 
 public:
   void SetLight(const GeoVector3D &pos, const GeoVector3D &origin, const GeoColor &color);
@@ -44,7 +41,7 @@ public:
   GeoColor Color() const;
   void Color(const GeoColor &color);
 
-  void ApplyShader(const Shader &shader) const;
+  unsigned int GetUniformBlockIndex() const;
 
 public:
   SINGLETON_DECLARE(GeoLight);
@@ -52,6 +49,15 @@ public:
 protected:
   GeoColor Attanuation(const GeoVector3D &objPos, const GeoColor &color);
   void RestoreFromSetting();
+  void ClearUBO();
+  void UpdateProjection();
+  void InitShader();
+  void InitUniformBuffer();
+  void UpdateUniformBuffer();
+
+private:
+  GeoLight(const GeoLight &light);
+  GeoLight &operator=(const GeoLight &light);
 
 public:
   static void InitShaderCode();
@@ -61,7 +67,7 @@ public:
 protected:
   GeoVector3D m_pos;
   GeoVector3D m_dir;
- 
+
   GeoVector3D m_ambient;
   GeoVector3D m_specular;
   GeoVector3D m_diffuse;
@@ -70,6 +76,10 @@ protected:
 
   LightSource_e m_source;
   unsigned int m_pointAttenuationRange;
+
+  Shader m_shader;
+  unsigned int m_ubo;
+  unsigned int m_bindingPoint;
 };
 
 #endif // __LIGHT_HEAD_FILE__

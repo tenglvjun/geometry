@@ -1,14 +1,6 @@
-struct Material 
-{
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;    
-    float shininess;
-};
-
 struct Light
 {
-    uint source;
+    int source;
 
     vec3 pos;
 
@@ -28,5 +20,12 @@ struct Light
     float outerCutOff;
 };
 
-uniform Light light;
-uniform Material material;
+layout (std140) uniform LightBlock
+{
+    uniform Light light;
+};
+
+void main()
+{
+    
+}

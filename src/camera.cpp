@@ -3,6 +3,7 @@
 #include "shader_code_manage.h"
 #include <vector>
 #include "opengl_helper.h"
+#include <iostream>
 
 GeoFrustum::GeoFrustum()
 {
@@ -124,7 +125,7 @@ const GeoVector3D &GeoCamera::Position() const
     return m_pos;
 }
 
-unsigned int GeoCamera::GetCameraUniformBlockIndex() const
+unsigned int GeoCamera::GetUniformBlockIndex() const
 {
     return m_shader.GetUniformBlockIndex("CameraBlock");
 }
@@ -208,13 +209,15 @@ void GeoCamera::InitUniformBuffer()
 
     std::vector<float> data;
 
-    unsigned int size = sizeof(float) * 16 * 2 + sizeof(float) * 3;
+    m_view.Flatten(data);
+    m_projection.Flatten(data);
+    m_pos.Flatten(data);
 
     glGenBuffers(1, &m_ubo);
     glBindBuffer(GL_UNIFORM_BUFFER, m_ubo);
-    glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_STATIC_DRAW);
+    glBufferData(GL_UNIFORM_BUFFER, sizeof(float) * data.size(), nullptr, GL_STATIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
-    glBindBufferRange(GL_UNIFORM_BUFFER, m_bindingPoint, m_ubo, 0, size);
+    glBindBufferRange(GL_UNIFORM_BUFFER, m_bindingPoint, m_ubo, 0, sizeof(float) * data.size());
 }
 
 void GeoCamera::UpdateUniformBuffer()

@@ -39,7 +39,7 @@ public:
 
   const GeoVector3D &Position() const;
 
-  unsigned int GetCameraUniformBlockIndex() const;
+  unsigned int GetUniformBlockIndex() const;
 
 protected:
   void ClearUBO();
