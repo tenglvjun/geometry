@@ -1,9 +1,9 @@
 layout (std140) uniform CameraBlock
 {
-    uniform mat4 view;
-    uniform mat4 projection;
-    uniform vec3 viewPos;
-};
+    mat4 view;
+    mat4 projection;
+    vec3 pos;
+} camera;
 
 void main()
 {

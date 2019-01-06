@@ -1,11 +1,11 @@
 layout (std140) uniform CameraBlock
 {
-    uniform mat4 view;
-    uniform mat4 projection;
-    uniform vec3 viewPos;
-};
+    mat4 view;
+    mat4 projection;
+    vec3 pos;
+} camera;
 
-struct Light
+layout (std140) uniform LightBlock
 {
     int source;
 
@@ -25,12 +25,7 @@ struct Light
     // spot light source parameters
     float cutOff;
     float outerCutOff;
-};
-
-layout (std140) uniform LightBlock
-{
-    uniform Light light;
-};
+} light;
 
 struct Material 
 {
@@ -58,7 +53,7 @@ vec3 DiffuseLight(vec3 norm, vec3 pos)
 vec3 SpecularLight(vec3 norm, vec3 pos)
 {
     vec3 lightDir = normalize(light.pos - pos);
-    vec3 viewDir = normalize(viewPos - pos);
+    vec3 viewDir = normalize(camera.pos - pos);
     vec3 reflectDir = reflect(lightDir, normalize(norm));  
 
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);

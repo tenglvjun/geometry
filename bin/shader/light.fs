@@ -1,4 +1,4 @@
-struct Light
+layout (std140) uniform LightBlock
 {
     int source;
 
@@ -18,12 +18,7 @@ struct Light
     // spot light source parameters
     float cutOff;
     float outerCutOff;
-};
-
-layout (std140) uniform LightBlock
-{
-    uniform Light light;
-};
+} light;
 
 void main()
 {
