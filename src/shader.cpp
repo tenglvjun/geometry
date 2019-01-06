@@ -113,14 +113,24 @@ unsigned int Shader::GetID() const
 
 unsigned int Shader::GetUniformBlockIndex(const std::string &name) const
 {
-    unsigned int uniformBlockIndex = glGetUniformBlockIndex(m_programID, name.c_str());
-    return uniformBlockIndex;
+    assert(m_programID > 0);
+    return glGetUniformBlockIndex(m_programID, name.c_str());
 }
 
-void Shader::UniformBlockBinding(unsigned int blockIndex) const
+unsigned int Shader::GetUniformBlockSize(const std::string &name) const
+{
+    unsigned int blockIndex = GetUniformBlockIndex(name);
+    int blockSize;
+    glGetActiveUniformBlockiv(m_programID, blockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &blockSize);
+    return blockSize;
+}
+
+void Shader::BindUniformBlock(const std::string &name, const unsigned int bindingPoint) const
 {
     assert(m_programID > 0);
-    glUniformBlockBinding(m_programID, blockIndex, 0);
+
+    unsigned int blockIdx = GetUniformBlockIndex(name);
+    glUniformBlockBinding(m_programID, blockIdx, bindingPoint);
 }
 
 void Shader::SetBool(const std::string &name, bool value) const

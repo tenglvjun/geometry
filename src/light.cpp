@@ -139,6 +139,16 @@ unsigned int GeoLight::GetUniformBlockIndex() const
     return m_shader.GetUniformBlockIndex("LightBlock");
 }
 
+unsigned int GeoLight::GetUniformBindingPoint() const
+{
+    return m_bindingPoint;
+}
+
+void GeoLight::BindUniformBlock(Shader &shader)
+{
+    shader.BindUniformBlock("LightBlock", m_bindingPoint);
+}
+
 void GeoLight::ClearUBO()
 {
     if (m_ubo > 0)
@@ -186,8 +196,7 @@ void GeoLight::InitUniformBuffer()
     m_specular.Flatten(data);
     m_color.Flatten(data);
 
-    unsigned int size = sizeof(int);
-    size += (sizeof(float) * (data.size() + 5));
+    int size = m_shader.GetUniformBlockSize("LightBlock");
 
     glGenBuffers(1, &m_ubo);
     glBindBuffer(GL_UNIFORM_BUFFER, m_ubo);
@@ -204,24 +213,49 @@ void GeoLight::UpdateUniformBuffer()
     float linear = (float)(config.m_light.m_pointAttenuation[m_pointAttenuationRange].m_linear);
     float quadratic = (float)(config.m_light.m_pointAttenuation[m_pointAttenuationRange].m_quadratic);
 
-    double cutOff = Tools::GetInstance()->Degree2dRadia(config.m_light.m_cutOff);
-    double outerCutOff = Tools::GetInstance()->Degree2dRadia(config.m_light.m_outerCutOff);
+    float cutOff = (float)(Tools::GetInstance()->Degree2dRadia(config.m_light.m_cutOff));
+    float outerCutOff = (float)(Tools::GetInstance()->Degree2dRadia(config.m_light.m_outerCutOff));
+
+    unsigned int offset = 0;
+
+    glBindBuffer(GL_UNIFORM_BUFFER, m_ubo);
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(int), &m_source);
 
     std::vector<float> data;
     m_pos.Flatten(data);
+    offset = 16;
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(float) * data.size(), &data[0]);
+
+    data.clear();
     m_ambient.Flatten(data);
+    offset = 32;
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(float) * data.size(), &data[0]);
+
+    data.clear();
     m_diffuse.Flatten(data);
+    offset = 48;
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(float) * data.size(), &data[0]);
+
+    data.clear();
     m_specular.Flatten(data);
+    offset = 64;
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(float) * data.size(), &data[0]);
+
+    data.clear();
     m_color.Flatten(data);
+    offset = 80;
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(float) * data.size(), &data[0]);
 
-    data.push_back(constant);
-    data.push_back(linear);
-    data.push_back(quadratic);
-    data.push_back(cutOff);
-    data.push_back(outerCutOff);
+    offset = 96;
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(float), &constant);
+    offset = 100;
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(float), &linear);
+    offset = 104;
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(float), &quadratic);
+    offset = 108;
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(float), &cutOff);
+    offset = 112;
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(float), &outerCutOff);
 
-    glBindBuffer(GL_UNIFORM_BUFFER, m_ubo);
-    glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(int), &m_source);
-    glBufferSubData(GL_UNIFORM_BUFFER, sizeof(int), sizeof(float) * data.size(), &data[0]);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }

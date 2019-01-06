@@ -42,6 +42,8 @@ public:
   void Color(const GeoColor &color);
 
   unsigned int GetUniformBlockIndex() const;
+  unsigned int GetUniformBindingPoint() const;
+  void BindUniformBlock(Shader &shader);
 
 public:
   SINGLETON_DECLARE(GeoLight);

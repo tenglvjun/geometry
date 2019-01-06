@@ -130,6 +130,16 @@ unsigned int GeoCamera::GetUniformBlockIndex() const
     return m_shader.GetUniformBlockIndex("CameraBlock");
 }
 
+unsigned int GeoCamera::GetUniformBindingPoint() const
+{
+    return m_bindingPoint;
+}
+
+void GeoCamera::BindUniformBlock(Shader &shader)
+{
+    shader.BindUniformBlock("CameraBlock", m_bindingPoint);
+}
+
 void GeoCamera::ClearUBO()
 {
     if (m_ubo > 0)
@@ -207,23 +217,18 @@ void GeoCamera::InitUniformBuffer()
 {
     ClearUBO();
 
-    std::vector<float> data;
-
-    m_view.Flatten(data);
-    m_projection.Flatten(data);
-    m_pos.Flatten(data);
+    int size = m_shader.GetUniformBlockSize("CameraBlock");
 
     glGenBuffers(1, &m_ubo);
     glBindBuffer(GL_UNIFORM_BUFFER, m_ubo);
-    glBufferData(GL_UNIFORM_BUFFER, sizeof(float) * data.size(), nullptr, GL_STATIC_DRAW);
+    glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_STATIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
-    glBindBufferRange(GL_UNIFORM_BUFFER, m_bindingPoint, m_ubo, 0, sizeof(float) * data.size());
+    glBindBufferRange(GL_UNIFORM_BUFFER, m_bindingPoint, m_ubo, 0, size);
 }
 
 void GeoCamera::UpdateUniformBuffer()
 {
     std::vector<float> data;
-
     m_view.Flatten(data);
     m_projection.Flatten(data);
     m_pos.Flatten(data);

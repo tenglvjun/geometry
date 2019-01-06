@@ -18,7 +18,8 @@ public:
   bool IsUsing() const;
   unsigned int GetID() const;
   unsigned int GetUniformBlockIndex(const std::string &name) const;
-  void UniformBlockBinding(unsigned int blockIndex) const;
+  unsigned int GetUniformBlockSize(const std::string &name) const;
+  void BindUniformBlock(const std::string &name, const unsigned int bindingPoint) const;
   void SetBool(const std::string &name, bool value) const;
   void SetInt(const std::string &name, int value) const;
   void SetUInt(const std::string &name, unsigned int value) const;

@@ -40,6 +40,8 @@ public:
   const GeoVector3D &Position() const;
 
   unsigned int GetUniformBlockIndex() const;
+  unsigned int GetUniformBindingPoint() const;
+  void BindUniformBlock(Shader &shader);
 
 protected:
   void ClearUBO();
