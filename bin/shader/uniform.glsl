@@ -1,3 +1,18 @@
+struct Material 
+{
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;    
+    float shininess;
+};
+
+layout (std140) uniform CameraBlock
+{
+    mat4 view;
+    mat4 projection;
+    vec3 pos;
+} camera;
+
 layout (std140) uniform LightBlock
 {
     int source;
@@ -20,7 +35,5 @@ layout (std140) uniform LightBlock
     float outerCutOff;
 } light;
 
-void main()
-{
-    
-}
+uniform Material material;
+uniform mat4 model;

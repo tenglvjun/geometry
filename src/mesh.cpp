@@ -86,14 +86,16 @@ void GeoMesh::SetupShaderCode()
 {
     std::vector<std::string> vcVertex, vcFragment;
 
-    const GeoShaderCode &meshShaderCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Mesh);
-    const GeoShaderCode &vertFuncCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_VertFunc);
-    const GeoShaderCode &fragFuncCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_FragFunc);
+    const GeoShaderCode &meshCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Mesh);
+    const GeoShaderCode &functionsCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Fuctions);
+    const GeoShaderCode &uniformCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Uniform);
 
-    vcVertex.push_back(vertFuncCode.m_vertex);
-    vcVertex.push_back(meshShaderCode.m_vertex);
-    vcFragment.push_back(fragFuncCode.m_fragment);
-    vcFragment.push_back(meshShaderCode.m_fragment);
+    vcVertex.push_back(uniformCode.m_vertex);
+    vcVertex.push_back(functionsCode.m_vertex);
+    vcVertex.push_back(meshCode.m_vertex);
+    vcFragment.push_back(uniformCode.m_vertex);
+    vcFragment.push_back(functionsCode.m_vertex);
+    vcFragment.push_back(meshCode.m_fragment);
 
     m_shader.SetShaderCodes(vcVertex, vcFragment);
     m_shader.Complie();
