@@ -30,8 +30,6 @@ void GeoLight::SetLight(const GeoVector3D &pos, const GeoVector3D &origin, const
 {
     m_pos = pos;
 
-    m_dir = pos - origin;
-    m_dir.Normalize();
     m_color = color;
 
     UpdateUniformBuffer();
@@ -61,17 +59,11 @@ void GeoLight::Position(const GeoVector3D &pos)
     UpdateUniformBuffer();
 }
 
-const GeoVector3D &GeoLight::Direction() const
+GeoVector3D GeoLight::Direction() const
 {
-    return m_dir;
-}
-
-void GeoLight::Direction(const GeoVector3D &dir)
-{
-    m_dir = dir;
-    m_dir.Normalize();
-
-    UpdateUniformBuffer();
+    GeoVector3D dir = GeoVector3D(0.0f, 0.0f, 0.0f) - m_pos;
+    dir.Normalize();
+    return dir;
 }
 
 const unsigned int GeoLight::PointLightAttenuationRange() const
@@ -168,7 +160,6 @@ void GeoLight::RestoreFromSetting()
     m_source = config.m_light.m_source;
     m_pointAttenuationRange = config.m_light.m_pointAttenuationRange;
     m_pos = config.m_light.m_pos;
-    m_dir = config.m_light.m_dir;
     m_color = config.m_light.m_color;
 }
 

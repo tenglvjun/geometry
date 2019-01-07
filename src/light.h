@@ -23,8 +23,7 @@ public:
   const GeoVector3D &Position() const;
   void Position(const GeoVector3D &pos);
 
-  const GeoVector3D &Direction() const;
-  void Direction(const GeoVector3D &dir);
+  GeoVector3D Direction() const;
 
   const unsigned int PointLightAttenuationRange() const;
   void SetPointLightAttenuationRange(const unsigned int range);
@@ -68,7 +67,6 @@ public:
 
 protected:
   GeoVector3D m_pos;
-  GeoVector3D m_dir;
 
   GeoVector3D m_ambient;
   GeoVector3D m_specular;

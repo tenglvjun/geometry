@@ -31,7 +31,6 @@ struct LightConfig
   LightConfig();
 
   GeoVector3D m_pos;
-  GeoVector3D m_dir;
   GeoColor m_color;
   GeoVector3D m_ambient;
   GeoVector3D m_specular;
