@@ -16,7 +16,7 @@ public:
   SINGLETON_DECLARE(Tools)
 public:
   static double Radia2Degree(const double r);
-  static double Degree2dRadia(const double d);
+  static double Degree2Radian(const double d);
   static std::string GetLocalTime();
   static bool IsZero(const double v);
   static double Maximum(const double a, const double b);

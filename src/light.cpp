@@ -204,8 +204,11 @@ void GeoLight::UpdateUniformBuffer()
     float linear = (float)(config.m_light.m_pointAttenuation[m_pointAttenuationRange].m_linear);
     float quadratic = (float)(config.m_light.m_pointAttenuation[m_pointAttenuationRange].m_quadratic);
 
-    float cutOff = (float)(Tools::GetInstance()->Degree2dRadia(config.m_light.m_cutOff));
-    float outerCutOff = (float)(Tools::GetInstance()->Degree2dRadia(config.m_light.m_outerCutOff));
+    float cutOff = (float)(Tools::GetInstance()->Degree2Radian(config.m_light.m_cutOff));
+    float outerCutOff = (float)(Tools::GetInstance()->Degree2Radian(config.m_light.m_outerCutOff));
+
+    cutOff = cos(cutOff);
+    outerCutOff = cos(outerCutOff);
 
     unsigned int offset = 0;
 

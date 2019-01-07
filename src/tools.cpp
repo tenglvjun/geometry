@@ -24,7 +24,7 @@ double Tools::Radia2Degree(const double r)
     return r * 180 / pi;
 }
 
-double Tools::Degree2dRadia(const double d)
+double Tools::Degree2Radian(const double d)
 {
     MathConfig &config = GeoSetting::GetInstance()->MathConfig();
 
