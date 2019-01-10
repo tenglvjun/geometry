@@ -5,7 +5,6 @@
       "epsilon": 1e-7
     },
     "opengl": {
-      "shader version": "#version 410 core",
       "light": {
         "position": "0.0, 0.0, 2.0",
         "color": "1.0, 1.0, 1.0, 1.0",

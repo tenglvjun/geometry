@@ -169,14 +169,9 @@ void GeoCanvas::SetupFrameBuffer(const unsigned int width, const unsigned int he
 
 void GeoCanvas::SetupShader()
 {
-    std::vector<std::string> vcVertex, vcFragment;
-
     const GeoShaderCode &shaderCodes = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Screen);
 
-    vcVertex.push_back(shaderCodes.m_vertex);
-    vcFragment.push_back(shaderCodes.m_fragment);
-
-    m_shader.SetShaderCodes(vcVertex, vcFragment);
+    m_shader.SetShaderCodes(shaderCodes.m_vertex, shaderCodes.m_fragment);
     m_shader.Complie();
 
     m_shader.SetInt("screenTexture", 0);

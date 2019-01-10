@@ -10,15 +10,15 @@ layout (std140) uniform LightBlock
 
     vec4 color;
 
-    # point light source parameters
     float constant;
     float linear;
     float quadratic;
 
-    # spot light source parameters
     float cutOff;
     float outerCutOff;
 } light;
+
+include(material.m4)
 
 vec3 AmbientLight()
 {

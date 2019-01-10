@@ -3,7 +3,6 @@
 
 #include <glad/glad.h>
 #include <string>
-#include <vector>
 
 class Shader final
 {
@@ -12,7 +11,7 @@ public:
   ~Shader();
 
 public:
-  void SetShaderCodes(const std::vector<std::string> &vertexCodes, const std::vector<std::string> &fragmentCodes);
+  void SetShaderCodes(const std::string &vertexCodes, const std::string &fragmentCodes);
   bool Complie();
   void Use() const;
   bool IsUsing() const;

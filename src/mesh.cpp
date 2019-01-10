@@ -84,14 +84,9 @@ void GeoMesh::SetupVertices()
 
 void GeoMesh::SetupShaderCode()
 {
-    std::vector<std::string> vcVertex, vcFragment;
-
     const GeoShaderCode &meshCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Mesh);
 
-    vcVertex.push_back(meshCode.m_vertex);
-    vcFragment.push_back(meshCode.m_fragment);
-
-    m_shader.SetShaderCodes(vcVertex, vcFragment);
+    m_shader.SetShaderCodes(meshCode.m_vertex, meshCode.m_fragment);
     m_shader.Complie();
 
     GeoCamera::GetInstance()->BindUniformBlock(m_shader);

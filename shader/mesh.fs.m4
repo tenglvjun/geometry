@@ -1,6 +1,7 @@
-#version 410 core
+`#'version 410 core
 out vec4 FragColor;
 
+include(camera.m4)
 include(light.m4)
 
 in MESHVS_OUT {
