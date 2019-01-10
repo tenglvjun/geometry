@@ -9,6 +9,13 @@ target_link_libraries(${PROJECT_NAME} glad)
 target_link_libraries(${PROJECT_NAME} json)
 target_link_libraries(${PROJECT_NAME} assimp)
 
+set(SHADER_GENERATOR_FILE shader_generate.py)
+add_custom_command (
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND  python ${CMAKE_CURRENT_SOURCE_DIR}/../${SHADER_GENERATOR_FILE}
+)
+
 if(MSVC)
     set(PROJECT_BIN_EXE ${PROJECT_NAME}.exe)
     add_custom_command (
@@ -18,5 +25,4 @@ if(MSVC)
         COMMAND ${CMAKE_COMMAND} -E copy ${EXECUTABLE_OUTPUT_PATH}/${CMAKE_BUILD_TYPE}/${PROJECT_BIN_EXE} ${EXECUTABLE_OUTPUT_PATH}
     )
 endif(MSVC)
-
 

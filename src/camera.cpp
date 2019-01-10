@@ -202,14 +202,13 @@ void GeoCamera::UpdateProjection()
 
 void GeoCamera::InitShader()
 {
-    const GeoShaderCode &uniformBlockCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Uniform);
     const GeoShaderCode &cameraCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Camera);
 
     std::vector<std::string> vert;
     std::vector<std::string> frag;
 
-    vert.push_back(uniformBlockCode.m_vertex);
     vert.push_back(cameraCode.m_vertex);
+    frag.push_back(cameraCode.m_fragment);
 
     m_shader.SetShaderCodes(vert, frag);
     m_shader.Complie();

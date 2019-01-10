@@ -1,12 +1,15 @@
 import os
 import shutil
 
-shader_dir = './shader'
-bin_dir = './bin/shader'
+current_path = os.path.dirname(__file__)
+os.chdir(current_path)
+
+shader_dir = 'shader'
+bin_dir = 'bin/shader'
 
 list = os.listdir(shader_dir)
 
-include_path = shader_dir+'/include'
+include_path = shader_dir+os.path.sep+'include'
 
 for i in range(0, len(list)):
     path = os.path.join(shader_dir, list[i])
@@ -20,5 +23,5 @@ isExists = os.path.exists(bin_dir)
 if not isExists:
     os.makedirs(bin_dir)
 
-os.system('mv ' + shader_dir + '/*.vs ' + bin_dir)
-os.system('mv ' + shader_dir + '/*.fs ' + bin_dir)
+os.system('mv ' + shader_dir + os.path.sep+'*.vs ' + bin_dir)
+os.system('mv ' + shader_dir + os.path.sep+'*.fs ' + bin_dir)

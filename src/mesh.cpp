@@ -87,14 +87,8 @@ void GeoMesh::SetupShaderCode()
     std::vector<std::string> vcVertex, vcFragment;
 
     const GeoShaderCode &meshCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Mesh);
-    const GeoShaderCode &functionsCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Fuctions);
-    const GeoShaderCode &uniformCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Uniform);
 
-    vcVertex.push_back(uniformCode.m_vertex);
-    vcVertex.push_back(functionsCode.m_vertex);
     vcVertex.push_back(meshCode.m_vertex);
-    vcFragment.push_back(uniformCode.m_vertex);
-    vcFragment.push_back(functionsCode.m_vertex);
     vcFragment.push_back(meshCode.m_fragment);
 
     m_shader.SetShaderCodes(vcVertex, vcFragment);

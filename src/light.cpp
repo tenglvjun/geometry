@@ -165,14 +165,13 @@ void GeoLight::RestoreFromSetting()
 
 void GeoLight::InitShader()
 {
-    const GeoShaderCode &uniformBlockCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Uniform);
-    const GeoShaderCode &lightCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Camera);
+    const GeoShaderCode &lightCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Light);
 
     std::vector<std::string> vert;
     std::vector<std::string> frag;
 
-    vert.push_back(uniformBlockCode.m_vertex);
     vert.push_back(lightCode.m_vertex);
+    frag.push_back(lightCode.m_fragment);
 
     m_shader.SetShaderCodes(vert, frag);
     m_shader.Complie();

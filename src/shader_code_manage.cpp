@@ -39,14 +39,14 @@ void GeoShaderCodeMgr::Init()
         {
         case SCT_Light:
         {
-            vertex += "light.glsl";
-            fragment = "";
+            vertex += "light.vs";
+            fragment += "light.fs";
         }
         break;
         case SCT_Camera:
         {
-            vertex += "camera.glsl";
-            fragment = "";
+            vertex += "camera.vs";
+            fragment += "camera.fs";
         }
         break;
         case SCT_Mesh:
@@ -59,18 +59,6 @@ void GeoShaderCodeMgr::Init()
         {
             vertex += "screen.vs";
             fragment += "screen.fs";
-        }
-        break;
-        case SCT_Uniform:
-        {
-            vertex += "uniform.glsl";
-            fragment = "";
-        }
-        break;
-        case SCT_Fuctions:
-        {
-            vertex += "functions.glsl";
-            fragment = "";  
         }
         break;
         default:
