@@ -51,3 +51,7 @@ bin/Debug
 bin/Release
 bin/assimp*
 bin/unit
+
+#shader
+shader/*.fs
+shader/*.vs
