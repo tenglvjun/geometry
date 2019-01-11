@@ -27,6 +27,7 @@ public:
 public:
   void Normalize();
   double Magnitude() const;
+  double Magnitude2() const;
   void Flatten(std::vector<float> &data) const;
 
 public:
@@ -62,6 +63,7 @@ public:
 public:
   void Normalize();
   double Magnitude() const;
+  double Magnitude2() const;
   void Flatten(std::vector<float> &data) const;
   void Dump() const;
 
@@ -95,6 +97,7 @@ public:
 public:
   void Normalize();
   double Magnitude() const;
+  double Magnitude2() const;
   void Flatten(std::vector<float> &data) const;
 
 public:
