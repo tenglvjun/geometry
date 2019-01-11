@@ -1,8 +1,8 @@
-`#'version 410 core
+include(shader_version.m4)
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 
-include(camera.m4)
+include(camera_func.m4)
 
 out MESHVS_OUT
 {

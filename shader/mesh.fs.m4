@@ -1,8 +1,7 @@
-`#'version 410 core
+include(shader_version.m4)
 out vec4 FragColor;
 
-include(camera.m4)
-include(light.m4)
+include(light_func.m4)
 
 in MESHVS_OUT {
     vec3 Normal;
