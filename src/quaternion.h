@@ -2,12 +2,13 @@
 #define __QUATERNION_HEAD_FILE__
 
 #include "vector.h"
+#include "matrix.h"
 
 class GeoQuaternion
 {
   public:
     GeoQuaternion();
-    GeoQuaternion(const double s, const GeoVector3D& v);
+    GeoQuaternion(const double s, const GeoVector3D &v);
     GeoQuaternion(const GeoQuaternion &quat);
     virtual ~GeoQuaternion();
 
@@ -29,6 +30,10 @@ class GeoQuaternion
     GeoQuaternion Pure();
     GeoQuaternion Conjugate();
     GeoQuaternion Inverse();
+
+  public:
+    static GeoQuaternion Rotation(const GeoVector3D &v, const GeoVector3D &axis, const double angle);
+    static GeoMatrix RotateMatrix(const GeoVector3D &v, const GeoVector3D &axis, const double angle);
 
   protected:
     double m_s;

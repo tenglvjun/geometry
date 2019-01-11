@@ -1,8 +1,14 @@
 #include "quaternion.h"
 #include <cmath>
+#include "tools.h"
 
 GeoQuaternion::GeoQuaternion()
     : m_s(0.0f)
+{
+}
+
+GeoQuaternion::GeoQuaternion(const double s, const GeoVector3D &v)
+    : m_s(s), m_v(v)
 {
 }
 
@@ -147,4 +153,46 @@ GeoQuaternion GeoQuaternion::Inverse()
     ret.m_v = conjugate.m_v * mag2;
 
     return ret;
+}
+
+GeoQuaternion GeoQuaternion::Rotation(const GeoVector3D &v, const GeoVector3D &axis, const double angle)
+{
+    GeoVector3D u = axis;
+    u.Normalize();
+
+    GeoQuaternion v1(0, v);
+
+    double theta = Tools::GetInstance()->Degree2Radian(angle / (double)2);
+
+    GeoQuaternion q(cos(theta), GeoVector3D(u * sin(theta)));
+
+    return q * v1 * q.Inverse();
+}
+
+GeoMatrix GeoQuaternion::RotateMatrix(const GeoVector3D &v, const GeoVector3D &axis, const double angle)
+{
+    GeoMatrix m(3, 3);
+
+    GeoVector3D u = axis;
+    u.Normalize();
+
+    double theta = Tools::GetInstance()->Degree2Radian(angle / (double)2);
+    double a = cos(theta);
+    double b = sin(theta) * u[0];
+    double c = sin(theta) * u[1];
+    double d = sin(theta) * u[2];
+
+    m[0][0] = 1 - 2 * c * c - 2 * d * d;
+    m[0][1] = 2 * b * c - 2 * a * d;
+    m[0][2] = 2 * a * c + 2 * b * d;
+
+    m[1][0] = 2 * b * c + 2 * a * d;
+    m[1][1] = 1 - 2 * b * b - 2 * d * d;
+    m[1][2] = 2 * c * d - 2 * a * b;
+
+    m[2][0] = 2 * b * d - 2 * a * c;
+    m[2][1] = 2 * a * b + 2 * c * d;
+    m[2][2] = 1 - 2 * b * b - 2 * c * c;
+
+    return m;
 }
