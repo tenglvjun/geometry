@@ -2,7 +2,6 @@
 #include "tools.h"
 #include "shader_code_manage.h"
 #include <vector>
-#include "opengl_helper.h"
 #include <iostream>
 
 GeoFrustum::GeoFrustum()
@@ -27,7 +26,7 @@ GeoCamera::GeoCamera()
 {
     m_view.SetIdentity();
     m_projection.SetIdentity();
-    m_bindingPoint = GeoOpenGLHelper::GetInstance()->RequestBindingPoint();
+    m_bindingPoint = Shader::RequestBindingPoint();
 
     InitShader();
     InitUniformBuffer();

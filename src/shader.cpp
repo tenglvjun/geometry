@@ -4,6 +4,8 @@
 #include <assert.h>
 #include "setting.h"
 
+static unsigned int g_bindingPoint = 0;
+
 Shader::Shader()
     : m_programID(0)
 {
@@ -157,6 +159,14 @@ void Shader::SetMatrix(const std::string &name, bool transpose, float *values) c
 {
     Use();
     glUniformMatrix4fv(glGetUniformLocation(m_programID, name.c_str()), 1, transpose ? GL_TRUE : GL_FALSE, values);
+}
+
+unsigned int Shader::RequestBindingPoint()
+{
+    unsigned int bp = g_bindingPoint;
+    g_bindingPoint++;
+
+    return bp;
 }
 
 void Shader::DeleteProgram()

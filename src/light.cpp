@@ -3,7 +3,6 @@
 #include "camera.h"
 #include "tools.h"
 #include "setting.h"
-#include "opengl_helper.h"
 #include "shader_code_manage.h"
 #include <iostream>
 
@@ -14,7 +13,7 @@ GeoLight::GeoLight()
 {
     RestoreFromSetting();
 
-    m_bindingPoint = GeoOpenGLHelper::GetInstance()->RequestBindingPoint();
+    m_bindingPoint = Shader::RequestBindingPoint();
 
     InitShader();
     InitUniformBuffer();

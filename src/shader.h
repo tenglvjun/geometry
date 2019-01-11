@@ -26,11 +26,13 @@ public:
   void SetVector(const std::string &name, unsigned int dim, float *values) const;
   void SetMatrix(const std::string &name, bool transpose, float *values) const;
 
+public:
+  static unsigned int RequestBindingPoint();
+
 protected:
   void DeleteProgram();
   void CheckCompileErrors(unsigned int shader, std::string type);
 
-public:
 protected:
   unsigned int m_programID;
   std::string m_vertexCodes;
