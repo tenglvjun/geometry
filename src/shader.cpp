@@ -14,7 +14,7 @@ Shader::~Shader()
     DeleteProgram();
 }
 
-void Shader::SetShaderCodes(const std::string &vertexCodes, const std::string &fragmentCodes)
+void Shader::Init(const std::string &vertexCodes, const std::string &fragmentCodes)
 {
     m_fragmentCodes = fragmentCodes;
     m_vertexCodes = vertexCodes;

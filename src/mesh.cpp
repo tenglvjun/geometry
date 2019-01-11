@@ -86,7 +86,7 @@ void GeoMesh::SetupShaderCode()
 {
     const GeoShaderCode &meshCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Mesh);
 
-    m_shader.SetShaderCodes(meshCode.m_vertex, meshCode.m_fragment);
+    m_shader.Init(meshCode.m_vertex, meshCode.m_fragment);
     m_shader.Complie();
 
     GeoCamera::GetInstance()->BindUniformBlock(m_shader);

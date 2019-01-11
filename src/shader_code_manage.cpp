@@ -39,43 +39,38 @@ void GeoShaderCodeMgr::Init()
         {
         case SCT_Light:
         {
-            vertex += "light.vs";
-            fragment += "light.fs";
+            vertex += "light";
+            fragment += "light";
         }
         break;
         case SCT_Camera:
         {
-            vertex += "camera.vs";
-            fragment += "camera.fs";
+            vertex += "camera";
+            fragment += "camera";
         }
         break;
         case SCT_Mesh:
         {
-            vertex += "mesh.vs";
-            fragment += "mesh.fs";
+            vertex += "mesh";
+            fragment += "mesh";
         }
         break;
         case SCT_Screen:
         {
-            vertex += "screen.vs";
-            fragment += "screen.fs";
+            vertex += "screen";
+            fragment += "screen";
         }
         break;
         default:
             break;
         }
 
+        vertex += ".vs";
+        fragment += ".fs";
+
         GeoShaderCode code;
-
-        if (!vertex.empty())
-        {
-            code.m_vertex = Tools::GetInstance()->ReadFile(vertex);
-        }
-
-        if (!fragment.empty())
-        {
-            code.m_fragment = Tools::GetInstance()->ReadFile(fragment);
-        }
+        code.m_vertex = Tools::GetInstance()->ReadFile(vertex);
+        code.m_fragment = Tools::GetInstance()->ReadFile(fragment);
 
         m_codes[(ShaderCodeType_e)i] = code;
     }

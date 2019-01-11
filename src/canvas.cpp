@@ -171,7 +171,7 @@ void GeoCanvas::SetupShader()
 {
     const GeoShaderCode &shaderCodes = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Screen);
 
-    m_shader.SetShaderCodes(shaderCodes.m_vertex, shaderCodes.m_fragment);
+    m_shader.Init(shaderCodes.m_vertex, shaderCodes.m_fragment);
     m_shader.Complie();
 
     m_shader.SetInt("screenTexture", 0);

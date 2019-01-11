@@ -204,7 +204,7 @@ void GeoCamera::InitShader()
 {
     const GeoShaderCode &cameraCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Camera);
     
-    m_shader.SetShaderCodes(cameraCode.m_vertex, cameraCode.m_fragment);
+    m_shader.Init(cameraCode.m_vertex, cameraCode.m_fragment);
     m_shader.Complie();
 }
 

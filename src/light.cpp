@@ -167,7 +167,7 @@ void GeoLight::InitShader()
 {
     const GeoShaderCode &lightCode = GeoShaderCodeMgr::GetInstance()->GetShaderCode(SCT_Light);
     
-    m_shader.SetShaderCodes(lightCode.m_vertex, lightCode.m_fragment);
+    m_shader.Init(lightCode.m_vertex, lightCode.m_fragment);
     m_shader.Complie();
 }
 

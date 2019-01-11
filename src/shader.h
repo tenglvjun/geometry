@@ -11,7 +11,7 @@ public:
   ~Shader();
 
 public:
-  void SetShaderCodes(const std::string &vertexCodes, const std::string &fragmentCodes);
+  void Init(const std::string &vertexCodes, const std::string &fragmentCodes);
   bool Complie();
   void Use() const;
   bool IsUsing() const;
