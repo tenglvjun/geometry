@@ -30,10 +30,12 @@ class GeoQuaternion
     GeoQuaternion Pure();
     GeoQuaternion Conjugate();
     GeoQuaternion Inverse();
+    double Angle() const;
+    GeoVector3D Axis() const;
 
   public:
     static GeoQuaternion Rotation(const GeoVector3D &v, const GeoVector3D &axis, const double angle);
-    static GeoMatrix RotateMatrix(const GeoVector3D &v, const GeoVector3D &axis, const double angle);
+    static GeoMatrix RotateMatrix(const GeoVector3D &axis, const double angle);
 
   protected:
     double m_s;

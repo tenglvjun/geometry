@@ -1,6 +1,7 @@
 #include "arcball.h"
 #include <cmath>
 #include "tools.h"
+#include "quaternion.h"
 
 GeoArcBall::GeoArcBall()
     : m_center(0.0f, 0.0f, 0.0f)
@@ -61,7 +62,12 @@ GeoMatrix GeoArcBall::GetRotateMatrix(const GeoVector3D &p1, const GeoVector3D &
 {
     GeoVector3D axis = p1 * p2;
     double angle = asin(axis.Magnitude() / (p1.Magnitude() * p2.Magnitude()));
-    axis.Normalize();
 
-    return GeoMatrix::RotateMatrix(angle, axis);
+    return GeoQuaternion::RotateMatrix(axis, angle);
+
+    // GeoVector3D axis = p1 * p2;
+    // double angle = asin(axis.Magnitude() / (p1.Magnitude() * p2.Magnitude()));
+    // axis.Normalize();
+
+    // return GeoMatrix::RotateMatrix(angle, axis);
 }
