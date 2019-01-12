@@ -324,49 +324,47 @@ void GeoWindow::OnMButtonUp(double xpos, double ypos)
 
 void GeoWindow::OnMouseMove(double xpos, double ypos)
 {
+    double minimum = Tools::GetInstance()->Minimum(m_width, m_height);
+    minimum *= 0.5;
+
+    GeoVector3D pos = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
+    pos[1] = -pos[1];
+
     if (m_mouseRBtnDown)
     {
-        GeoVector3D pos = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
-        pos[1] = -pos[1];
-
         GeoVector3D trans = pos - m_lastPt;
 
-        trans[0] /= ((double)m_width / 2);
-        trans[1] /= ((double)m_height / 2);
+        trans[0] /= minimum;
+        trans[1] /= minimum;
 
         GeoCamera::GetInstance()->Move(trans);
-
-        m_lastPt = pos;
     }
 
     if (m_mouseLBtnDown)
     {
-        GeoVector3D ptNow = GeoVector3D(xpos, ypos, 0.0f) - m_origin;
-        ptNow[1] = -ptNow[1];
-
-        if (ptNow == m_lastPt)
+        if (pos == m_lastPt)
         {
             return;
         }
 
         GeoVector3D lastPt = m_lastPt;
-        lastPt[0] /= ((double)m_width / 2);
-        lastPt[1] /= ((double)m_height / 2);
+        lastPt[0] /= minimum;
+        lastPt[1] /= minimum;
 
-        GeoVector3D pos = ptNow;
-        pos[0] /= ((double)m_width / 2);
-        pos[1] /= ((double)m_height / 2);
+        GeoVector3D ptNow = pos;
+        ptNow[0] /= minimum;
+        ptNow[1] /= minimum;
 
         GeoArcBall ball;
         lastPt = ball.ProjectToBall(lastPt);
-        pos = ball.ProjectToBall(pos);
+        ptNow = ball.ProjectToBall(ptNow);
 
-        GeoMatrix rotate = ball.GetRotateMatrix(lastPt, pos);
+        GeoMatrix rotate = ball.GetRotateMatrix(lastPt, ptNow);
 
         GeoCamera::GetInstance()->Rotate(rotate);
-
-        m_lastPt = ptNow;
     }
+
+    m_lastPt = pos;
 }
 
 void GeoWindow::OnClose()

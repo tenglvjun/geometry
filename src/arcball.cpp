@@ -60,14 +60,14 @@ GeoVector3D GeoArcBall::ProjectToBall(const GeoVector3D &pt)
 
 GeoMatrix GeoArcBall::GetRotateMatrix(const GeoVector3D &p1, const GeoVector3D &p2)
 {
-    GeoVector3D axis = p1 * p2;
-    double angle = asin(axis.Magnitude() / (p1.Magnitude() * p2.Magnitude()));
-
-    return GeoQuaternion::RotateMatrix(axis, angle);
-
     // GeoVector3D axis = p1 * p2;
     // double angle = asin(axis.Magnitude() / (p1.Magnitude() * p2.Magnitude()));
-    // axis.Normalize();
 
-    // return GeoMatrix::RotateMatrix(angle, axis);
+    // return GeoQuaternion::RotateMatrix(axis, angle);
+
+    GeoVector3D axis = p1 * p2;
+    double angle = asin(axis.Magnitude() / (p1.Magnitude() * p2.Magnitude()));
+    axis.Normalize();
+
+    return GeoMatrix::RotateMatrix(angle, axis);
 }
