@@ -7,12 +7,11 @@
 #include "shader_code_manage.h"
 
 GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices)
-    : m_model(4, 4), m_trans(4, 4)
+    : m_model(4, 4)
 {
     m_vertices = vertices;
     m_indices = indices;
     m_model.SetIdentity();
-    m_trans.SetIdentity();
     m_vao = m_vbo = m_ebo = 0;
 
     Setup();
@@ -42,12 +41,12 @@ void GeoMesh::Draw()
 
 void GeoMesh::Translate(const GeoMatrix &m)
 {
-    m_trans += m;
+    m_model += m;
 }
 
 void GeoMesh::Rotate(const GeoMatrix &m)
 {
-    m_trans = m * m_trans;
+    m_model = m * m_model;
 }
 
 void GeoMesh::Setup()
@@ -119,10 +118,6 @@ void GeoMesh::ApplyShader()
     std::vector<float> value;
     m_model.Flatten(value);
     m_shader.SetMatrix("model", false, &value[0]);
-
-    value.clear();
-    m_trans.Flatten(value);
-    m_shader.SetMatrix("translate", false, &value[0]);
 
     m_material.ApplyShader(m_shader);
 }

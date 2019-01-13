@@ -184,7 +184,7 @@ GeoQuaternion GeoQuaternion::Rotation(const GeoVector3D &v, const GeoVector3D &a
 
 GeoMatrix GeoQuaternion::RotateMatrix(const GeoVector3D &axis, const double angle)
 {
-    GeoMatrix matrix(3, 3);
+    GeoMatrix matrix(4, 4);
 
     GeoVector3D u = axis;
     u.Normalize();
@@ -208,6 +208,8 @@ GeoMatrix GeoQuaternion::RotateMatrix(const GeoVector3D &axis, const double angl
     matrix[2][0] = 2 * b * d - 2 * a * c;
     matrix[2][1] = 2 * a * b + 2 * c * d;
     matrix[2][2] = 1 - 2 * b * b - 2 * c * c;
+
+    matrix[3][3] = 1.0f;
 
     return matrix;
 }
