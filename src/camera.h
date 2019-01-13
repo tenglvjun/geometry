@@ -30,8 +30,6 @@ public:
   void ResetCamera(const GeoVector3D &pos, const GeoVector3D &center, const GeoVector3D &up);
   void SetFrustum(const GeoFrustum &frustum, ProjType_e pt);
 
-  void Move(const GeoVector3D &v);
-  void Rotate(const GeoMatrix &m);
   void Scale(bool enlarge);
 
   const GeoMatrix &GetViewMatrix() const;

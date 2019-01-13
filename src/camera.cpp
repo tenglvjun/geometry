@@ -93,25 +93,6 @@ const GeoMatrix &GeoCamera::GetProjectionMatrix() const
     return m_projection;
 }
 
-void GeoCamera::Move(const GeoVector3D &v)
-{
-    m_view[0][3] += v[0];
-    m_view[1][3] += v[1];
-    m_view[2][3] += v[2];
-
-    UpdateUniformBuffer();
-}
-
-void GeoCamera::Rotate(const GeoMatrix &m)
-{
-    GeoMatrix subMatrix = m_view.SubMatrix(0, 3, 0, 3);
-    subMatrix = m * subMatrix;
-
-    m_view.Replace(0, 0, subMatrix);
-
-    UpdateUniformBuffer();
-}
-
 void GeoCamera::Scale(bool enlarge)
 {
     m_frustum.m_near += (enlarge ? (m_sensitivity) : (-m_sensitivity));

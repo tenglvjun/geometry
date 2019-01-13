@@ -39,35 +39,34 @@ GeoVector3D GeoArcBall::ProjectToBall(const GeoVector3D &pt)
     ret[0] = pt[0];
     ret[1] = pt[1];
 
-    double powx = pt[0] * pt[0];
-    double powy = pt[1] * pt[1];
-    double powr = m_radius * m_radius;
-    double powr2 = powr / ((double)2);
+    double square = pt[0] * pt[0] + pt[1] * pt[1];
 
-    if ((powx + powy) >= powr2)
+    if (square <= 1.0f)
     {
-
-        ret[2] = powr2 / sqrt(powx + powy);
+        ret[2] = sqrt(1.0 - square);
     }
-
     else
     {
-        ret[2] = sqrt(powr - powx - powy);
+        double length = sqrt(square); 
+        ret[0] /= length; 
+        ret[1] /= length; 
+       ret[2]= 0.0f; 
     }
 
     return ret;
 }
 
-GeoMatrix GeoArcBall::GetRotateMatrix(const GeoVector3D &p1, const GeoVector3D &p2)
+GeoMatrix GeoArcBall::GetRotateMatrix(const GeoVector3D &s, const GeoVector3D &e)
 {
     // GeoVector3D axis = p1 * p2;
     // double angle = asin(axis.Magnitude() / (p1.Magnitude() * p2.Magnitude()));
 
     // return GeoQuaternion::RotateMatrix(axis, angle);
 
-    GeoVector3D axis = p1 * p2;
-    double angle = asin(axis.Magnitude() / (p1.Magnitude() * p2.Magnitude()));
+    GeoVector3D axis = s * e;
     axis.Normalize();
+    
+    double angle = acos(s % e);
 
     return GeoMatrix::RotateMatrix(angle, axis);
 }

@@ -18,6 +18,7 @@ public:
   GeoVector3D operator*(const GeoVector3D &v) const;
   GeoVector2D operator*(const GeoVector2D &v) const;
   GeoMatrix operator*(const GeoMatrix &m) const;
+  void operator+=(const GeoMatrix &m);
 
 public:
   void SetIdentity();
@@ -36,6 +37,7 @@ private:
   GeoMatrix();
 
 public:
+  static GeoMatrix TranslateMatrix(const GeoVector3D &trans);
   static GeoMatrix RotateMatrix(const double angle, const GeoVector3D &axis);
 
 private:

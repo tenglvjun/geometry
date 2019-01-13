@@ -108,6 +108,19 @@ GeoMatrix GeoMatrix::operator*(const GeoMatrix &m) const
     return ret;
 }
 
+void GeoMatrix::operator+=(const GeoMatrix &m)
+{
+    assert((m_col == m.Cols()) && (m_row == m.Rows()));
+
+    for (unsigned int i = 0; i < m_row; i++)
+    {
+        for (unsigned int j = 0; j < m_col; j++)
+        {
+            m_data[i][j] += m[i][j];
+        }
+    }
+}
+
 void GeoMatrix::SetIdentity()
 {
     assert((m_row == m_col) && (m_row > 0));
@@ -222,9 +235,20 @@ void GeoMatrix::Init(const unsigned int row, const unsigned int col)
     }
 }
 
+GeoMatrix GeoMatrix::TranslateMatrix(const GeoVector3D &trans)
+{
+    GeoMatrix matrix(4, 4);
+
+    matrix[0][3] = trans[0];
+    matrix[1][3] = trans[1];
+    matrix[2][3] = trans[2];
+
+    return matrix;
+}
+
 GeoMatrix GeoMatrix::RotateMatrix(const double angle, const GeoVector3D &axis)
 {
-    GeoMatrix matrix(3, 3);
+    GeoMatrix matrix(4, 4);
 
     double c = cos(angle);
     double s = sin(angle);
@@ -240,6 +264,8 @@ GeoMatrix GeoMatrix::RotateMatrix(const double angle, const GeoVector3D &axis)
     matrix[2][0] = (1 - c) * axis[0] * axis[2] - s * axis[1];
     matrix[2][1] = (1 - c) * axis[1] * axis[2] + s * axis[0];
     matrix[2][2] = c + (1 - c) * axis[2] * axis[2];
+
+    matrix[3][3] = 1.0f;
 
     return matrix;
 }

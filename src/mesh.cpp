@@ -6,13 +6,13 @@
 #include "tools.h"
 #include "shader_code_manage.h"
 
-GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices, GeoVector3D &pos)
-    : m_model(4, 4)
+GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices)
+    : m_model(4, 4), m_trans(4, 4)
 {
     m_vertices = vertices;
     m_indices = indices;
-    m_pos = pos;
     m_model.SetIdentity();
+    m_trans.SetIdentity();
     m_vao = m_vbo = m_ebo = 0;
 
     Setup();
@@ -38,6 +38,16 @@ void GeoMesh::Draw()
     glBindVertexArray(m_vao);
     glDrawElements(GL_TRIANGLES, (GLsizei)m_indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+}
+
+void GeoMesh::Translate(const GeoMatrix &m)
+{
+    m_trans += m;
+}
+
+void GeoMesh::Rotate(const GeoMatrix &m)
+{
+    m_trans = m * m_trans;
 }
 
 void GeoMesh::Setup()
@@ -107,11 +117,12 @@ void GeoMesh::ApplyShader()
         return;
 
     std::vector<float> value;
-    m_model[0][3] = m_pos[0];
-    m_model[1][3] = m_pos[1];
-    m_model[2][3] = m_pos[2];
     m_model.Flatten(value);
     m_shader.SetMatrix("model", false, &value[0]);
+
+    value.clear();
+    m_trans.Flatten(value);
+    m_shader.SetMatrix("translate", false, &value[0]);
 
     m_material.ApplyShader(m_shader);
 }
