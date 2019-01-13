@@ -517,15 +517,9 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
     if (m_mouseRBtnDown)
     {
-        lastPt = ball.ProjectToBall(lastPt);
-        pos = ball.ProjectToBall(pos);
-
         GeoVector3D trans = pos - lastPt;
-        trans[2] = lastPt[2];
 
         m_mesh->Translate(GeoMatrix::TranslateMatrix(trans));
-
-        pos[2] = lastPt[2];
     }
 
     if (m_mouseLBtnDown)
