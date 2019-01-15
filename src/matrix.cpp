@@ -244,64 +244,78 @@ unsigned int GeoMatrix::Cols() const
     return m_col;
 }
 
-bool GeoMatrix::LUDecompose(GeoMatrix &up, GeoMatrix &low)
+bool GeoMatrix::LUDecompose(GeoMatrix &up, GeoMatrix &low) const
 {
     assert(m_col == m_row);
-
-    if (Tools::GetInstance()->IsZero(m_data[0][0]))
-    {
-        return false;
-    }
 
     up.Resharp(m_row, m_col);
     low.Resharp(m_row, m_col);
 
-    low.SetIdentity();
-
-    // the first row of up-triangle matrix is equal to
-    // the first row of the raw matrix
-    for (unsigned int j = 0; j < m_col; j++)
-    {
-        up[0][j] = m_data[0][j];
-        low[j][0] = m_data[j][0] / up[0][0];
-    }
-
+    unsigned int n = m_row;
     double sum;
 
-    for (size_t i = 1; i < m_row; i++)
+    for (unsigned int i = 0; i < n; i++)
     {
-        for (size_t j = 1; j < m_col; j++)
+        // Upper Triangular
+        for (unsigned int k = i; k < n; k++)
         {
+            // Summation of L(i, j) * U(j, k)
             sum = 0.0f;
-            for (size_t k = 0; k < i - 1; k++)
-            {
-                sum += low[i][k] * up[k][j];
-            }
+            for (unsigned int j = 0; j < i; j++)
+                sum += (low[i][j] * up[j][k]);
 
-            up[i][j] = m_data[i][j] - sum;
+            // Evaluating U(i, k)
+            up[i][k] = m_data[i][k] - sum;
 
-            if ((i == j) && (Tools::GetInstance()->IsZero(up[i][j])))
+            if ((i == k) && (Tools::GetInstance()->IsZero(up[i][k])))
             {
                 return false;
             }
         }
-    }
 
-    for (size_t i = 1; i < m_row; i++)
-    {
-        for (size_t j = 1; j < m_col; j++)
+        // Lower Triangular
+        for (unsigned int k = i; k < n; k++)
         {
-            sum = 0.0f;
-            for (size_t k = 0; k < j - 1; k++)
+            if (i == k)
             {
-                sum += low[i][k] * up[k][j];
+                low[i][i] = 1; // Diagonal as 1
             }
+            else
+            {
 
-            low[i][j] = (m_data[i][j] - sum) * (1 / up[j][j]);
+                // Summation of L(k, j) * U(j, i)
+                sum = 0;
+                for (unsigned int j = 0; j < i; j++)
+                {
+                    sum += (low[k][j] * up[j][i]);
+                }
+
+                // Evaluating L(k, i)
+                low[k][i] = (m_data[k][i] - sum) / up[i][i];
+            }
         }
     }
 
     return true;
+}
+
+double GeoMatrix::Det() const
+{
+    GeoMatrix up(m_row, m_col);
+    GeoMatrix low(m_row, m_col);
+
+    if (!LUDecompose(up, low)) {
+        return 0;
+    }
+
+    double det = 1.0f;
+
+    for(size_t i = 0; i < m_row; i++)
+    {
+        det *= up[i][i];
+    }
+    
+    return det;
 }
 
 void GeoMatrix::Clear()

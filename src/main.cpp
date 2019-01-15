@@ -8,25 +8,14 @@
 
 int main(int argc, char const *argv[])
 {
-    // double data[] = {2, 3, 2, 1, 3, 2, 3, 4, 1};
-
-    // GeoMatrix m(3, 3, data);
-
-    // GeoMatrix up(3, 3);
-    // GeoMatrix low(3, 3);
-
-    // if (!m.LUDecompose(up, low))
-    // {
-    //     std::cout << "LUDecompose failed" << std::endl;
-    //     return 0;
-    // }
-    // m.Dump();
-    // std::cout << "=====================================" << std::endl;
-    // up.Dump();
-    // std::cout << "=====================================" << std::endl;
-    // low.Dump();
-
     GeoSetting::GetInstance()->Init("setting.json");
+
+    // double data[] = {3, 4, 5, 11, 2, 5, 4, 9, 5, 3, 2, 12, 14, -11, 21, 29};
+
+    // GeoMatrix m(4, 4, data);
+
+    // std::cout << m.Det() << std::endl;
+
     GeoWindow window("geometry");
 
     window.CreateGeoWindow();

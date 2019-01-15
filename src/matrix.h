@@ -31,7 +31,8 @@ public:
   void Dump() const;
   unsigned int Rows() const;
   unsigned int Cols() const;
-  bool LUDecompose(GeoMatrix &up, GeoMatrix &low);
+  bool LUDecompose(GeoMatrix &up, GeoMatrix &low) const;
+  double Det() const;
 
 protected:
   void Clear();
