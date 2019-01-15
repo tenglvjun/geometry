@@ -4,11 +4,26 @@
 #include <assert.h>
 #include <cmath>
 #include <iostream>
+#include "tools.h"
 
 GeoMatrix::GeoMatrix(const unsigned int row, const unsigned int col)
     : m_data(nullptr), m_row(0), m_col(0)
 {
     Init(row, col);
+}
+
+GeoMatrix::GeoMatrix(const unsigned int row, const unsigned int col, const double *data)
+    : m_data(nullptr), m_row(0), m_col(0)
+{
+    Init(row, col);
+
+    for (unsigned int i = 0; i < m_row; i++)
+    {
+        for (unsigned int j = 0; j < m_col; j++)
+        {
+            m_data[i][j] = data[m_col * i + j];
+        }
+    }
 }
 
 GeoMatrix::GeoMatrix(const GeoMatrix &m)
@@ -141,6 +156,30 @@ void GeoMatrix::SetIdentity()
     }
 }
 
+void GeoMatrix::Zeros()
+{
+    for (unsigned int row = 0; row < m_row; row++)
+    {
+        m_data[row] = new double[m_col];
+        for (unsigned int col = 0; col < m_col; col++)
+        {
+            m_data[row][col] = 0.0f;
+        }
+    }
+}
+
+void GeoMatrix::Resharp(const unsigned int row, const unsigned int col)
+{
+    if (m_row == row && m_col == col)
+    {
+        Zeros();
+        return;
+    }
+
+    Clear();
+    Init(row, col);
+}
+
 void GeoMatrix::Flatten(std::vector<float> &data) const
 {
     for (unsigned int j = 0; j < m_col; j++)
@@ -205,6 +244,66 @@ unsigned int GeoMatrix::Cols() const
     return m_col;
 }
 
+bool GeoMatrix::LUDecompose(GeoMatrix &up, GeoMatrix &low)
+{
+    assert(m_col == m_row);
+
+    if (Tools::GetInstance()->IsZero(m_data[0][0]))
+    {
+        return false;
+    }
+
+    up.Resharp(m_row, m_col);
+    low.Resharp(m_row, m_col);
+
+    low.SetIdentity();
+
+    // the first row of up-triangle matrix is equal to
+    // the first row of the raw matrix
+    for (unsigned int j = 0; j < m_col; j++)
+    {
+        up[0][j] = m_data[0][j];
+        low[j][0] = m_data[j][0] / up[0][0];
+    }
+
+    double sum;
+
+    for (size_t i = 1; i < m_row; i++)
+    {
+        for (size_t j = 1; j < m_col; j++)
+        {
+            sum = 0.0f;
+            for (size_t k = 0; k < i - 1; k++)
+            {
+                sum += low[i][k] * up[k][j];
+            }
+
+            up[i][j] = m_data[i][j] - sum;
+
+            if ((i == j) && (Tools::GetInstance()->IsZero(up[i][j])))
+            {
+                return false;
+            }
+        }
+    }
+
+    for (size_t i = 1; i < m_row; i++)
+    {
+        for (size_t j = 1; j < m_col; j++)
+        {
+            sum = 0.0f;
+            for (size_t k = 0; k < j - 1; k++)
+            {
+                sum += low[i][k] * up[k][j];
+            }
+
+            low[i][j] = (m_data[i][j] - sum) * (1 / up[j][j]);
+        }
+    }
+
+    return true;
+}
+
 void GeoMatrix::Clear()
 {
     for (unsigned int row = 0; row < m_row; row++)
@@ -225,14 +324,7 @@ void GeoMatrix::Init(const unsigned int row, const unsigned int col)
 
     m_data = new double *[m_row];
 
-    for (unsigned int row = 0; row < m_row; row++)
-    {
-        m_data[row] = new double[m_col];
-        for (unsigned int col = 0; col < m_col; col++)
-        {
-            m_data[row][col] = 0.0f;
-        }
-    }
+    Zeros();
 }
 
 GeoMatrix GeoMatrix::TranslateMatrix(const GeoVector3D &trans)

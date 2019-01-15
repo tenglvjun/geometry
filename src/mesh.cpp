@@ -41,7 +41,7 @@ void GeoMesh::Draw()
 
 void GeoMesh::Translate(const GeoMatrix &m)
 {
-    m_model += m;
+    m_model = m_model * m;
 }
 
 void GeoMesh::Rotate(const GeoMatrix &m)

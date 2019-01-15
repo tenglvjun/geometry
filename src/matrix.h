@@ -8,6 +8,7 @@ class GeoMatrix
 {
 public:
   GeoMatrix(const unsigned int row, const unsigned int col);
+  GeoMatrix(const unsigned int row, const unsigned int col, const double *data);
   GeoMatrix(const GeoMatrix &m);
   virtual ~GeoMatrix();
 
@@ -21,13 +22,16 @@ public:
   void operator+=(const GeoMatrix &m);
 
 public:
+  void Resharp(const unsigned int row, const unsigned int col);
   void SetIdentity();
+  void Zeros();
   void Flatten(std::vector<float> &data) const;
   GeoMatrix SubMatrix(const unsigned int sRow, const unsigned int eRow, const unsigned int sCol, const unsigned int eCol);
   void Replace(const unsigned int r, const unsigned int c, const GeoMatrix &m);
   void Dump() const;
   unsigned int Rows() const;
   unsigned int Cols() const;
+  bool LUDecompose(GeoMatrix &up, GeoMatrix &low);
 
 protected:
   void Clear();
