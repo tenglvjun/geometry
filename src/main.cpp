@@ -10,16 +10,31 @@ int main(int argc, char const *argv[])
 {
     GeoSetting::GetInstance()->Init("setting.json");
 
-    // double data[] = {3, 4, 5, 11, 2, 5, 4, 9, 5, 3, 2, 12, 14, -11, 21, 29};
+    double data[] = {3, 4, 5, 11, 2, 5, 4, 9, 5, 3, 2, 12, 14, -11, 21, 29};
 
-    // GeoMatrix m(4, 4, data);
+    GeoMatrix m(4, 4, data);
 
-    // std::cout << m.Det() << std::endl;
+    GeoMatrix up(4, 4);
+    GeoMatrix low(4, 4);
 
-    GeoWindow window("geometry");
+    m.LUDecompose(up, low);
 
-    window.CreateGeoWindow();
-    window.ShowGeoWindow();
+    up.Dump();
+
+    std::cout << "===============================" << std::endl;
+
+    low.Dump();
+
+    std::cout << "===============================" << std::endl;
+
+    low.Transpose();
+    low.Dump();
+
+
+    // GeoWindow window("geometry");
+
+    // window.CreateGeoWindow();
+    // window.ShowGeoWindow();
 
     return 0;
 }

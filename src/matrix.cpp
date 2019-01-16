@@ -46,7 +46,6 @@ GeoMatrix::~GeoMatrix()
 
 GeoMatrix &GeoMatrix::operator=(const GeoMatrix &m)
 {
-
     if (&m == this)
     {
         return *this;
@@ -246,7 +245,10 @@ unsigned int GeoMatrix::Cols() const
 
 bool GeoMatrix::LUDecompose(GeoMatrix &up, GeoMatrix &low) const
 {
-    assert(m_col == m_row);
+    if (!IsSquare())
+    {
+        return false;
+    }
 
     up.Resharp(m_row, m_col);
     low.Resharp(m_row, m_col);
@@ -321,6 +323,7 @@ double GeoMatrix::Det() const
 
 bool GeoMatrix::Inverse(GeoMatrix &inverse) const
 {
+
     GeoMatrix up(m_row, m_col);
     GeoMatrix low(m_row, m_col);
 
@@ -330,6 +333,36 @@ bool GeoMatrix::Inverse(GeoMatrix &inverse) const
     }
 
     return true;
+}
+
+bool GeoMatrix::IsSquare() const
+{
+    assert((m_col > 0) && (m_col > 0));
+
+    return (m_col == m_row);
+}
+
+void GeoMatrix::Transpose()
+{
+    assert((m_col > 0) && (m_col > 0));
+
+    GeoMatrix tmp(m_col, m_row);
+    Transpose(tmp);
+
+    (*this) = (tmp);
+}
+
+void GeoMatrix::Transpose(GeoMatrix &transpose) const
+{
+    transpose.Resharp(m_col, m_row);
+
+    for (size_t row = 0; row < m_row; row++)
+    {
+        for (size_t col = 0; col < m_col; col++)
+        {
+            transpose[col][row] = m_data[row][col];
+        }
+    }
 }
 
 void GeoMatrix::Clear()
