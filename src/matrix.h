@@ -19,6 +19,8 @@ public:
   GeoVector3D operator*(const GeoVector3D &v) const;
   GeoVector2D operator*(const GeoVector2D &v) const;
   GeoMatrix operator*(const GeoMatrix &m) const;
+  void operator*=(const double s);
+  GeoMatrix operator*(const double s);
   void operator+=(const GeoMatrix &m);
 
 public:

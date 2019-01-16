@@ -122,6 +122,32 @@ GeoMatrix GeoMatrix::operator*(const GeoMatrix &m) const
     return ret;
 }
 
+void GeoMatrix::operator*=(const double s)
+{
+    for (unsigned int i = 0; i < m_row; i++)
+    {
+        for (unsigned int j = 0; j < m_col; j++)
+        {
+            m_data[i][j] *= s;
+        }
+    }
+}
+
+GeoMatrix GeoMatrix::operator*(const double s)
+{
+    GeoMatrix ret(m_row, m_col);
+
+    for (unsigned int i = 0; i < m_row; i++)
+    {
+        for (unsigned int j = 0; j < m_col; j++)
+        {
+            ret[i][j] *= s;
+        }
+    }
+
+    return ret;
+}
+
 void GeoMatrix::operator+=(const GeoMatrix &m)
 {
     assert((m_col == m.Cols()) && (m_row == m.Rows()));
@@ -331,6 +357,35 @@ bool GeoMatrix::Inverse(GeoMatrix &inverse) const
     {
         return false;
     }
+
+    GeoMatrix l_inverse(m_row, m_col);
+    GeoMatrix u_inverse(m_row, m_col);
+    double s = 0.0f;
+
+    for (int i = 0; i < m_row; i++)
+    {
+        u_inverse[i][i] = 1 / up[i][i];
+        for (int k = i - 1; k >= 0; k--)
+        {
+            s = 0;
+            for (int j = k + 1; j <= i; j++)
+                s = s + up[k][j] * u_inverse[j][i];
+            u_inverse[k][i] = -s / up[k][k];
+        }
+    }
+    for (int i = 0; i < m_row; i++)
+    {
+        l_inverse[i][i] = 1;
+        for (int k = i + 1; k < m_row; k++)
+        {
+            for (int j = i; j <= k - 1; j++)
+            {
+                l_inverse[k][i] = l_inverse[k][i] - low[k][j] * l_inverse[j][i];
+            }
+        }
+    }
+
+    inverse = u_inverse * l_inverse;
 
     return true;
 }

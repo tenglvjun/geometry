@@ -13,23 +13,10 @@ int main(int argc, char const *argv[])
     double data[] = {3, 4, 5, 11, 2, 5, 4, 9, 5, 3, 2, 12, 14, -11, 21, 29};
 
     GeoMatrix m(4, 4, data);
+    GeoMatrix invers(4, 4);
+    m.Inverse(invers);
 
-    GeoMatrix up(4, 4);
-    GeoMatrix low(4, 4);
-
-    m.LUDecompose(up, low);
-
-    up.Dump();
-
-    std::cout << "===============================" << std::endl;
-
-    low.Dump();
-
-    std::cout << "===============================" << std::endl;
-
-    low.Transpose();
-    low.Dump();
-
+    invers.Dump();
 
     // GeoWindow window("geometry");
 
