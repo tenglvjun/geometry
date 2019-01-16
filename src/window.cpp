@@ -519,7 +519,7 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
     {
         GeoVector3D trans = pos - lastPt;
 
-        m_mesh->Translate(GeoMatrix::TranslateMatrix(trans));
+        m_mesh->Transform(GeoMatrix::TranslateMatrix(trans));
     }
 
     if (m_mouseLBtnDown)
@@ -529,7 +529,7 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
         GeoMatrix rotate = ball.GetRotateMatrix(lastPt, pos);
 
-        m_mesh->Rotate(rotate);
+        m_mesh->Transform(rotate);
     }
 
     m_lastPt = pos;

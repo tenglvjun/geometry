@@ -304,18 +304,32 @@ double GeoMatrix::Det() const
     GeoMatrix up(m_row, m_col);
     GeoMatrix low(m_row, m_col);
 
-    if (!LUDecompose(up, low)) {
+    if (!LUDecompose(up, low))
+    {
         return 0;
     }
 
     double det = 1.0f;
 
-    for(size_t i = 0; i < m_row; i++)
+    for (size_t i = 0; i < m_row; i++)
     {
         det *= up[i][i];
     }
-    
+
     return det;
+}
+
+bool GeoMatrix::Inverse(GeoMatrix &inverse) const
+{
+    GeoMatrix up(m_row, m_col);
+    GeoMatrix low(m_row, m_col);
+
+    if (!LUDecompose(up, low))
+    {
+        return false;
+    }
+
+    return true;
 }
 
 void GeoMatrix::Clear()

@@ -16,8 +16,7 @@ public:
 
 public:
   void Draw();
-  void Translate(const GeoMatrix &m);
-  void Rotate(const GeoMatrix &m);
+  void Transform(const GeoMatrix &m);
 
 private:
   GeoMesh();

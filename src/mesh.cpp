@@ -39,12 +39,7 @@ void GeoMesh::Draw()
     glBindVertexArray(0);
 }
 
-void GeoMesh::Translate(const GeoMatrix &m)
-{
-    m_model = m_model * m;
-}
-
-void GeoMesh::Rotate(const GeoMatrix &m)
+void GeoMesh::Transform(const GeoMatrix &m)
 {
     m_model = m * m_model;
 }

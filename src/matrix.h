@@ -33,6 +33,7 @@ public:
   unsigned int Cols() const;
   bool LUDecompose(GeoMatrix &up, GeoMatrix &low) const;
   double Det() const;
+  bool Inverse(GeoMatrix& inverse) const;
 
 protected:
   void Clear();
