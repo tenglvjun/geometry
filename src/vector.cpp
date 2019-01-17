@@ -601,16 +601,6 @@ GeoVector GeoVector::operator+(const GeoVector &v)
 
 GeoVector GeoVector::operator*(const double scale) const
 {
-    for (unsigned int i = 0; i < m_len; i++)
-    {
-        m_coord[i] *= scale;
-    }
-
-    return *this;
-}
-
-GeoVector &GeoVector::operator*=(const double scale)
-{
     GeoVector ret(m_len);
 
     for (unsigned int i = 0; i < m_len; i++)
@@ -619,6 +609,16 @@ GeoVector &GeoVector::operator*=(const double scale)
     }
 
     return ret;
+}
+
+GeoVector &GeoVector::operator*=(const double scale)
+{
+    for (unsigned int i = 0; i < m_len; i++)
+    {
+        m_coord[i] *= scale;
+    }
+
+    return *this;
 }
 
 GeoVector GeoVector::operator-(const GeoVector &v) const
