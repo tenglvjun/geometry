@@ -107,4 +107,38 @@ protected:
   double m_coord[4];
 };
 
+class GeoVector
+{
+public:
+  GeoVector();
+  GeoVector(const unsigned int len, const double *data = nullptr);
+  GeoVector(const GeoVector &v);
+  virtual ~GeoVector();
+
+public:
+  GeoVector &operator=(const GeoVector &v);
+  double operator[](const unsigned int idx) const;
+  double &operator[](const unsigned int idx);
+  GeoVector &operator+=(const GeoVector &v);
+  GeoVector operator+(const GeoVector &v);
+  GeoVector operator*(const double scale) const;
+  GeoVector &operator*=(const double scale);
+  GeoVector operator-(const GeoVector &v) const;
+  GeoVector &operator-=(const GeoVector &v);
+
+public:
+  void Normalize();
+  double Magnitude() const;
+  double Magnitude2() const;
+  void Flatten(std::vector<float> &data) const;
+  unsigned int Length() const;
+
+protected:
+  void Clear();
+
+protected:
+  unsigned int m_len;
+  double *m_coord;
+};
+
 #endif // __VECTOR_HEAD_FILE__

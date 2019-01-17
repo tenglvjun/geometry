@@ -500,3 +500,193 @@ unsigned int GeoVector4D::Size()
 {
     return 4;
 }
+
+GeoVector::GeoVector()
+    : m_coord(nullptr), m_len(0)
+{
+}
+
+GeoVector::GeoVector(const unsigned int len, const double *data /* = nullptr */)
+{
+    assert(len > 0);
+
+    m_len = len;
+    m_coord = new double[m_len];
+    memset(m_coord, 0, sizeof(double) * m_len);
+
+    if (data)
+    {
+        for (unsigned int i = 0; i < m_len; i++)
+        {
+            m_coord[i] = data[i];
+        }
+    }
+}
+
+GeoVector::GeoVector(const GeoVector &v)
+{
+    assert((v.m_len > 0) && v.m_coord);
+
+    m_len = v.m_len;
+    m_coord = new double[m_len];
+
+    for (unsigned int i = 0; i < m_len; i++)
+    {
+        m_coord[i] = v.m_coord[i];
+    }
+}
+
+GeoVector::~GeoVector()
+{
+    Clear();
+}
+
+GeoVector &GeoVector::operator=(const GeoVector &v)
+{
+    if (this == &v)
+    {
+        return *this;
+    }
+
+    Clear();
+
+    m_len = v.m_len;
+    m_coord = new double[m_len];
+
+    for (unsigned int i = 0; i < m_len; i++)
+    {
+        m_coord[i] = v.m_coord[i];
+    }
+
+    return *this;
+}
+
+double GeoVector::operator[](const unsigned int idx) const
+{
+    assert(idx < m_len);
+
+    return m_coord[idx];
+}
+
+double &GeoVector::operator[](const unsigned int idx)
+{
+    assert(idx < m_len);
+
+    return m_coord[idx];
+}
+
+GeoVector &GeoVector::operator+=(const GeoVector &v)
+{
+    assert(m_len == v.Length());
+
+    for (unsigned int i = 0; i < m_len; i++)
+    {
+        m_coord[i] += v[i];
+    }
+
+    return *this;
+}
+
+GeoVector GeoVector::operator+(const GeoVector &v)
+{
+    GeoVector ret(m_len);
+
+    for (unsigned int i = 0; i < m_len; i++)
+    {
+        ret[i] = m_coord[i] + v[i];
+    }
+
+    return ret;
+}
+
+GeoVector GeoVector::operator*(const double scale) const
+{
+    for (unsigned int i = 0; i < m_len; i++)
+    {
+        m_coord[i] *= scale;
+    }
+
+    return *this;
+}
+
+GeoVector &GeoVector::operator*=(const double scale)
+{
+    GeoVector ret(m_len);
+
+    for (unsigned int i = 0; i < m_len; i++)
+    {
+        ret[i] = m_coord[i] * scale;
+    }
+
+    return ret;
+}
+
+GeoVector GeoVector::operator-(const GeoVector &v) const
+{
+    GeoVector ret(m_len);
+
+    for (unsigned int i = 0; i < m_len; i++)
+    {
+        ret[i] = m_coord[i] - v[i];
+    }
+
+    return ret;
+}
+
+GeoVector &GeoVector::operator-=(const GeoVector &v)
+{
+    assert(m_len == v.Length());
+
+    for (unsigned int i = 0; i < m_len; i++)
+    {
+        m_coord[i] -= v[i];
+    }
+
+    return *this;
+}
+
+void GeoVector::Normalize()
+{
+    double magnitude = Magnitude();
+    for (unsigned int i = 0; i < m_len; i++)
+    {
+        m_coord[i] /= magnitude;
+    }
+}
+
+double GeoVector::Magnitude() const
+{
+    double sum = Magnitude2();
+
+    return sqrt(sum);
+}
+
+double GeoVector::Magnitude2() const
+{
+    double sum = 0.0f;
+    for (unsigned int i = 0; i < m_len; i++)
+    {
+        sum += m_coord[i] * m_coord[i];
+    }
+
+    return sum;
+}
+
+void GeoVector::Flatten(std::vector<float> &data) const
+{
+    for (unsigned int i = 0; i < m_len; i++)
+    {
+        data.push_back(m_coord[i]);
+    }
+}
+
+unsigned int GeoVector::Length() const
+{
+    return m_len;
+}
+
+void GeoVector::Clear()
+{
+    m_len = 0;
+    SAFE_DELETE_ARRAY(m_coord);
+}
