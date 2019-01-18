@@ -131,13 +131,13 @@ public:
   double Magnitude() const;
   double Magnitude2() const;
   void Flatten(std::vector<float> &data) const;
-  unsigned int Length() const;
+  unsigned int Dim() const;
 
 protected:
   void Clear();
 
 protected:
-  unsigned int m_len;
+  unsigned int m_dim;
   double *m_coord;
 };
 

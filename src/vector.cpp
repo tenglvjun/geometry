@@ -502,7 +502,7 @@ unsigned int GeoVector4D::Size()
 }
 
 GeoVector::GeoVector()
-    : m_coord(nullptr), m_len(0)
+    : m_coord(nullptr), m_dim(0)
 {
 }
 
@@ -510,13 +510,13 @@ GeoVector::GeoVector(const unsigned int len, const double *data /* = nullptr */)
 {
     assert(len > 0);
 
-    m_len = len;
-    m_coord = new double[m_len];
-    memset(m_coord, 0, sizeof(double) * m_len);
+    m_dim = len;
+    m_coord = new double[m_dim];
+    memset(m_coord, 0, sizeof(double) * m_dim);
 
     if (data)
     {
-        for (unsigned int i = 0; i < m_len; i++)
+        for (unsigned int i = 0; i < m_dim; i++)
         {
             m_coord[i] = data[i];
         }
@@ -525,12 +525,12 @@ GeoVector::GeoVector(const unsigned int len, const double *data /* = nullptr */)
 
 GeoVector::GeoVector(const GeoVector &v)
 {
-    assert((v.m_len > 0) && v.m_coord);
+    assert((v.m_dim > 0) && v.m_coord);
 
-    m_len = v.m_len;
-    m_coord = new double[m_len];
+    m_dim = v.m_dim;
+    m_coord = new double[m_dim];
 
-    for (unsigned int i = 0; i < m_len; i++)
+    for (unsigned int i = 0; i < m_dim; i++)
     {
         m_coord[i] = v.m_coord[i];
     }
@@ -550,10 +550,10 @@ GeoVector &GeoVector::operator=(const GeoVector &v)
 
     Clear();
 
-    m_len = v.m_len;
-    m_coord = new double[m_len];
+    m_dim = v.m_dim;
+    m_coord = new double[m_dim];
 
-    for (unsigned int i = 0; i < m_len; i++)
+    for (unsigned int i = 0; i < m_dim; i++)
     {
         m_coord[i] = v.m_coord[i];
     }
@@ -563,23 +563,23 @@ GeoVector &GeoVector::operator=(const GeoVector &v)
 
 double GeoVector::operator[](const unsigned int idx) const
 {
-    assert(idx < m_len);
+    assert(idx < m_dim);
 
     return m_coord[idx];
 }
 
 double &GeoVector::operator[](const unsigned int idx)
 {
-    assert(idx < m_len);
+    assert(idx < m_dim);
 
     return m_coord[idx];
 }
 
 GeoVector &GeoVector::operator+=(const GeoVector &v)
 {
-    assert(m_len == v.Length());
+    assert(m_dim == v.Dim());
 
-    for (unsigned int i = 0; i < m_len; i++)
+    for (unsigned int i = 0; i < m_dim; i++)
     {
         m_coord[i] += v[i];
     }
@@ -589,9 +589,9 @@ GeoVector &GeoVector::operator+=(const GeoVector &v)
 
 GeoVector GeoVector::operator+(const GeoVector &v)
 {
-    GeoVector ret(m_len);
+    GeoVector ret(m_dim);
 
-    for (unsigned int i = 0; i < m_len; i++)
+    for (unsigned int i = 0; i < m_dim; i++)
     {
         ret[i] = m_coord[i] + v[i];
     }
@@ -601,9 +601,9 @@ GeoVector GeoVector::operator+(const GeoVector &v)
 
 GeoVector GeoVector::operator*(const double scale) const
 {
-    GeoVector ret(m_len);
+    GeoVector ret(m_dim);
 
-    for (unsigned int i = 0; i < m_len; i++)
+    for (unsigned int i = 0; i < m_dim; i++)
     {
         ret[i] = m_coord[i] * scale;
     }
@@ -613,7 +613,7 @@ GeoVector GeoVector::operator*(const double scale) const
 
 GeoVector &GeoVector::operator*=(const double scale)
 {
-    for (unsigned int i = 0; i < m_len; i++)
+    for (unsigned int i = 0; i < m_dim; i++)
     {
         m_coord[i] *= scale;
     }
@@ -623,9 +623,9 @@ GeoVector &GeoVector::operator*=(const double scale)
 
 GeoVector GeoVector::operator-(const GeoVector &v) const
 {
-    GeoVector ret(m_len);
+    GeoVector ret(m_dim);
 
-    for (unsigned int i = 0; i < m_len; i++)
+    for (unsigned int i = 0; i < m_dim; i++)
     {
         ret[i] = m_coord[i] - v[i];
     }
@@ -635,9 +635,9 @@ GeoVector GeoVector::operator-(const GeoVector &v) const
 
 GeoVector &GeoVector::operator-=(const GeoVector &v)
 {
-    assert(m_len == v.Length());
+    assert(m_dim == v.Dim());
 
-    for (unsigned int i = 0; i < m_len; i++)
+    for (unsigned int i = 0; i < m_dim; i++)
     {
         m_coord[i] -= v[i];
     }
@@ -648,7 +648,7 @@ GeoVector &GeoVector::operator-=(const GeoVector &v)
 void GeoVector::Normalize()
 {
     double magnitude = Magnitude();
-    for (unsigned int i = 0; i < m_len; i++)
+    for (unsigned int i = 0; i < m_dim; i++)
     {
         m_coord[i] /= magnitude;
     }
@@ -664,7 +664,7 @@ double GeoVector::Magnitude() const
 double GeoVector::Magnitude2() const
 {
     double sum = 0.0f;
-    for (unsigned int i = 0; i < m_len; i++)
+    for (unsigned int i = 0; i < m_dim; i++)
     {
         sum += m_coord[i] * m_coord[i];
     }
@@ -674,19 +674,19 @@ double GeoVector::Magnitude2() const
 
 void GeoVector::Flatten(std::vector<float> &data) const
 {
-    for (unsigned int i = 0; i < m_len; i++)
+    for (unsigned int i = 0; i < m_dim; i++)
     {
         data.push_back(m_coord[i]);
     }
 }
 
-unsigned int GeoVector::Length() const
+unsigned int GeoVector::Dim() const
 {
-    return m_len;
+    return m_dim;
 }
 
 void GeoVector::Clear()
 {
-    m_len = 0;
+    m_dim = 0;
     SAFE_DELETE_ARRAY(m_coord);
 }
