@@ -39,6 +39,8 @@ public:
   bool IsSquare() const;
   void Transpose();
   void Transpose(GeoMatrix &transpose) const;
+  void SetVector(const unsigned int idx, const GeoVector &v, bool isRow);
+  bool SolveLinearEquation(const GeoVector &b, GeoVector &x) const;
 
 protected:
   void Clear();
@@ -50,6 +52,7 @@ private:
 public:
   static GeoMatrix TranslateMatrix(const GeoVector3D &trans);
   static GeoMatrix RotateMatrix(const double angle, const GeoVector3D &axis);
+  static GeoVector SolveLinearEquation(const GeoMatrix &up, const GeoMatrix &low, const GeoVector &b);
 
 private:
   unsigned int m_row;

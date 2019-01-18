@@ -349,7 +349,6 @@ double GeoMatrix::Det() const
 
 bool GeoMatrix::Inverse(GeoMatrix &inverse) const
 {
-
     GeoMatrix up(m_row, m_col);
     GeoMatrix low(m_row, m_col);
 
@@ -358,34 +357,21 @@ bool GeoMatrix::Inverse(GeoMatrix &inverse) const
         return false;
     }
 
-    GeoMatrix l_inverse(m_row, m_col);
-    GeoMatrix u_inverse(m_row, m_col);
-    double s = 0.0f;
+    inverse.Resharp(m_row, m_col);
 
-    for (int i = 0; i < m_row; i++)
+    for (unsigned int i = 0; i < m_row; i++)
     {
-        u_inverse[i][i] = 1 / up[i][i];
-        for (int k = i - 1; k >= 0; k--)
-        {
-            s = 0;
-            for (int j = k + 1; j <= i; j++)
-                s = s + up[k][j] * u_inverse[j][i];
-            u_inverse[k][i] = -s / up[k][k];
-        }
-    }
-    for (int i = 0; i < m_row; i++)
-    {
-        l_inverse[i][i] = 1;
-        for (int k = i + 1; k < m_row; k++)
-        {
-            for (int j = i; j <= k - 1; j++)
-            {
-                l_inverse[k][i] = l_inverse[k][i] - low[k][j] * l_inverse[j][i];
-            }
-        }
-    }
+        GeoVector b(m_col);
 
-    inverse = u_inverse * l_inverse;
+        for (unsigned int j = 0; j < m_col; j++)
+        {
+            b[j] = (i == j) ? 1 : 0;
+        }
+
+        GeoVector ret = GeoMatrix::SolveLinearEquation(up, low, b);
+
+        inverse.SetVector(i, ret, false);
+    }
 
     return true;
 }
@@ -418,6 +404,43 @@ void GeoMatrix::Transpose(GeoMatrix &transpose) const
             transpose[col][row] = m_data[row][col];
         }
     }
+}
+
+void GeoMatrix::SetVector(const unsigned int idx, const GeoVector &v, bool isRow)
+{
+    if (isRow)
+    {
+        assert(m_col == v.Dim());
+        for (unsigned int col = 0; col < m_col; col++)
+        {
+            m_data[idx][col] = v[col];
+        }
+    }
+    else
+    {
+        assert(m_row == v.Dim());
+        for (unsigned int row = 0; row < m_row; row++)
+        {
+            m_data[row][idx] = v[row];
+        }
+    }
+}
+
+bool GeoMatrix::SolveLinearEquation(const GeoVector &b, GeoVector &x) const
+{
+    assert(b.Dim() == x.Dim());
+
+    GeoMatrix up(m_row, m_col);
+    GeoMatrix low(m_row, m_col);
+
+    if (!LUDecompose(up, low))
+    {
+        return false;
+    }
+
+    x = GeoMatrix::SolveLinearEquation(up, low, b);
+
+    return true;
 }
 
 void GeoMatrix::Clear()
@@ -476,4 +499,35 @@ GeoMatrix GeoMatrix::RotateMatrix(const double angle, const GeoVector3D &axis)
     matrix[3][3] = 1.0f;
 
     return matrix;
+}
+
+GeoVector GeoMatrix::SolveLinearEquation(const GeoMatrix &up, const GeoMatrix &low, const GeoVector &b)
+{
+    double sum;
+
+    // Solve Lower
+    GeoVector y(b.Dim());
+    for (int row = 0; row < low.Rows(); row++)
+    {
+        sum = 0.0f;
+        for (int col = 0; col < row; col++)
+        {
+            sum += low[row][col] * y[col];
+        }
+        y[row] = (b[row] - sum) / low[row][row];
+    }
+
+    GeoVector ret(y.Dim());
+    //Solve Upper
+    for (int row = (up.Rows() - 1); row >= 0; row--)
+    {
+        sum = 0.0f;
+        for (int col = up.Cols() - 1; col > row; col--)
+        {
+            sum += up[row][col] * ret[col];
+        }
+        ret[row] = (y[row] - sum) / up[row][row];
+    }
+
+    return ret;
 }
