@@ -52,7 +52,7 @@ void Log::OutputConsole(double value, const std::string msg /* = "" */, LogLevel
     }
 }
 
-void Log::Dump(const GeoMatrix &matrix)
+void Log::Dump(const GeoMatrix &matrix) const
 {
     std::cout.precision(5);
     for (unsigned int i = 0; i < matrix.Rows(); i++)
@@ -66,7 +66,7 @@ void Log::Dump(const GeoMatrix &matrix)
     }
 }
 
-void Log::Dump(const GeoVector &v)
+void Log::Dump(const GeoVector &v) const
 {
     for (unsigned int i = 0; i < v.Dim(); i++)
     {
@@ -75,17 +75,22 @@ void Log::Dump(const GeoVector &v)
     std::cout << std::endl;
 }
 
-void Log::Dump(const GeoVector3D &v)
+void Log::Dump(const GeoVector3D &v) const
 {
     std::cout << v[0] << "    " << v[1] << "    " << v[2] << std::endl;
 }
 
-void Log::Dump(const GeoVector2D &v)
+void Log::Dump(const GeoVector2D &v) const
 {
     std::cout << v[0] << "    " << v[1] << std::endl;
 }
 
-void Log::Dump(const GeoVector4D &v)
+void Log::Dump(const GeoVector4D &v) const
 {
     std::cout << v[0] << "    " << v[1] << "    " << v[2] << "    " << v[3] << std::endl;
+}
+
+void Log::Dump(const GeoColor &c) const
+{
+    std::cout << "R: " << c[0] << " G: " << c[1] << " B: " << c[2] << " A: " << c[3] << std::endl;
 }

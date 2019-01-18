@@ -126,6 +126,26 @@ void GeoColor::Flatten(std::vector<float> &data) const
     }
 }
 
+double GeoColor::Red() const
+{
+    return m_rgba[0];
+}
+
+double GeoColor::Green() const
+{
+    return m_rgba[1];
+}
+
+double GeoColor::Blue() const
+{
+    return m_rgba[2];
+}
+
+double GeoColor::Alpha() const
+{
+    return m_rgba[3];
+}
+
 unsigned int GeoColor::Size()
 {
     return 4;

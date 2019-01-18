@@ -7,6 +7,7 @@
 #include <map>
 #include "matrix.h"
 #include "vector.h"
+#include "color.h"
 
 class Log final
 {
@@ -23,11 +24,12 @@ public:
   void OutputConsole(double value, const std::string msg = "", LogLevel_e level = Level_Info);
 
 public:
-  void Dump(const GeoMatrix &matrix);
-  void Dump(const GeoVector &v);
-  void Dump(const GeoVector3D &v);
-  void Dump(const GeoVector2D &v);
-  void Dump(const GeoVector4D &v);
+  void Dump(const GeoMatrix &matrix) const;
+  void Dump(const GeoVector &v) const;
+  void Dump(const GeoVector3D &v) const;
+  void Dump(const GeoVector2D &v) const;
+  void Dump(const GeoVector4D &v) const;
+  void Dump(const GeoColor &c) const;
 
 private:
   std::map<LogLevel_e, std::string> m_mapLevelMsg;

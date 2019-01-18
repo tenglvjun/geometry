@@ -23,6 +23,10 @@ public:
 public:
   void Scale(const double scale, bool applyAlpha);
   void Flatten(std::vector<float> &data) const;
+  double Red() const;
+  double Green() const;
+  double Blue() const;
+  double Alpha() const;
 
 public:
   static unsigned int Size();
