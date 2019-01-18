@@ -321,11 +321,6 @@ void GeoVector3D::Flatten(std::vector<float> &data) const
     data.push_back((float)m_coord[2]);
 }
 
-void GeoVector3D::Dump() const
-{
-    std::cout << m_coord[0] << "    " << m_coord[1] << "    " << m_coord[2] << std::endl;
-}
-
 unsigned int GeoVector3D::Size()
 {
     return 3;
@@ -689,13 +684,4 @@ void GeoVector::Clear()
 {
     m_dim = 0;
     SAFE_DELETE_ARRAY(m_coord);
-}
-
-void GeoVector::Dump() const
-{
-    for (unsigned int i = 0; i < m_dim; i++)
-    {
-        std::cout << m_coord[i] << "    ";
-    }
-    std::cout << std::endl;
 }

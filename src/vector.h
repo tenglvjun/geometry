@@ -65,7 +65,6 @@ public:
   double Magnitude() const;
   double Magnitude2() const;
   void Flatten(std::vector<float> &data) const;
-  void Dump() const;
 
 public:
   static unsigned int Size();
@@ -132,7 +131,6 @@ public:
   double Magnitude2() const;
   void Flatten(std::vector<float> &data) const;
   unsigned int Dim() const;
-  void Dump() const;
 
 protected:
   void Clear();

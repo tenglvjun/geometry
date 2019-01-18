@@ -6,6 +6,7 @@
 #include <string>
 #include <map>
 #include "matrix.h"
+#include "vector.h"
 
 class Log final
 {
@@ -23,6 +24,10 @@ public:
 
 public:
   void Dump(const GeoMatrix &matrix);
+  void Dump(const GeoVector &v);
+  void Dump(const GeoVector3D &v);
+  void Dump(const GeoVector2D &v);
+  void Dump(const GeoVector4D &v);
 
 private:
   std::map<LogLevel_e, std::string> m_mapLevelMsg;
