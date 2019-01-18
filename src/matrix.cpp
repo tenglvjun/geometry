@@ -231,34 +231,6 @@ GeoMatrix GeoMatrix::SubMatrix(const unsigned int sRow, const unsigned int eRow,
     return m;
 }
 
-void GeoMatrix::Replace(const unsigned int r, const unsigned int c, const GeoMatrix &m)
-{
-    unsigned int rows = m.Rows();
-    unsigned int cols = m.Cols();
-
-    for (unsigned int i = 0; i < rows; i++)
-    {
-        for (unsigned int j = 0; j < cols; j++)
-        {
-            m_data[i + r][j + c] = m[i][j];
-        }
-    }
-}
-
-void GeoMatrix::Dump() const
-{
-    std::cout.precision(5);
-    for (unsigned int i = 0; i < m_row; i++)
-    {
-        for (unsigned int j = 0; j < m_col; j++)
-        {
-            std::cout << m_data[i][j] << "  ";
-        }
-
-        std::cout << std::endl;
-    }
-}
-
 unsigned int GeoMatrix::Rows() const
 {
     return m_row;

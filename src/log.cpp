@@ -51,3 +51,17 @@ void Log::OutputConsole(double value, const std::string msg /* = "" */, LogLevel
         abort();
     }
 }
+
+void Log::Dump(const GeoMatrix &matrix)
+{
+    std::cout.precision(5);
+    for (unsigned int i = 0; i < matrix.Rows(); i++)
+    {
+        for (unsigned int j = 0; j < matrix.Cols(); j++)
+        {
+            std::cout << matrix[i][j] << "  ";
+        }
+
+        std::cout << std::endl;
+    }
+}

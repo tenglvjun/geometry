@@ -5,6 +5,7 @@
 #include "global_enum.h"
 #include <string>
 #include <map>
+#include "matrix.h"
 
 class Log final
 {
@@ -19,6 +20,9 @@ public:
   void OutputConsole(const std::string &msg, LogLevel_e level = Level_Info);
   void OutputConsole(int code, const std::string msg = "", LogLevel_e level = Level_Info);
   void OutputConsole(double value, const std::string msg = "", LogLevel_e level = Level_Info);
+
+public:
+  void Dump(const GeoMatrix &matrix);
 
 private:
   std::map<LogLevel_e, std::string> m_mapLevelMsg;

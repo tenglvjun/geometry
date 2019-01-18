@@ -29,8 +29,6 @@ public:
   void Zeros();
   void Flatten(std::vector<float> &data) const;
   GeoMatrix SubMatrix(const unsigned int sRow, const unsigned int eRow, const unsigned int sCol, const unsigned int eCol);
-  void Replace(const unsigned int r, const unsigned int c, const GeoMatrix &m);
-  void Dump() const;
   unsigned int Rows() const;
   unsigned int Cols() const;
   bool LUDecompose(GeoMatrix &up, GeoMatrix &low) const;
