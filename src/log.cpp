@@ -68,9 +68,9 @@ void Log::Dump(const GeoMatrix &matrix)
 
 void Log::Dump(const GeoVector &v)
 {
-    for (unsigned int i = 0; i < m_dim; i++)
+    for (unsigned int i = 0; i < v.Dim(); i++)
     {
-        std::cout << m_coord[i] << "    ";
+        std::cout << v[i] << "    ";
     }
     std::cout << std::endl;
 }
