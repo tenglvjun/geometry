@@ -1,7 +1,6 @@
 #if !defined(__BOUNDING_BOX_HEAD_FILE__)
 #define __BOUNDING_BOX_HEAD_FILE__
 
-#include "vector.h"
 #include "vertex.h"
 
 class GeoBBox
