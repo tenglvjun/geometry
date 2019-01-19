@@ -16,16 +16,19 @@ else()
 endif(MSVC)
 set(SHADER_GENERATOR_FILE shader_generate.py)
 
-add_custom_command (
-    TARGET ${PROJECT_BIN_EXE}
-    PRE_BUILD
-    COMMAND ${CMAKE_COMMAND} -E remove -f ${PROJECT_BIN_EXE}
-)
-
-add_custom_command (
-    TARGET ${PROJECT_BIN_EXE}
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BIN_EXE} ${BIN_OUTPUT_PATH}
-    COMMAND  python ${CMAKE_CURRENT_SOURCE_DIR}/../${SHADER_GENERATOR_FILE}
-)
+if(MSVC)
+    add_custom_command (
+        TARGET ${PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/src/${CMAKE_BUILD_TYPE}/${PROJECT_BIN_EXE} ${BIN_OUTPUT_PATH}
+        COMMAND  python ${CMAKE_CURRENT_SOURCE_DIR}/../${SHADER_GENERATOR_FILE}
+    )
+else()
+    add_custom_command (
+        TARGET ${PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BIN_EXE} ${BIN_OUTPUT_PATH}
+        COMMAND  python ${CMAKE_CURRENT_SOURCE_DIR}/../${SHADER_GENERATOR_FILE}
+    )
+endif(MSVC)
 
