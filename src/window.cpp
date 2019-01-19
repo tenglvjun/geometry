@@ -527,6 +527,11 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
         lastPt = ball.ProjectToBall(lastPt);
         pos = ball.ProjectToBall(pos);
 
+        
+        if (lastPt == pos) {
+            return;
+        }
+
         GeoMatrix rotate = ball.GetRotateMatrix(lastPt, pos);
 
         m_mesh->Transform(rotate);
