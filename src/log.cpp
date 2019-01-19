@@ -94,3 +94,13 @@ void Log::Dump(const GeoColor &c) const
 {
     std::cout << "R: " << c[0] << " G: " << c[1] << " B: " << c[2] << " A: " << c[3] << std::endl;
 }
+
+void Log::Dump(const GeoBBox &b) const
+{
+    std::cout << "Center: ";
+    Dump(b.GetCenter());
+    std::cout << "Max: ";
+    Dump(b.GetMax());
+    std::cout << "Min: ";
+    Dump(b.GetMin());
+}

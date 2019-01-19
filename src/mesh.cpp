@@ -14,6 +14,7 @@ GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &in
     m_indices = indices;
     m_model.SetIdentity();
     m_vao = m_vbo = m_ebo = 0;
+    m_bbox.CalBBox(vertices);
 
     Setup();
 }

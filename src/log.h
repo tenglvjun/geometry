@@ -8,6 +8,7 @@
 #include "matrix.h"
 #include "vector.h"
 #include "color.h"
+#include "bbox.h"
 
 class Log final
 {
@@ -30,6 +31,7 @@ public:
   void Dump(const GeoVector2D &v) const;
   void Dump(const GeoVector4D &v) const;
   void Dump(const GeoColor &c) const;
+  void Dump(const GeoBBox &b) const;
 
 private:
   std::map<LogLevel_e, std::string> m_mapLevelMsg;
