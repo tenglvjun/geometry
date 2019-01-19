@@ -31,4 +31,3 @@ else()
         COMMAND  python ${CMAKE_CURRENT_SOURCE_DIR}/../${SHADER_GENERATOR_FILE}
     )
 endif(MSVC)
-
