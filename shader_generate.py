@@ -6,7 +6,6 @@ def RemoveShaderFiles(path):
     list = os.listdir(path)
     for i in range(0, len(list)):
         ext = os.path.splitext(list[i])
-        print(ext[1])
         if (ext[1] == ".vs") or (ext[1] == ".fs"):
             os.remove(os.path.join(path, list[i]))
 
@@ -29,7 +28,6 @@ def GenerateShaderFiles(path, include):
 if __name__ == "__main__":
     current_path = os.getcwd()
     current_path = current_path[:current_path.find('build', 1)]
-    print(current_path)
 
     os.chdir(current_path)
 
