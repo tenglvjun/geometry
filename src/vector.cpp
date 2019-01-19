@@ -350,6 +350,14 @@ GeoVector4D::GeoVector4D(const GeoVector4D &v)
     m_coord[3] = v[3];
 }
 
+GeoVector4D::GeoVector4D(const GeoVector3D &v)
+{
+    m_coord[0] = v[0];
+    m_coord[1] = v[1];
+    m_coord[2] = v[2];
+    m_coord[3] = 0.0f;
+}
+
 GeoVector4D::~GeoVector4D()
 {
 }
@@ -671,7 +679,7 @@ void GeoVector::Flatten(std::vector<float> &data) const
 {
     for (unsigned int i = 0; i < m_dim; i++)
     {
-        data.push_back(m_coord[i]);
+        data.push_back((float)m_coord[i]);
     }
 }
 

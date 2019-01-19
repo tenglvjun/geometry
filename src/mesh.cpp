@@ -5,6 +5,7 @@
 #include "light.h"
 #include "tools.h"
 #include "shader_code_manage.h"
+#include "log.h"
 
 GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices)
     : m_model(4, 4)
@@ -42,6 +43,11 @@ void GeoMesh::Draw()
 void GeoMesh::Transform(const GeoMatrix &m)
 {
     m_model = m * m_model;
+}
+
+const GeoMatrix &GeoMesh::GetModelMatrix()
+{
+    return m_model;
 }
 
 void GeoMesh::Setup()
@@ -107,9 +113,6 @@ void GeoMesh::SetupMaterial()
 
 void GeoMesh::ApplyShader()
 {
-    if (m_shader.IsUsing())
-        return;
-
     std::vector<float> value;
     m_model.Flatten(value);
     m_shader.SetMatrix("model", false, &value[0]);

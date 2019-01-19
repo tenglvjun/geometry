@@ -18,6 +18,7 @@ public:
   double *operator[](const unsigned int idx);
   GeoVector3D operator*(const GeoVector3D &v) const;
   GeoVector2D operator*(const GeoVector2D &v) const;
+  GeoVector4D operator*(const GeoVector4D &v) const;
   GeoMatrix operator*(const GeoMatrix &m) const;
   void operator*=(const double s);
   GeoMatrix operator*(const double s);
@@ -49,6 +50,7 @@ private:
 
 public:
   static GeoMatrix TranslateMatrix(const GeoVector3D &trans);
+  static GeoMatrix TranslateMatrix(const GeoVector4D &trans);
   static GeoMatrix RotateMatrix(const double angle, const GeoVector3D &axis);
   static GeoVector SolveLinearEquation(const GeoMatrix &up, const GeoMatrix &low, const GeoVector &b);
 

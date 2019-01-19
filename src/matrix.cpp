@@ -102,6 +102,20 @@ GeoVector2D GeoMatrix::operator*(const GeoVector2D &v) const
     return ret;
 }
 
+GeoVector4D GeoMatrix::operator*(const GeoVector4D &v) const
+{
+    assert((GeoVector4D::Size() == m_col) && (m_col == m_row));
+
+    GeoVector4D ret;
+
+    ret[0] = m_data[0][0] * v[0] + m_data[0][1] * v[1] + m_data[0][2] * v[2] + m_data[0][3] * v[3];
+    ret[1] = m_data[1][0] * v[0] + m_data[1][1] * v[1] + m_data[1][2] * v[2] + m_data[1][3] * v[3];
+    ret[2] = m_data[2][0] * v[0] + m_data[2][1] * v[1] + m_data[2][2] * v[2] + m_data[2][3] * v[3];
+    ret[3] = m_data[3][0] * v[0] + m_data[3][1] * v[1] + m_data[3][2] * v[2] + m_data[3][3] * v[3];
+
+    return ret;
+}
+
 GeoMatrix GeoMatrix::operator*(const GeoMatrix &m) const
 {
     assert(m_col == m.Rows());
@@ -311,7 +325,7 @@ double GeoMatrix::Det() const
 
     double det = 1.0f;
 
-    for (size_t i = 0; i < m_row; i++)
+    for (unsigned int i = 0; i < m_row; i++)
     {
         det *= up[i][i];
     }
@@ -369,9 +383,9 @@ void GeoMatrix::Transpose(GeoMatrix &transpose) const
 {
     transpose.Resharp(m_col, m_row);
 
-    for (size_t row = 0; row < m_row; row++)
+    for (unsigned int row = 0; row < m_row; row++)
     {
-        for (size_t col = 0; col < m_col; col++)
+        for (unsigned int col = 0; col < m_col; col++)
         {
             transpose[col][row] = m_data[row][col];
         }
@@ -442,6 +456,21 @@ GeoMatrix GeoMatrix::TranslateMatrix(const GeoVector3D &trans)
 {
     GeoMatrix matrix(4, 4);
 
+    matrix.SetIdentity();
+
+    matrix[0][3] = trans[0];
+    matrix[1][3] = trans[1];
+    matrix[2][3] = trans[2];
+
+    return matrix;
+}
+
+GeoMatrix GeoMatrix::TranslateMatrix(const GeoVector4D &trans)
+{
+    GeoMatrix matrix(4, 4);
+
+    matrix.SetIdentity();
+
     matrix[0][3] = trans[0];
     matrix[1][3] = trans[1];
     matrix[2][3] = trans[2];
@@ -479,7 +508,7 @@ GeoVector GeoMatrix::SolveLinearEquation(const GeoMatrix &up, const GeoMatrix &l
 
     // Solve Lower
     GeoVector y(b.Dim());
-    for (int row = 0; row < low.Rows(); row++)
+    for (int row = 0; row < (int)low.Rows(); row++)
     {
         sum = 0.0f;
         for (int col = 0; col < row; col++)
@@ -491,10 +520,10 @@ GeoVector GeoMatrix::SolveLinearEquation(const GeoMatrix &up, const GeoMatrix &l
 
     GeoVector ret(y.Dim());
     //Solve Upper
-    for (int row = (up.Rows() - 1); row >= 0; row--)
+    for (int row = (int)(up.Rows() - 1); row >= 0; row--)
     {
         sum = 0.0f;
-        for (int col = up.Cols() - 1; col > row; col--)
+        for (int col = (int)(up.Cols() - 1); col > row; col--)
         {
             sum += up[row][col] * ret[col];
         }

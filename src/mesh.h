@@ -17,6 +17,7 @@ public:
 public:
   void Draw();
   void Transform(const GeoMatrix &m);
+  const GeoMatrix &GetModelMatrix();
 
 private:
   GeoMesh();

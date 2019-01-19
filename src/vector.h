@@ -79,6 +79,7 @@ public:
   GeoVector4D();
   GeoVector4D(const double x, const double y, const double z, const double w);
   GeoVector4D(const GeoVector4D &v);
+  GeoVector4D(const GeoVector3D &v);
   virtual ~GeoVector4D();
 
 public:

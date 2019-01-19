@@ -519,7 +519,18 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
     {
         GeoVector3D trans = pos - lastPt;
 
-        m_mesh->Transform(GeoMatrix::TranslateMatrix(trans));
+        const GeoMatrix &project = GeoCamera::GetInstance()->GetProjectionMatrix();
+        const GeoMatrix &view = GeoCamera::GetInstance()->GetViewMatrix();
+        const GeoMatrix &model = m_mesh->GetModelMatrix();
+
+        GeoMatrix pvm = project * view * model;
+        GeoMatrix pvm_inverse(4, 4);
+
+        assert(pvm.Inverse(pvm_inverse));
+        
+        GeoVector4D model_trans = pvm_inverse * GeoVector4D(trans);
+
+        m_mesh->Transform(GeoMatrix::TranslateMatrix(model_trans));
     }
 
     if (m_mouseLBtnDown)
@@ -527,8 +538,8 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
         lastPt = ball.ProjectToBall(lastPt);
         pos = ball.ProjectToBall(pos);
 
-        
-        if (lastPt == pos) {
+        if (lastPt == pos)
+        {
             return;
         }
 
