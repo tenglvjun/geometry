@@ -7,6 +7,8 @@
 #include "matrix.h"
 #include "material.h"
 #include "bbox.h"
+#include "global_enum.h"
+#include "arcball.h"
 
 class GeoMesh
 {
@@ -16,8 +18,9 @@ public:
 
 public:
   void Draw();
-  void Transform(const GeoMatrix &m);
-  const GeoMatrix &GetModelMatrix();
+  void Transform(const GeoMatrix &m, const TransformType_e transform);
+  GeoMatrix GetModelMatrix() const;
+  GeoBBox GetBBox() const;
 
 private:
   GeoMesh();
@@ -33,12 +36,15 @@ protected:
   std::vector<GeoVertex> m_vertices;
   std::vector<unsigned int> m_indices;
   std::vector<GeoVector3D> m_normals;
-  GeoVector3D m_pos;
-  GeoMatrix m_model;
   unsigned int m_vao, m_vbo, m_ebo;
   Shader m_shader;
   GeoMaterial m_material;
   GeoBBox m_bbox;
+
+  // transform matrices
+  GeoMatrix m_rotate;
+  GeoMatrix m_trans;
+  GeoMatrix m_scale;
 };
 
 #endif // __MESH_HEAD_FILE__

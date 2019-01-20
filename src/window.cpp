@@ -527,10 +527,10 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
         GeoMatrix pvm_inverse(4, 4);
 
         assert(pvm.Inverse(pvm_inverse));
-        
+
         GeoVector4D model_trans = pvm_inverse * GeoVector4D(trans);
 
-        m_mesh->Transform(GeoMatrix::TranslateMatrix(model_trans));
+        m_mesh->Transform(GeoMatrix::TranslateMatrix(model_trans), Transform_Translate);
     }
 
     if (m_mouseLBtnDown)
@@ -545,7 +545,7 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
         GeoMatrix rotate = ball.GetRotateMatrix(lastPt, pos);
 
-        m_mesh->Transform(rotate);
+        m_mesh->Transform(rotate, Transform_Rotate);
     }
 
     m_lastPt = pos;
