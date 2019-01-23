@@ -519,17 +519,14 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
         GeoMatrix view = GeoCamera::GetInstance()->GetViewMatrix();
         GeoMatrix model = m_mesh->GetModelMatrix();
 
-        project.Transpose();
-        view.Transpose();
-        model.Transpose();
         GeoMatrix pvm = project * view * model;
 
         GeoMatrix pvm_inverse(4, 4);
 
         pvm.Inverse(pvm_inverse);
 
-        GeoVector4D v2 = pvm_inverse * GeoVector4D(pos, 1.0f);
-        GeoVector4D v1 = pvm_inverse * GeoVector4D(lastPt, 1.0f);
+        GeoVector4D v2 = GeoVector4D(pos, 1.0f) * pvm_inverse;
+        GeoVector4D v1 = GeoVector4D(lastPt, 1.0f) * pvm_inverse;
 
         m_mesh->Translate(v2 - v1);
     }
@@ -553,13 +550,13 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
         GeoMatrix model = m_mesh->GetModelMatrix();
 
         GeoBBox &box = m_mesh->GetBBox();
-        GeoVector3D center = box.GetCenter();
+        GeoVector4D center = GeoVector4D(box.GetCenter(), 1.0f);
 
-        GeoVector4D c1 = project * view * model * GeoVector4D(center, 1.0f);
+        GeoVector4D c1 = project * view * model * center;
         m_mesh->Rotate(rotate);
 
         model = m_mesh->GetModelMatrix();
-        GeoVector4D c2 = project * view * model * GeoVector4D(center, 1.0f);
+        GeoVector4D c2 = project * view * model * center;
         m_mesh->Translate(c1 - c2);
     }
 
@@ -626,7 +623,7 @@ void GeoWindow::WindowSizeChange()
     x = m_width / minimum;
     y = m_height / minimum;
     GeoFrustum frustum(-x, x, -y, y, 2.0f, 10.f);
-    GeoCamera::GetInstance()->SetFrustum(frustum, PT_Persp);
+    GeoCamera::GetInstance()->SetFrustum(frustum, PT_Ortho);
 
     SAFE_DELETE(m_canvas);
     m_canvas = new GeoCanvas(m_width, m_height);

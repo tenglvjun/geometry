@@ -60,4 +60,8 @@ private:
   double **m_data;
 };
 
+GeoVector4D operator*(const GeoVector4D &v, const GeoMatrix &m);
+GeoVector3D operator*(const GeoVector3D &v, const GeoMatrix &m);
+GeoVector2D operator*(const GeoVector2D &v, const GeoMatrix &m);
+
 #endif // __MATRIX_HEAD_FILE__

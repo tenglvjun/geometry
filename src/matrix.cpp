@@ -532,3 +532,42 @@ GeoVector GeoMatrix::SolveLinearEquation(const GeoMatrix &up, const GeoMatrix &l
 
     return ret;
 }
+
+GeoVector4D operator*(const GeoVector4D &v, const GeoMatrix &m)
+{
+    assert((GeoVector4D::Size() == m.Cols()) && (m.IsSquare()));
+
+    GeoVector4D ret;
+
+    ret[0] = m[0][0] * v[0] + m[0][1] * v[1] + m[0][2] * v[2] + m[0][3] * v[3];
+    ret[1] = m[1][0] * v[0] + m[1][1] * v[1] + m[1][2] * v[2] + m[1][3] * v[3];
+    ret[2] = m[2][0] * v[0] + m[2][1] * v[1] + m[2][2] * v[2] + m[2][3] * v[3];
+    ret[3] = m[3][0] * v[0] + m[3][1] * v[1] + m[3][2] * v[2] + m[3][3] * v[3];
+
+    return ret;
+}
+
+GeoVector3D operator*(const GeoVector3D &v, const GeoMatrix &m)
+{
+    assert((GeoVector3D::Size() == m.Cols()) && (m.IsSquare()));
+
+    GeoVector3D ret;
+
+    ret[0] = m[0][0] * v[0] + m[0][1] * v[1] + m[0][2] * v[2];
+    ret[1] = m[1][0] * v[0] + m[1][1] * v[1] + m[1][2] * v[2];
+    ret[2] = m[2][0] * v[0] + m[2][1] * v[1] + m[2][2] * v[2];
+
+    return ret;
+}
+
+GeoVector2D operator*(const GeoVector2D &v, const GeoMatrix &m)
+{
+    assert((GeoVector2D::Size() == m.Cols()) && (m.IsSquare()));
+
+    GeoVector2D ret;
+
+    ret[0] = m[0][0] * v[0] + m[0][1] * v[1];
+    ret[1] = m[1][0] * v[0] + m[1][1] * v[1];
+
+    return ret;
+}
