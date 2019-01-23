@@ -517,20 +517,23 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
     if (m_mouseRBtnDown)
     {
-        GeoVector3D trans = pos - lastPt;
+        GeoMatrix project = GeoCamera::GetInstance()->GetProjectionMatrix();
+        GeoMatrix view = GeoCamera::GetInstance()->GetViewMatrix();
+        GeoMatrix model = m_mesh->GetModelMatrix();
 
-        const GeoMatrix &project = GeoCamera::GetInstance()->GetProjectionMatrix();
-        const GeoMatrix &view = GeoCamera::GetInstance()->GetViewMatrix();
-        const GeoMatrix &model = m_mesh->GetModelMatrix();
-
+        project.Transpose();
+        view.Transpose();
+        model.Transpose();
         GeoMatrix pvm = project * view * model;
+
         GeoMatrix pvm_inverse(4, 4);
 
-        assert(pvm.Inverse(pvm_inverse));
+        pvm.Inverse(pvm_inverse);
 
-        GeoVector4D model_trans = pvm_inverse * GeoVector4D(trans);
+        GeoVector4D v2 = pvm_inverse * GeoVector4D(pos);
+        GeoVector4D v1 = pvm_inverse * GeoVector4D(lastPt);
 
-        m_mesh->Transform(GeoMatrix::TranslateMatrix(model_trans), Transform_Translate);
+        m_mesh->Transform(GeoMatrix::TranslateMatrix(v2 - v1), Transform_Translate);
     }
 
     if (m_mouseLBtnDown)
@@ -610,8 +613,8 @@ void GeoWindow::WindowSizeChange()
     minimum = Tools::GetInstance()->Minimum(m_width, m_height);
     x = m_width / minimum;
     y = m_height / minimum;
-    GeoFrustum frustum(-x, x, -y, y, 2.0f, -10.f);
-    GeoCamera::GetInstance()->SetFrustum(frustum, PT_Persp);
+    GeoFrustum frustum(-x, x, -y, y, 2.0f, 10.f);
+    GeoCamera::GetInstance()->SetFrustum(frustum, PT_Ortho);
 
     SAFE_DELETE(m_canvas);
     m_canvas = new GeoCanvas(m_width, m_height);

@@ -51,7 +51,9 @@ void GeoMesh::Transform(const GeoMatrix &m, const TransformType_e transform)
         m_rotate = m * m_rotate;
         break;
     case Transform_Translate:
-        m_trans += m;
+        m_trans[0][3] += m[0][3];
+        m_trans[1][3] += m[1][3];
+        m_trans[2][3] += m[2][3];
         break;
     case Transform_Scale:
         m_scale[0][0] *= m[0][0];
