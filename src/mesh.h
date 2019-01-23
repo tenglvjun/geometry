@@ -20,7 +20,6 @@ public:
   void Draw();
   void Transform(const GeoMatrix &m, const TransformType_e transform);
   GeoMatrix GetModelMatrix() const;
-  GeoBBox GetBBox() const;
 
 private:
   GeoMesh();

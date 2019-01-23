@@ -69,11 +69,6 @@ GeoMatrix GeoMesh::GetModelMatrix() const
     return m_scale * m_rotate * m_trans;
 }
 
-GeoBBox GeoMesh::GetBBox() const
-{
-
-}
-
 void GeoMesh::Setup()
 {
     SetupVertices();

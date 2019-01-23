@@ -6,8 +6,8 @@ include(camera_func.m4)
 
 out MESHVS_OUT
 {
-    out vec3 Normal;
-    out vec3 FragPos;
+    vec3 Normal;
+    vec3 FragPos;
 } MeshVS_out;
 
 void main()
