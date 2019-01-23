@@ -16,8 +16,7 @@ GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &in
     m_rotate.SetIdentity();
     m_vao = m_vbo = m_ebo = 0;
     m_bbox.CalBBox(vertices);
-
-    m_trans[3] = 1.0f;
+    m_scale = 1.0f;
 
     Setup();
 }
@@ -55,9 +54,20 @@ void GeoMesh::Translate(const GeoVector4D &trans)
     m_trans[3] = 1.0f;
 }
 
+void GeoMesh::Scale(const double ratio)
+{
+    m_scale *= ratio;
+}
+
 GeoMatrix GeoMesh::GetModelMatrix() const
 {
-    return GeoMatrix::TranslateMatrix(m_trans) * m_rotate;
+    GeoMatrix scale(4, 4);
+    scale.SetIdentity();
+    scale[0][0] = m_scale;
+    scale[1][1] = m_scale;
+    scale[2][2] = m_scale;
+
+    return GeoMatrix::TranslateMatrix(m_trans) * scale * m_rotate;
 }
 
 GeoBBox &GeoMesh::GetBBox()

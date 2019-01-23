@@ -590,7 +590,15 @@ void GeoWindow::OnWindowSize(int width, int height)
 
 void GeoWindow::OnScroll(double xoffset, double yoffset)
 {
-    GeoCamera::GetInstance()->Scale(yoffset < 0 ? false : true);
+
+    if (GeoCamera::GetInstance()->GetProjectType() == PT_Ortho)
+    {
+        m_mesh->Scale(yoffset < 0 ? 0.9f : 1.1f);
+    }
+    else
+    {
+        GeoCamera::GetInstance()->Scale(yoffset < 0 ? false : true);
+    }
 }
 
 void GeoWindow::SetCallback()

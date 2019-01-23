@@ -34,6 +34,7 @@ public:
 
   const GeoMatrix &GetViewMatrix() const;
   const GeoMatrix &GetProjectionMatrix() const;
+  ProjType_e GetProjectType() const;
 
   const GeoVector3D &Position() const;
 

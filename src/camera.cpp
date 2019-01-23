@@ -93,6 +93,11 @@ const GeoMatrix &GeoCamera::GetProjectionMatrix() const
     return m_projection;
 }
 
+ProjType_e GeoCamera::GetProjectType() const
+{
+    return m_projType;
+}
+
 void GeoCamera::Scale(bool enlarge)
 {
     m_frustum.m_near += (enlarge ? (m_sensitivity) : (-m_sensitivity));

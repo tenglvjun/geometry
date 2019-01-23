@@ -20,6 +20,7 @@ public:
   void Draw();
   void Rotate(const GeoMatrix &m);
   void Translate(const GeoVector4D &trans);
+  void Scale(const double ratio);
   GeoMatrix GetModelMatrix() const;
   GeoBBox &GetBBox();
 
@@ -45,6 +46,7 @@ protected:
   // transform matrices
   GeoMatrix m_rotate;
   GeoVector4D m_trans;
+  double m_scale;
 };
 
 #endif // __MESH_HEAD_FILE__
