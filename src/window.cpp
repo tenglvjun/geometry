@@ -507,11 +507,10 @@ void GeoWindow::OnMButtonUp(double xpos, double ypos)
 void GeoWindow::OnMouseMove(double xpos, double ypos)
 {
     GeoVector3D lastPt = m_lastPt;
-
-    GeoVector3D pos;
-    pos[0] = ((2.0f * xpos) / (double)m_width) - 1.0f;
-    pos[1] = 1.0f - ((2.0 * ypos) / (double)m_height);
-    pos[2] = 0.0f;
+    GeoVector3D now;
+    now[0] = ((2.0f * xpos) / (double)m_width) - 1.0f;
+    now[1] = 1.0f - ((2.0 * ypos) / (double)m_height);
+    now[2] = 0.0f;
 
     if (m_mouseRBtnDown)
     {
@@ -525,7 +524,7 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
         pvm.Inverse(pvm_inverse);
 
-        GeoVector4D v2 = GeoVector4D(pos, 1.0f) * pvm_inverse;
+        GeoVector4D v2 = GeoVector4D(now, 1.0f) * pvm_inverse;
         GeoVector4D v1 = GeoVector4D(lastPt, 1.0f) * pvm_inverse;
 
         m_mesh->Translate(v2 - v1);
@@ -536,7 +535,7 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
         GeoArcBall ball;
 
         lastPt = ball.ProjectToBall(lastPt);
-        pos = ball.ProjectToBall(pos);
+        GeoVector3D pos = ball.ProjectToBall(now);
 
         if (lastPt == pos)
         {
@@ -560,7 +559,7 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
         m_mesh->Translate(c1 - c2);
     }
 
-    m_lastPt = pos;
+    m_lastPt = now;
 }
 
 void GeoWindow::OnClose()
