@@ -34,12 +34,4 @@ typedef enum
   SCT_Count,
 } ShaderCodeType_e;
 
-typedef enum
-{
-  Transform_Invalid = 0,
-  Transform_Translate,
-  Transform_Rotate,
-  Transform_Scale,
-} TransformType_e;
-
 #endif // __GLOBAL_ENUM_HEAD_FILE__

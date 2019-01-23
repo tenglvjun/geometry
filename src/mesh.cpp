@@ -6,17 +6,18 @@
 #include "tools.h"
 #include "shader_code_manage.h"
 #include "log.h"
+#include <assert.h>
 
 GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices)
-    : m_rotate(4, 4), m_scale(4, 4), m_trans(4, 4)
+    : m_rotate(4, 4)
 {
     m_vertices = vertices;
     m_indices = indices;
     m_rotate.SetIdentity();
-    m_scale.SetIdentity();
-    m_trans.SetIdentity();
     m_vao = m_vbo = m_ebo = 0;
     m_bbox.CalBBox(vertices);
+
+    m_trans[3] = 1.0f;
 
     Setup();
 }
@@ -43,32 +44,25 @@ void GeoMesh::Draw()
     glBindVertexArray(0);
 }
 
-void GeoMesh::Transform(const GeoMatrix &m, const TransformType_e transform)
+void GeoMesh::Rotate(const GeoMatrix &m)
 {
-    switch (transform)
-    {
-    case Transform_Rotate:
-        m_rotate = m * m_rotate;
-        break;
-    case Transform_Translate:
-        m_trans[0][3] += m[0][3];
-        m_trans[1][3] += m[1][3];
-        m_trans[2][3] += m[2][3];
-        break;
-    case Transform_Scale:
-        m_scale[0][0] *= m[0][0];
-        m_scale[1][1] *= m[1][1];
-        m_scale[2][2] *= m[2][2];
-        break;
-    default:
-        assert(0);
-        break;
-    }
+    m_rotate = m * m_rotate;
+}
+
+void GeoMesh::Translate(const GeoVector4D &trans)
+{
+    m_trans += trans;
+    m_trans[3] = 1.0f;
 }
 
 GeoMatrix GeoMesh::GetModelMatrix() const
 {
-    return m_scale * m_rotate * m_trans;
+    return GeoMatrix::TranslateMatrix(m_trans) * m_rotate;
+}
+
+GeoBBox &GeoMesh::GetBBox()
+{
+    return m_bbox;
 }
 
 void GeoMesh::Setup()

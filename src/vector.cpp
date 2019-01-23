@@ -208,9 +208,9 @@ double &GeoVector3D::operator[](const unsigned int idx)
 
 GeoVector3D &GeoVector3D::operator+=(const GeoVector3D &v)
 {
-    m_coord[0] = v[0];
-    m_coord[1] = v[1];
-    m_coord[2] = v[2];
+    m_coord[0] += v[0];
+    m_coord[1] += v[1];
+    m_coord[2] += v[2];
 
     return *this;
 }
@@ -350,12 +350,12 @@ GeoVector4D::GeoVector4D(const GeoVector4D &v)
     m_coord[3] = v[3];
 }
 
-GeoVector4D::GeoVector4D(const GeoVector3D &v)
+GeoVector4D::GeoVector4D(const GeoVector3D &v, const double w)
 {
     m_coord[0] = v[0];
     m_coord[1] = v[1];
     m_coord[2] = v[2];
-    m_coord[3] = 0.0f;
+    m_coord[3] = w;
 }
 
 GeoVector4D::~GeoVector4D()
@@ -393,10 +393,10 @@ double &GeoVector4D::operator[](const unsigned int idx)
 
 GeoVector4D &GeoVector4D::operator+=(const GeoVector4D &v)
 {
-    m_coord[0] = v[0];
-    m_coord[1] = v[1];
-    m_coord[2] = v[2];
-    m_coord[3] = v[3];
+    m_coord[0] += v[0];
+    m_coord[1] += v[1];
+    m_coord[2] += v[2];
+    m_coord[3] += v[3];
 
     return *this;
 }
