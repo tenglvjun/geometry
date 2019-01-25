@@ -52,6 +52,7 @@ public:
   static GeoMatrix TranslateMatrix(const GeoVector3D &trans);
   static GeoMatrix TranslateMatrix(const GeoVector4D &trans);
   static GeoMatrix RotateMatrix(const double angle, const GeoVector3D &axis);
+  static GeoMatrix ScaleMatrix(const double s);
   static GeoVector SolveLinearEquation(const GeoMatrix &up, const GeoMatrix &low, const GeoVector &b);
 
 private:

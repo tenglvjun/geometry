@@ -9,14 +9,13 @@
 #include <assert.h>
 
 GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices)
-    : m_rotate(4, 4)
+    : m_model(4, 4)
 {
     m_vertices = vertices;
     m_indices = indices;
-    m_rotate.SetIdentity();
+    m_model.SetIdentity();
     m_vao = m_vbo = m_ebo = 0;
     m_bbox.CalBBox(vertices);
-    m_scale = 1.0f;
 
     Setup();
 }
@@ -43,31 +42,14 @@ void GeoMesh::Draw()
     glBindVertexArray(0);
 }
 
-void GeoMesh::Rotate(const GeoMatrix &m)
+void GeoMesh::Transform(const GeoMatrix &m)
 {
-    m_rotate = m * m_rotate;
+    m_model = m_model * m;
 }
 
-void GeoMesh::Translate(const GeoVector4D &trans)
+GeoMatrix &GeoMesh::GetModelMatrix()
 {
-    m_trans += trans;
-    m_trans[3] = 1.0f;
-}
-
-void GeoMesh::Scale(const double ratio)
-{
-    m_scale *= ratio;
-}
-
-GeoMatrix GeoMesh::GetModelMatrix() const
-{
-    GeoMatrix scale(4, 4);
-    scale.SetIdentity();
-    scale[0][0] = m_scale;
-    scale[1][1] = m_scale;
-    scale[2][2] = m_scale;
-
-    return GeoMatrix::TranslateMatrix(m_trans) * scale * m_rotate;
+    return m_model;
 }
 
 GeoBBox &GeoMesh::GetBBox()
@@ -138,10 +120,8 @@ void GeoMesh::SetupMaterial()
 
 void GeoMesh::ApplyShader()
 {
-    GeoMatrix model = GetModelMatrix();
-
     std::vector<float> value;
-    model.Flatten(value);
+    m_model.Flatten(value);
     m_shader.SetMatrix("model", false, &value[0]);
 
     m_material.ApplyShader(m_shader);

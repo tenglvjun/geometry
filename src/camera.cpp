@@ -83,12 +83,12 @@ void GeoCamera::SetFrustum(const GeoFrustum &frustum, ProjType_e pt)
     UpdateProjection();
 }
 
-const GeoMatrix &GeoCamera::GetViewMatrix() const
+GeoMatrix &GeoCamera::GetViewMatrix()
 {
     return m_view;
 }
 
-const GeoMatrix &GeoCamera::GetProjectionMatrix() const
+GeoMatrix &GeoCamera::GetProjectionMatrix()
 {
     return m_projection;
 }

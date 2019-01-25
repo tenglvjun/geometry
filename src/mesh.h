@@ -18,10 +18,8 @@ public:
 
 public:
   void Draw();
-  void Rotate(const GeoMatrix &m);
-  void Translate(const GeoVector4D &trans);
-  void Scale(const double ratio);
-  GeoMatrix GetModelMatrix() const;
+  void Transform(const GeoMatrix &m);
+  GeoMatrix &GetModelMatrix();
   GeoBBox &GetBBox();
 
 private:
@@ -42,11 +40,7 @@ protected:
   Shader m_shader;
   GeoMaterial m_material;
   GeoBBox m_bbox;
-
-  // transform matrices
-  GeoMatrix m_rotate;
-  GeoVector4D m_trans;
-  double m_scale;
+  GeoMatrix m_model;
 };
 
 #endif // __MESH_HEAD_FILE__

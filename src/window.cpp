@@ -514,9 +514,9 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
     if (m_mouseRBtnDown)
     {
-        GeoMatrix project = GeoCamera::GetInstance()->GetProjectionMatrix();
-        GeoMatrix view = GeoCamera::GetInstance()->GetViewMatrix();
-        GeoMatrix model = m_mesh->GetModelMatrix();
+        GeoMatrix &project = GeoCamera::GetInstance()->GetProjectionMatrix();
+        GeoMatrix &view = GeoCamera::GetInstance()->GetViewMatrix();
+        GeoMatrix &model = m_mesh->GetModelMatrix();
 
         GeoMatrix pvm = project * view * model;
 
@@ -527,7 +527,7 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
         GeoVector4D v2 = GeoVector4D(now, 1.0f) * pvm_inverse;
         GeoVector4D v1 = GeoVector4D(lastPt, 1.0f) * pvm_inverse;
 
-        m_mesh->Translate(v2 - v1);
+        m_mesh->Transform(GeoMatrix::TranslateMatrix(v2 - v1));
     }
 
     if (m_mouseLBtnDown)
@@ -544,19 +544,24 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
         GeoMatrix rotate = ball.GetRotateMatrix(lastPt, pos);
 
-        GeoMatrix project = GeoCamera::GetInstance()->GetProjectionMatrix();
-        GeoMatrix view = GeoCamera::GetInstance()->GetViewMatrix();
-        GeoMatrix model = m_mesh->GetModelMatrix();
+        GeoMatrix &project = GeoCamera::GetInstance()->GetProjectionMatrix();
+        GeoMatrix &view = GeoCamera::GetInstance()->GetViewMatrix();
+        GeoMatrix &model = m_mesh->GetModelMatrix();
 
         GeoBBox &box = m_mesh->GetBBox();
-        GeoVector4D center = GeoVector4D(box.GetCenter(), 1.0f);
+        GeoVector4D c1 = GeoVector4D(box.GetCenter(), 1.0f);
+        GeoVector4D c2 = c1;
 
-        GeoVector4D c1 = project * view * model * center;
-        m_mesh->Rotate(rotate);
+        c2 = project * view * model * c1;
+        m_mesh->Transform(rotate);
 
-        model = m_mesh->GetModelMatrix();
-        GeoVector4D c2 = project * view * model * center;
-        m_mesh->Translate(c1 - c2);
+        GeoMatrix pvm = project * view * model;
+        GeoMatrix pvm_inverse(4, 4);
+        pvm.Inverse(pvm_inverse);
+
+        c2 = c2 * pvm_inverse;
+
+        m_mesh->Transform(GeoMatrix::TranslateMatrix(c1 - c2));
     }
 
     m_lastPt = now;
@@ -592,7 +597,9 @@ void GeoWindow::OnScroll(double xoffset, double yoffset)
 
     if (GeoCamera::GetInstance()->GetProjectType() == PT_Ortho)
     {
-        m_mesh->Scale(yoffset < 0 ? 0.9f : 1.1f);
+        double scale = yoffset < 0 ? 0.9f : 1.1f;
+
+        m_mesh->Transform(GeoMatrix::ScaleMatrix(scale));
     }
     else
     {

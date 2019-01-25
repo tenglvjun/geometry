@@ -502,6 +502,18 @@ GeoMatrix GeoMatrix::RotateMatrix(const double angle, const GeoVector3D &axis)
     return matrix;
 }
 
+GeoMatrix GeoMatrix::ScaleMatrix(const double s)
+{
+    GeoMatrix ret(4, 4);
+    ret.SetIdentity();
+
+    ret[0][0] = s;
+    ret[1][1] = s;
+    ret[2][2] = s;
+
+    return ret;
+}
+
 GeoVector GeoMatrix::SolveLinearEquation(const GeoMatrix &up, const GeoMatrix &low, const GeoVector &b)
 {
     double sum;

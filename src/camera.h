@@ -32,8 +32,8 @@ public:
 
   void Scale(bool enlarge);
 
-  const GeoMatrix &GetViewMatrix() const;
-  const GeoMatrix &GetProjectionMatrix() const;
+  GeoMatrix &GetViewMatrix();
+  GeoMatrix &GetProjectionMatrix();
   ProjType_e GetProjectType() const;
 
   const GeoVector3D &Position() const;
