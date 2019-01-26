@@ -36,7 +36,7 @@ public:
   double Det() const;
   bool Inverse(GeoMatrix &inverse) const;
   bool IsSquare() const;
-  void Transpose();
+  GeoMatrix &Transpose();
   void Transpose(GeoMatrix &transpose) const;
   void SetVector(const unsigned int idx, const GeoVector &v, bool isRow);
   bool SolveLinearEquation(const GeoVector &b, GeoVector &x) const;

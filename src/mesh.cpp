@@ -44,7 +44,7 @@ void GeoMesh::Draw()
 
 void GeoMesh::Transform(const GeoMatrix &m)
 {
-    m_model = m_model * m;
+    m_model = m * m_model;
 }
 
 GeoMatrix &GeoMesh::GetModelMatrix()

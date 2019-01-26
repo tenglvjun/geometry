@@ -369,7 +369,7 @@ bool GeoMatrix::IsSquare() const
     return (m_col == m_row);
 }
 
-void GeoMatrix::Transpose()
+GeoMatrix &GeoMatrix::Transpose()
 {
     assert((m_col > 0) && (m_col > 0));
 
@@ -377,6 +377,8 @@ void GeoMatrix::Transpose()
     Transpose(tmp);
 
     (*this) = (tmp);
+
+    return *this;
 }
 
 void GeoMatrix::Transpose(GeoMatrix &transpose) const
