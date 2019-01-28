@@ -7,6 +7,7 @@
 #include "shader_code_manage.h"
 #include "log.h"
 #include <assert.h>
+#include "render.h"
 
 GeoMesh::GeoMesh(std::vector<GeoVertex> &vertices, std::vector<unsigned int> &indices)
     : m_model(4, 4)
@@ -106,7 +107,7 @@ void GeoMesh::SetupShaderCode()
     m_shader.Init(meshCode.m_vertex, meshCode.m_fragment);
     m_shader.Complie();
 
-    GeoCamera::GetInstance()->BindUniformBlock(m_shader);
+    GeoRender::GetInstance()->BindCameraUniformBlock(m_shader);
     GeoLight::GetInstance()->BindUniformBlock(m_shader);
 }
 

@@ -19,8 +19,6 @@ GeoFrustum::GeoFrustum(const double l, const double r, const double b, const dou
     m_far = f;
 }
 
-SINGLETON_IMPLEMENT(GeoCamera);
-
 GeoCamera::GeoCamera()
     : m_view(4, 4), m_projection(4, 4), m_sensitivity(0.1f), m_projType(PT_Invalid), m_ubo(0)
 {
@@ -120,7 +118,7 @@ unsigned int GeoCamera::GetUniformBindingPoint() const
     return m_bindingPoint;
 }
 
-void GeoCamera::BindUniformBlock(Shader &shader)
+void GeoCamera::BindUniformBlock(const Shader &shader)
 {
     shader.BindUniformBlock("CameraBlock", m_bindingPoint);
 }

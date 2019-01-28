@@ -7,7 +7,7 @@
 #include "global_enum.h"
 #include "shader.h"
 
-class GeoLight final
+class GeoLight
 {
 public:
   GeoLight();

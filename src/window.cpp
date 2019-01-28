@@ -3,10 +3,10 @@
 #include <assert.h>
 #include "mesh.h"
 #include "arcball.h"
-#include "camera.h"
 #include "tools.h"
 #include "light.h"
 #include "setting.h"
+#include "render.h"
 
 static void glfw_error_callback(int error, const char *description)
 {
@@ -151,7 +151,7 @@ void GeoWindow::ShowGeoWindow()
 {
     assert(m_window);
 
-    GeoCamera::GetInstance()->ResetCamera(GeoVector3D(0.0f, 0.0f, 5.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
+    GeoRender::GetInstance()->SetCamera(GeoVector3D(0.0f, 0.0f, 5.0f), GeoVector3D(0.0f, 0.0f, 0.0f), GeoVector3D(0.0f, 1.0f, 0.0f));
 
     glfwGetFramebufferSize(m_window, &m_width, &m_height);
     WindowSizeChange();
@@ -410,8 +410,7 @@ void GeoWindow::ShowGeoWindow()
 
     while (!glfwWindowShouldClose(m_window))
     {
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        GeoRender::GetInstance()->Render();
 
         m_canvas->Active();
 
@@ -512,8 +511,8 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
     now[1] = 1.0f - ((2.0 * ypos) / (double)m_height);
     now[2] = 0.0f;
 
-    GeoMatrix &project = GeoCamera::GetInstance()->GetProjectionMatrix();
-    GeoMatrix &view = GeoCamera::GetInstance()->GetViewMatrix();
+    GeoMatrix &project = GeoRender::GetInstance()->ProjectMatrix();
+    GeoMatrix &view = GeoRender::GetInstance()->ViewMatrix();
     GeoMatrix &model = m_mesh->GetModelMatrix();
 
     GeoMatrix pv = project * view;
@@ -586,7 +585,7 @@ void GeoWindow::OnWindowSize(int width, int height)
 void GeoWindow::OnScroll(double xoffset, double yoffset)
 {
 
-    if (GeoCamera::GetInstance()->GetProjectType() == PT_Ortho)
+    if (GeoRender::GetInstance()->ProjectType() == PT_Ortho)
     {
         double scale = yoffset < 0 ? 0.9f : 1.1f;
 
@@ -594,7 +593,7 @@ void GeoWindow::OnScroll(double xoffset, double yoffset)
     }
     else
     {
-        GeoCamera::GetInstance()->Scale(yoffset < 0 ? false : true);
+        GeoRender::GetInstance()->Scale(yoffset < 0 ? false : true);
     }
 }
 
@@ -621,14 +620,15 @@ void GeoWindow::WindowSizeChange()
     m_origin[0] = m_width / 2;
     m_origin[1] = m_height / 2;
 
-    glViewport(0, 0, m_width, m_height);
+    GeoViewport viewport(0, 0, m_width, m_height);
+    GeoRender::GetInstance()->SetViewPort(viewport);
 
     double x, y, minimum;
     minimum = Tools::GetInstance()->Minimum(m_width, m_height);
     x = m_width / minimum;
     y = m_height / minimum;
     GeoFrustum frustum(-x, x, -y, y, 2.0f, 10.f);
-    GeoCamera::GetInstance()->SetFrustum(frustum, PT_Ortho);
+    GeoRender::GetInstance()->SetFrustum(frustum, PT_Ortho);
 
     SAFE_DELETE(m_canvas);
     m_canvas = new GeoCanvas(m_width, m_height);

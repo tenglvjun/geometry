@@ -3,7 +3,6 @@
 
 #include "vector.h"
 #include "matrix.h"
-#include "global_def.h"
 #include "global_enum.h"
 #include "shader.h"
 
@@ -20,7 +19,7 @@ struct GeoFrustum
   double m_far;
 };
 
-class GeoCamera final
+class GeoCamera
 {
 public:
   GeoCamera();
@@ -40,7 +39,7 @@ public:
 
   unsigned int GetUniformBlockIndex() const;
   unsigned int GetUniformBindingPoint() const;
-  void BindUniformBlock(Shader &shader);
+  void BindUniformBlock(const Shader &shader);
 
 protected:
   void ClearUBO();
@@ -48,9 +47,6 @@ protected:
   void InitShader();
   void InitUniformBuffer();
   void UpdateUniformBuffer();
-
-public:
-  SINGLETON_DECLARE(GeoCamera);
 
 private:
   GeoCamera(const GeoCamera &camera);
