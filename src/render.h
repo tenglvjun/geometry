@@ -3,6 +3,7 @@
 
 #include "global_def.h"
 #include "camera.h"
+#include "light.h"
 
 struct GeoViewport
 {
@@ -38,10 +39,12 @@ public:
 
 public:
   void BindCameraUniformBlock(const Shader& shader);
+  void BindLightUniformBlock(const Shader& shader);
 
 private:
   struct GeoViewport m_viewPort;
   GeoCamera m_camera;
+  GeoLight m_light;
 };
 
 #endif // __RENDER_HEAD_FILE__

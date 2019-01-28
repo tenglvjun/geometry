@@ -3,7 +3,6 @@
 
 #include "vector.h"
 #include "color.h"
-#include "global_def.h"
 #include "global_enum.h"
 #include "shader.h"
 
@@ -42,10 +41,7 @@ public:
 
   unsigned int GetUniformBlockIndex() const;
   unsigned int GetUniformBindingPoint() const;
-  void BindUniformBlock(Shader &shader);
-
-public:
-  SINGLETON_DECLARE(GeoLight);
+  void BindUniformBlock(const Shader &shader);
 
 protected:
   GeoColor Attanuation(const GeoVector3D &objPos, const GeoColor &color);

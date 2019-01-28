@@ -108,7 +108,7 @@ void GeoMesh::SetupShaderCode()
     m_shader.Complie();
 
     GeoRender::GetInstance()->BindCameraUniformBlock(m_shader);
-    GeoLight::GetInstance()->BindUniformBlock(m_shader);
+    GeoRender::GetInstance()->BindLightUniformBlock(m_shader);
 }
 
 void GeoMesh::SetupMaterial()

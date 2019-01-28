@@ -1,12 +1,8 @@
 #include "light.h"
 #include <cmath>
-#include "camera.h"
 #include "tools.h"
 #include "setting.h"
 #include "shader_code_manage.h"
-#include <iostream>
-
-SINGLETON_IMPLEMENT(GeoLight);
 
 GeoLight::GeoLight()
     : m_ubo(0)
@@ -135,7 +131,7 @@ unsigned int GeoLight::GetUniformBindingPoint() const
     return m_bindingPoint;
 }
 
-void GeoLight::BindUniformBlock(Shader &shader)
+void GeoLight::BindUniformBlock(const Shader &shader)
 {
     shader.BindUniformBlock("LightBlock", m_bindingPoint);
 }

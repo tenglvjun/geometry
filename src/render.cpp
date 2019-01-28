@@ -72,3 +72,8 @@ void GeoRender::BindCameraUniformBlock(const Shader &shader)
 {
     m_camera.BindUniformBlock(shader);
 }
+
+void GeoRender::BindLightUniformBlock(const Shader& shader)
+{
+    m_light.BindUniformBlock(shader);
+}
