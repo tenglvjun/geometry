@@ -51,8 +51,6 @@ protected:
   bool m_mouseLBtnDown;
   GeoVector3D m_lastPt;
   GeoVector3D m_origin;
-  GeoMesh *m_mesh;
-  GeoCanvas *m_canvas;
 };
 
 #endif // __GeoWindow_HEAD_FILE__

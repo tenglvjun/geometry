@@ -86,7 +86,7 @@ static void glfw_window_size_callback(GLFWwindow *window, int width, int height)
 }
 
 GeoWindow::GeoWindow(const std::string &title)
-    : m_window(nullptr), m_title(title), m_mouseLBtnDown(false), m_mouseRBtnDown(false), m_mesh(nullptr), m_canvas(nullptr)
+    : m_window(nullptr), m_title(title), m_mouseLBtnDown(false), m_mouseRBtnDown(false)
 {
     WindowConfig &config = GeoSetting::GetInstance()->WindowConfig();
 
@@ -104,9 +104,6 @@ GeoWindow::~GeoWindow()
 
     m_mouseLBtnDown = false;
     m_mouseRBtnDown = false;
-
-    SAFE_DELETE(m_mesh);
-    SAFE_DELETE(m_canvas);
 
     glfwTerminate();
 }
@@ -156,267 +153,9 @@ void GeoWindow::ShowGeoWindow()
     glfwGetFramebufferSize(m_window, &m_width, &m_height);
     WindowSizeChange();
 
-    std::vector<GeoVertex> vertices;
-    std::vector<unsigned int> indices;
-
-    float data[] = {
-        // positions          // normals
-
-        -0.3f,
-        -0.3f,
-        -0.3f,
-        0.0f,
-        0.0f,
-        -1.0f,
-        0.3f,
-        -0.3f,
-        -0.3f,
-        0.0f,
-        0.0f,
-        -1.0f,
-        0.3f,
-        0.3f,
-        -0.3f,
-        0.0f,
-        0.0f,
-        -1.0f,
-        0.3f,
-        0.3f,
-        -0.3f,
-        0.0f,
-        0.0f,
-        -1.0f,
-        -0.3f,
-        0.3f,
-        -0.3f,
-        0.0f,
-        0.0f,
-        -1.0f,
-        -0.3f,
-        -0.3f,
-        -0.3f,
-        0.0f,
-        0.0f,
-        -1.0f,
-
-        -0.3f,
-        -0.3f,
-        0.3f,
-        0.0f,
-        0.0f,
-        1.0f,
-        0.3f,
-        -0.3f,
-        0.3f,
-        0.0f,
-        0.0f,
-        1.0f,
-        0.3f,
-        0.3f,
-        0.3f,
-        0.0f,
-        0.0f,
-        1.0f,
-        0.3f,
-        0.3f,
-        0.3f,
-        0.0f,
-        0.0f,
-        1.0f,
-        -0.3f,
-        0.3f,
-        0.3f,
-        0.0f,
-        0.0f,
-        1.0f,
-        -0.3f,
-        -0.3f,
-        0.3f,
-        0.0f,
-        0.0f,
-        1.0f,
-
-        -0.3f,
-        0.3f,
-        0.3f,
-        -1.0f,
-        0.0f,
-        0.0f,
-        -0.3f,
-        0.3f,
-        -0.3f,
-        -1.0f,
-        0.0f,
-        0.0f,
-        -0.3f,
-        -0.3f,
-        -0.3f,
-        -1.0f,
-        0.0f,
-        0.0f,
-        -0.3f,
-        -0.3f,
-        -0.3f,
-        -1.0f,
-        0.0f,
-        0.0f,
-        -0.3f,
-        -0.3f,
-        0.3f,
-        -1.0f,
-        0.0f,
-        0.0f,
-        -0.3f,
-        0.3f,
-        0.3f,
-        -1.0f,
-        0.0f,
-        0.0f,
-
-        0.3f,
-        0.3f,
-        0.3f,
-        1.0f,
-        0.0f,
-        0.0f,
-        0.3f,
-        0.3f,
-        -0.3f,
-        1.0f,
-        0.0f,
-        0.0f,
-        0.3f,
-        -0.3f,
-        -0.3f,
-        1.0f,
-        0.0f,
-        0.0f,
-        0.3f,
-        -0.3f,
-        -0.3f,
-        1.0f,
-        0.0f,
-        0.0f,
-        0.3f,
-        -0.3f,
-        0.3f,
-        1.0f,
-        0.0f,
-        0.0f,
-        0.3f,
-        0.3f,
-        0.3f,
-        1.0f,
-        0.0f,
-        0.0f,
-
-        -0.3f,
-        -0.3f,
-        -0.3f,
-        0.0f,
-        -1.0f,
-        0.0f,
-        0.3f,
-        -0.3f,
-        -0.3f,
-        0.0f,
-        -1.0f,
-        0.0f,
-        0.3f,
-        -0.3f,
-        0.3f,
-        0.0f,
-        -1.0f,
-        0.0f,
-        0.3f,
-        -0.3f,
-        0.3f,
-        0.0f,
-        -1.0f,
-        0.0f,
-        -0.3f,
-        -0.3f,
-        0.3f,
-        0.0f,
-        -1.0f,
-        0.0f,
-        -0.3f,
-        -0.3f,
-        -0.3f,
-        0.0f,
-        -1.0f,
-        0.0f,
-
-        -0.3f,
-        0.3f,
-        -0.3f,
-        0.0f,
-        1.0f,
-        0.0f,
-        0.3f,
-        0.3f,
-        -0.3f,
-        0.0f,
-        1.0f,
-        0.0f,
-        0.3f,
-        0.3f,
-        0.3f,
-        0.0f,
-        1.0f,
-        0.0f,
-        0.3f,
-        0.3f,
-        0.3f,
-        0.0f,
-        1.0f,
-        0.0f,
-        -0.3f,
-        0.3f,
-        0.3f,
-        0.0f,
-        1.0f,
-        0.0f,
-        -0.3f,
-        0.3f,
-        -0.3f,
-        0.0f,
-        1.0f,
-        0.0f,
-    };
-
-    for (unsigned int i = 0; i < 36; i++)
-    {
-        GeoVertex vertex;
-
-        GeoVector3D pos, normal;
-
-        pos[0] = data[i * 6];
-        pos[1] = data[i * 6 + 1];
-        pos[2] = data[i * 6 + 2];
-
-        normal[0] = data[i * 6 + 3];
-        normal[1] = data[i * 6 + 4];
-        normal[2] = data[i * 6 + 5];
-
-        vertex.Position(pos);
-        vertex.Normal(normal);
-
-        vertices.push_back(vertex);
-        indices.push_back(i);
-    }
-
-    m_mesh = new GeoMesh(vertices, indices);
-
     while (!glfwWindowShouldClose(m_window))
     {
         GeoRender::GetInstance()->Render();
-
-        m_canvas->Active();
-
-        m_mesh->Draw();
-
-        m_canvas->Deactive();
 
         glfwSwapBuffers(m_window);
         glfwPollEvents();
@@ -511,9 +250,11 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
     now[1] = 1.0f - ((2.0 * ypos) / (double)m_height);
     now[2] = 0.0f;
 
+    GeoMesh *mesh = GeoRender::GetInstance()->GetMesh();
+
     GeoMatrix &project = GeoRender::GetInstance()->ProjectMatrix();
     GeoMatrix &view = GeoRender::GetInstance()->ViewMatrix();
-    GeoMatrix &model = m_mesh->GetModelMatrix();
+    GeoMatrix &model = mesh->GetModelMatrix();
 
     GeoMatrix pv = project * view;
     GeoMatrix pv_inverse(4, 4);
@@ -524,7 +265,7 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
         GeoVector4D v2 = pv_inverse * GeoVector4D(now, 1.0f);
         GeoVector4D v1 = pv_inverse * GeoVector4D(lastPt, 1.0f);
 
-        m_mesh->Transform(GeoMatrix::TranslateMatrix(v2 - v1));
+        mesh->Transform(GeoMatrix::TranslateMatrix(v2 - v1));
     }
 
     if (m_mouseLBtnDown)
@@ -541,7 +282,7 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
         GeoMatrix rotate = ball.GetRotateMatrix(lastPt, pos);
 
-        GeoBBox &box = m_mesh->GetBBox();
+        GeoBBox &box = mesh->GetBBox();
 
         GeoVector4D center = GeoVector4D(box.GetCenter(), 1.0f);
 
@@ -550,8 +291,8 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
         GeoVector4D ts = cs1 - cs2;
         GeoVector4D tm = pv_inverse * ts;
 
-        m_mesh->Transform(rotate);
-        m_mesh->Transform(GeoMatrix::TranslateMatrix(tm));
+        mesh->Transform(rotate);
+        mesh->Transform(GeoMatrix::TranslateMatrix(tm));
     }
 
     m_lastPt = now;
@@ -587,9 +328,8 @@ void GeoWindow::OnScroll(double xoffset, double yoffset)
 
     if (GeoRender::GetInstance()->ProjectType() == PT_Ortho)
     {
-        double scale = yoffset < 0 ? 0.9f : 1.1f;
-
-        m_mesh->Transform(GeoMatrix::ScaleMatrix(scale));
+        GeoMesh *mesh = GeoRender::GetInstance()->GetMesh();
+        mesh->Transform(GeoMatrix::ScaleMatrix(yoffset < 0 ? 0.9f : 1.1f));
     }
     else
     {
@@ -629,7 +369,4 @@ void GeoWindow::WindowSizeChange()
     y = m_height / minimum;
     GeoFrustum frustum(-x, x, -y, y, 2.0f, 10.f);
     GeoRender::GetInstance()->SetFrustum(frustum, PT_Ortho);
-
-    SAFE_DELETE(m_canvas);
-    m_canvas = new GeoCanvas(m_width, m_height);
 }

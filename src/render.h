@@ -4,6 +4,8 @@
 #include "global_def.h"
 #include "camera.h"
 #include "light.h"
+#include "canvas.h"
+#include "mesh.h"
 
 struct GeoViewport
 {
@@ -38,13 +40,18 @@ public:
   void SetFrustum(const GeoFrustum &frustum, const ProjType_e pt);
 
 public:
-  void BindCameraUniformBlock(const Shader& shader);
-  void BindLightUniformBlock(const Shader& shader);
+  GeoMesh *GetMesh();
+
+public:
+  void BindCameraUniformBlock(const Shader &shader);
+  void BindLightUniformBlock(const Shader &shader);
 
 private:
   struct GeoViewport m_viewPort;
   GeoCamera m_camera;
   GeoLight m_light;
+  GeoCanvas *m_canvas;
+  GeoMesh *m_mesh;
 };
 
 #endif // __RENDER_HEAD_FILE__
