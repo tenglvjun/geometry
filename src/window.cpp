@@ -512,20 +512,18 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
     now[1] = 1.0f - ((2.0 * ypos) / (double)m_height);
     now[2] = 0.0f;
 
+    GeoMatrix &project = GeoCamera::GetInstance()->GetProjectionMatrix();
+    GeoMatrix &view = GeoCamera::GetInstance()->GetViewMatrix();
+    GeoMatrix &model = m_mesh->GetModelMatrix();
+
+    GeoMatrix pv = project * view;
+    GeoMatrix pv_inverse(4, 4);
+    pv.Inverse(pv_inverse);
+
     if (m_mouseRBtnDown)
     {
-        GeoMatrix &project = GeoCamera::GetInstance()->GetProjectionMatrix();
-        GeoMatrix &view = GeoCamera::GetInstance()->GetViewMatrix();
-        GeoMatrix &model = m_mesh->GetModelMatrix();
-
-        GeoMatrix pvm = project * view * model;
-
-        GeoMatrix pvm_inverse(4, 4);
-
-        pvm.Inverse(pvm_inverse);
-
-        GeoVector4D v2 = pvm_inverse * GeoVector4D(now, 1.0f);
-        GeoVector4D v1 = pvm_inverse * GeoVector4D(lastPt, 1.0f);
+        GeoVector4D v2 = pv_inverse * GeoVector4D(now, 1.0f);
+        GeoVector4D v1 = pv_inverse * GeoVector4D(lastPt, 1.0f);
 
         m_mesh->Transform(GeoMatrix::TranslateMatrix(v2 - v1));
     }
@@ -534,8 +532,8 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
     {
         GeoArcBall ball;
 
-        lastPt = ball.ProjectToBall(lastPt);
-        GeoVector3D pos = ball.ProjectToBall(now);
+        lastPt = ball.ProjectToSphere(lastPt);
+        GeoVector3D pos = ball.ProjectToSphere(now);
 
         if (lastPt == pos)
         {
@@ -544,28 +542,17 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
 
         GeoMatrix rotate = ball.GetRotateMatrix(lastPt, pos);
 
-        GeoMatrix &project = GeoCamera::GetInstance()->GetProjectionMatrix();
-        GeoMatrix &view = GeoCamera::GetInstance()->GetViewMatrix();
-        GeoMatrix &model = m_mesh->GetModelMatrix();
-        GeoMatrix pvm = project * view * model;
-
         GeoBBox &box = m_mesh->GetBBox();
-        GeoVector4D c1 = GeoVector4D(box.GetCenter(), 1.0f);
-        GeoVector4D c2 = c1;
 
-        c2 = pvm * c1;
+        GeoVector4D center = GeoVector4D(box.GetCenter(), 1.0f);
+
+        GeoVector4D cs1 = pv * model * center;
+        GeoVector4D cs2 = pv * rotate * model * center;
+        GeoVector4D ts = cs1 - cs2;
+        GeoVector4D tm = pv_inverse * ts;
+
         m_mesh->Transform(rotate);
-
-        GeoMatrix pvm_inverse(4, 4);
-        pvm.Inverse(pvm_inverse);
-
-        c2 = c2 * pvm_inverse;
-
-        GeoMatrix t = GeoMatrix::TranslateMatrix(c1 - c2);
-
-        Log::GetInstance()->Dump(t);
-
-        m_mesh->Transform(t);
+        m_mesh->Transform(GeoMatrix::TranslateMatrix(tm));
     }
 
     m_lastPt = now;

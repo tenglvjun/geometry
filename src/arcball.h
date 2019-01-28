@@ -15,7 +15,7 @@ public:
   GeoArcBall &operator=(const GeoArcBall &ball);
 
 public:
-  GeoVector3D ProjectToBall(const GeoVector3D &pt);
+  GeoVector3D ProjectToSphere(const GeoVector3D &pt);
   GeoMatrix GetRotateMatrix(const GeoVector3D &s, const GeoVector3D &e);
 
 protected:

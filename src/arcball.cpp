@@ -32,7 +32,7 @@ GeoArcBall &GeoArcBall::operator=(const GeoArcBall &ball)
     return *this;
 }
 
-GeoVector3D GeoArcBall::ProjectToBall(const GeoVector3D &pt)
+GeoVector3D GeoArcBall::ProjectToSphere(const GeoVector3D &pt)
 {
     GeoVector3D ret;
 
@@ -58,10 +58,16 @@ GeoVector3D GeoArcBall::ProjectToBall(const GeoVector3D &pt)
 
 GeoMatrix GeoArcBall::GetRotateMatrix(const GeoVector3D &s, const GeoVector3D &e)
 {
-    GeoVector3D axis = s * e;
+    GeoVector3D v1 = s;
+    GeoVector3D v2 = e;
+
+    v1.Normalize();
+    v2.Normalize();
+
+    GeoVector3D axis = v1 * v2;
     axis.Normalize();
 
-    double angle = acos(s % e);
+    double angle = acos(v1 % v2);
 
     //    return GeoQuaternion::RotateMatrix(axis, angle);
     return GeoMatrix::RotateMatrix(angle, axis);
