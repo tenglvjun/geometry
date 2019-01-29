@@ -6,6 +6,7 @@
 #include "light.h"
 #include "canvas.h"
 #include "mesh.h"
+#include "point.h"
 #include <vector>
 
 struct GeoViewport
@@ -46,6 +47,12 @@ public:
   void AddMesh(GeoMesh *mesh);
 
 public:
+  GeoVector3D MapScreenToModel(const GeoVector3D &v, const unsigned int idx);
+  GeoVector4D MapScreenToModel(const GeoVector4D &v, const unsigned int idx);
+  GeoVector3D MapModelToScreen(const GeoVector3D &v, const unsigned int idx);
+  GeoVector4D MapModelToScreen(const GeoVector4D &v, const unsigned int idx);
+
+public:
   void BindCameraUniformBlock(const Shader &shader);
   void BindLightUniformBlock(const Shader &shader);
 
@@ -57,7 +64,7 @@ private:
   GeoCamera m_camera;
   GeoLight m_light;
   GeoCanvas *m_canvas;
-  std::vector<GeoMesh *>  m_meshes;
+  std::vector<GeoMesh *> m_meshes;
 };
 
 #endif // __RENDER_HEAD_FILE__

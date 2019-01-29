@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <assert.h>
+#include "matrix.h"
 
 GeoViewport::GeoViewport()
 {
@@ -114,6 +115,54 @@ void GeoRender::AddMesh(GeoMesh *mesh)
     }
 
     m_meshes.push_back(mesh);
+}
+
+GeoVector3D GeoRender::MapScreenToModel(const GeoVector3D &v, const unsigned int idx)
+{
+    assert(idx < m_meshes.size());
+
+    GeoVector4D v1(v, 1.0f);
+
+    v1 = MapScreenToModel(v1, idx);
+
+    return GeoVector3D(v1[0], v1[1], v1[2]);
+}
+
+GeoVector4D GeoRender::MapScreenToModel(const GeoVector4D &v, const unsigned int idx)
+{
+    assert(idx < m_meshes.size());
+
+    GeoMatrix &project = GeoRender::GetInstance()->ProjectMatrix();
+    GeoMatrix &view = GeoRender::GetInstance()->ViewMatrix();
+    GeoMatrix &model = m_meshes[idx]->GetModelMatrix();
+
+    GeoMatrix pv = project * view;
+    GeoMatrix pv_inverse(4, 4);
+    pv.Inverse(pv_inverse);
+
+    return (pv_inverse * v);
+}
+
+GeoVector3D GeoRender::MapModelToScreen(const GeoVector3D &v, const unsigned int idx)
+{
+    assert(idx < m_meshes.size());
+
+    GeoVector4D v1(v, 1.0f);
+
+    v1 = MapModelToScreen(v1, idx);
+
+    return GeoVector3D(v1[0], v1[1], v1[2]);
+}
+
+GeoVector4D GeoRender::MapModelToScreen(const GeoVector4D &v, const unsigned int idx)
+{
+    assert(idx < m_meshes.size());
+
+    GeoMatrix &project = GeoRender::GetInstance()->ProjectMatrix();
+    GeoMatrix &view = GeoRender::GetInstance()->ViewMatrix();
+    GeoMatrix &model = m_meshes[idx]->GetModelMatrix();
+
+    return project * view * model * v;
 }
 
 void GeoRender::BindCameraUniformBlock(const Shader &shader)
