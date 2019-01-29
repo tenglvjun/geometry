@@ -153,6 +153,78 @@ void GeoWindow::ShowGeoWindow()
     glfwGetFramebufferSize(m_window, &m_width, &m_height);
     WindowSizeChange();
 
+    std::vector<GeoVertex> vertices;
+    std::vector<unsigned int> indices;
+
+    float data[] = {
+        // positions          // normals
+        -0.3f, -0.3f, -0.3f,  0.0f,  0.0f, -1.0f,
+         0.3f, -0.3f, -0.3f,  0.0f,  0.0f, -1.0f,
+         0.3f,  0.3f, -0.3f,  0.0f,  0.0f, -1.0f,
+         0.3f,  0.3f, -0.3f,  0.0f,  0.0f, -1.0f,
+        -0.3f,  0.3f, -0.3f,  0.0f,  0.0f, -1.0f,
+        -0.3f, -0.3f, -0.3f,  0.0f,  0.0f, -1.0f,
+
+        -0.3f, -0.3f,  0.3f,  0.0f,  0.0f,  1.0f,
+         0.3f, -0.3f,  0.3f,  0.0f,  0.0f,  1.0f,
+         0.3f,  0.3f,  0.3f,  0.0f,  0.0f,  1.0f,
+         0.3f,  0.3f,  0.3f,  0.0f,  0.0f,  1.0f,
+        -0.3f,  0.3f,  0.3f,  0.0f,  0.0f,  1.0f,
+        -0.3f, -0.3f,  0.3f,  0.0f,  0.0f,  1.0f,
+
+        -0.3f,  0.3f,  0.3f, -1.0f,  0.0f,  0.0f,
+        -0.3f,  0.3f, -0.3f, -1.0f,  0.0f,  0.0f,
+        -0.3f, -0.3f, -0.3f, -1.0f,  0.0f,  0.0f,
+        -0.3f, -0.3f, -0.3f, -1.0f,  0.0f,  0.0f,
+        -0.3f, -0.3f,  0.3f, -1.0f,  0.0f,  0.0f,
+        -0.3f,  0.3f,  0.3f, -1.0f,  0.0f,  0.0f,
+
+         0.3f,  0.3f,  0.3f,  1.0f,  0.0f,  0.0f,
+         0.3f,  0.3f, -0.3f,  1.0f,  0.0f,  0.0f,
+         0.3f, -0.3f, -0.3f,  1.0f,  0.0f,  0.0f,
+         0.3f, -0.3f, -0.3f,  1.0f,  0.0f,  0.0f,
+         0.3f, -0.3f,  0.3f,  1.0f,  0.0f,  0.0f,
+         0.3f,  0.3f,  0.3f,  1.0f,  0.0f,  0.0f,
+
+        -0.3f, -0.3f, -0.3f,  0.0f, -1.0f,  0.0f,
+         0.3f, -0.3f, -0.3f,  0.0f, -1.0f,  0.0f,
+         0.3f, -0.3f,  0.3f,  0.0f, -1.0f,  0.0f,
+         0.3f, -0.3f,  0.3f,  0.0f, -1.0f,  0.0f,
+        -0.3f, -0.3f,  0.3f,  0.0f, -1.0f,  0.0f,
+        -0.3f, -0.3f, -0.3f,  0.0f, -1.0f,  0.0f,
+
+        -0.3f,  0.3f, -0.3f,  0.0f,  1.0f,  0.0f,
+         0.3f,  0.3f, -0.3f,  0.0f,  1.0f,  0.0f,
+         0.3f,  0.3f,  0.3f,  0.0f,  1.0f,  0.0f,
+         0.3f,  0.3f,  0.3f,  0.0f,  1.0f,  0.0f,
+        -0.3f,  0.3f,  0.3f,  0.0f,  1.0f,  0.0f,
+        -0.3f,  0.3f, -0.3f,  0.0f,  1.0f,  0.0f,
+    };
+
+    for (unsigned int i = 0; i < 36; i++)
+    {
+        GeoVertex vertex;
+
+        GeoVector3D pos, normal;
+
+        pos[0] = data[i * 6];
+        pos[1] = data[i * 6 + 1];
+        pos[2] = data[i * 6 + 2];
+
+        normal[0] = data[i * 6 + 3];
+        normal[1] = data[i * 6 + 4];
+        normal[2] = data[i * 6 + 5];
+
+        vertex.Position(pos);
+        vertex.Normal(normal);
+
+        vertices.push_back(vertex);
+        indices.push_back(i);
+    }
+
+    GeoMesh *mesh = new GeoMesh(vertices, indices);
+    GeoRender::GetInstance()->AddMesh(mesh);
+
     while (!glfwWindowShouldClose(m_window))
     {
         GeoRender::GetInstance()->Render();
@@ -250,7 +322,7 @@ void GeoWindow::OnMouseMove(double xpos, double ypos)
     now[1] = 1.0f - ((2.0 * ypos) / (double)m_height);
     now[2] = 0.0f;
 
-    GeoMesh *mesh = GeoRender::GetInstance()->GetMesh();
+    GeoMesh *mesh = GeoRender::GetInstance()->GetMesh(0);
 
     GeoMatrix &project = GeoRender::GetInstance()->ProjectMatrix();
     GeoMatrix &view = GeoRender::GetInstance()->ViewMatrix();
@@ -328,7 +400,7 @@ void GeoWindow::OnScroll(double xoffset, double yoffset)
 
     if (GeoRender::GetInstance()->ProjectType() == PT_Ortho)
     {
-        GeoMesh *mesh = GeoRender::GetInstance()->GetMesh();
+        GeoMesh *mesh = GeoRender::GetInstance()->GetMesh(0);
         mesh->Transform(GeoMatrix::ScaleMatrix(yoffset < 0 ? 0.9f : 1.1f));
     }
     else

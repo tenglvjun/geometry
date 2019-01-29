@@ -1,6 +1,7 @@
 #include "render.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <assert.h>
 
 GeoViewport::GeoViewport()
 {
@@ -18,85 +19,13 @@ GeoViewport::GeoViewport(const unsigned int x, const unsigned int y, const unsig
 SINGLETON_IMPLEMENT(GeoRender);
 
 GeoRender::GeoRender()
-    : m_canvas(nullptr), m_mesh(nullptr)
+    : m_canvas(nullptr)
 {
-
-    std::vector<GeoVertex> vertices;
-    std::vector<unsigned int> indices;
-
-    float data[] = {
-        // positions          // normals
-        -0.3f, -0.3f, -0.3f,  0.0f,  0.0f, -1.0f,
-         0.3f, -0.3f, -0.3f,  0.0f,  0.0f, -1.0f,
-         0.3f,  0.3f, -0.3f,  0.0f,  0.0f, -1.0f,
-         0.3f,  0.3f, -0.3f,  0.0f,  0.0f, -1.0f,
-        -0.3f,  0.3f, -0.3f,  0.0f,  0.0f, -1.0f,
-        -0.3f, -0.3f, -0.3f,  0.0f,  0.0f, -1.0f,
-
-        -0.3f, -0.3f,  0.3f,  0.0f,  0.0f,  1.0f,
-         0.3f, -0.3f,  0.3f,  0.0f,  0.0f,  1.0f,
-         0.3f,  0.3f,  0.3f,  0.0f,  0.0f,  1.0f,
-         0.3f,  0.3f,  0.3f,  0.0f,  0.0f,  1.0f,
-        -0.3f,  0.3f,  0.3f,  0.0f,  0.0f,  1.0f,
-        -0.3f, -0.3f,  0.3f,  0.0f,  0.0f,  1.0f,
-
-        -0.3f,  0.3f,  0.3f, -1.0f,  0.0f,  0.0f,
-        -0.3f,  0.3f, -0.3f, -1.0f,  0.0f,  0.0f,
-        -0.3f, -0.3f, -0.3f, -1.0f,  0.0f,  0.0f,
-        -0.3f, -0.3f, -0.3f, -1.0f,  0.0f,  0.0f,
-        -0.3f, -0.3f,  0.3f, -1.0f,  0.0f,  0.0f,
-        -0.3f,  0.3f,  0.3f, -1.0f,  0.0f,  0.0f,
-
-         0.3f,  0.3f,  0.3f,  1.0f,  0.0f,  0.0f,
-         0.3f,  0.3f, -0.3f,  1.0f,  0.0f,  0.0f,
-         0.3f, -0.3f, -0.3f,  1.0f,  0.0f,  0.0f,
-         0.3f, -0.3f, -0.3f,  1.0f,  0.0f,  0.0f,
-         0.3f, -0.3f,  0.3f,  1.0f,  0.0f,  0.0f,
-         0.3f,  0.3f,  0.3f,  1.0f,  0.0f,  0.0f,
-
-        -0.3f, -0.3f, -0.3f,  0.0f, -1.0f,  0.0f,
-         0.3f, -0.3f, -0.3f,  0.0f, -1.0f,  0.0f,
-         0.3f, -0.3f,  0.3f,  0.0f, -1.0f,  0.0f,
-         0.3f, -0.3f,  0.3f,  0.0f, -1.0f,  0.0f,
-        -0.3f, -0.3f,  0.3f,  0.0f, -1.0f,  0.0f,
-        -0.3f, -0.3f, -0.3f,  0.0f, -1.0f,  0.0f,
-
-        -0.3f,  0.3f, -0.3f,  0.0f,  1.0f,  0.0f,
-         0.3f,  0.3f, -0.3f,  0.0f,  1.0f,  0.0f,
-         0.3f,  0.3f,  0.3f,  0.0f,  1.0f,  0.0f,
-         0.3f,  0.3f,  0.3f,  0.0f,  1.0f,  0.0f,
-        -0.3f,  0.3f,  0.3f,  0.0f,  1.0f,  0.0f,
-        -0.3f,  0.3f, -0.3f,  0.0f,  1.0f,  0.0f,
-    };
-
-    for (unsigned int i = 0; i < 36; i++)
-    {
-        GeoVertex vertex;
-
-        GeoVector3D pos, normal;
-
-        pos[0] = data[i * 6];
-        pos[1] = data[i * 6 + 1];
-        pos[2] = data[i * 6 + 2];
-
-        normal[0] = data[i * 6 + 3];
-        normal[1] = data[i * 6 + 4];
-        normal[2] = data[i * 6 + 5];
-
-        vertex.Position(pos);
-        vertex.Normal(normal);
-
-        vertices.push_back(vertex);
-        indices.push_back(i);
-    }
-
-    m_mesh = new GeoMesh(vertices, indices);
 }
 
 GeoRender::~GeoRender()
 {
-    SAFE_DELETE(m_canvas);
-    SAFE_DELETE(m_mesh);
+    Clear();
 }
 
 void GeoRender::Render()
@@ -107,7 +36,14 @@ void GeoRender::Render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     m_canvas->Active();
-    m_mesh->Draw();
+
+    for (std::vector<GeoMesh *>::iterator iter = m_meshes.begin(); iter != m_meshes.end(); iter++)
+    {
+        assert(*iter);
+
+        (*iter)->Draw();
+    }
+
     m_canvas->Deactive();
 }
 
@@ -149,9 +85,35 @@ void GeoRender::SetFrustum(const GeoFrustum &frustum, const ProjType_e pt)
     m_camera.SetFrustum(frustum, pt);
 }
 
-GeoMesh *GeoRender::GetMesh()
+GeoMesh *GeoRender::GetMesh(const unsigned int idx)
 {
-    return m_mesh;
+    assert(idx < m_meshes.size());
+
+    return m_meshes[idx];
+}
+
+void GeoRender::DeleteMesh(const unsigned int idx)
+{
+    assert(idx < m_meshes.size());
+
+    std::vector<GeoMesh *>::iterator iter = m_meshes.begin() + idx;
+
+    SAFE_DELETE(*iter);
+
+    m_meshes.erase(iter);
+}
+
+void GeoRender::AddMesh(GeoMesh *mesh)
+{
+    for (std::vector<GeoMesh *>::iterator iter = m_meshes.begin(); iter != m_meshes.end(); iter++)
+    {
+        if ((*iter) == mesh)
+        {
+            return;
+        }
+    }
+
+    m_meshes.push_back(mesh);
 }
 
 void GeoRender::BindCameraUniformBlock(const Shader &shader)
@@ -162,4 +124,16 @@ void GeoRender::BindCameraUniformBlock(const Shader &shader)
 void GeoRender::BindLightUniformBlock(const Shader &shader)
 {
     m_light.BindUniformBlock(shader);
+}
+
+void GeoRender::Clear()
+{
+    for (std::vector<GeoMesh *>::iterator iter = m_meshes.begin(); iter != m_meshes.end(); iter++)
+    {
+        SAFE_DELETE(*iter);
+    }
+
+    m_meshes.clear();
+
+    SAFE_DELETE(m_canvas);
 }
