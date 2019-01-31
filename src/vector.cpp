@@ -142,6 +142,14 @@ double GeoVector2D::Magnitude2() const
     return m_coord[0] * m_coord[0] + m_coord[1] * m_coord[1];
 }
 
+GeoVector2D GeoVector2D::ProjectTo(const GeoVector2D &v)
+{
+    GeoVector2D tmp = v;
+    tmp.Normalize();
+
+    return tmp * (*this % tmp);
+}
+
 void GeoVector2D::Flatten(std::vector<float> &data) const
 {
     data.push_back((float)m_coord[0]);
@@ -312,6 +320,14 @@ double GeoVector3D::Magnitude() const
 double GeoVector3D::Magnitude2() const
 {
     return m_coord[0] * m_coord[0] + m_coord[1] * m_coord[1] + m_coord[2] * m_coord[2];
+}
+
+GeoVector3D GeoVector3D::ProjectTo(const GeoVector3D &v)
+{
+    GeoVector3D tmp = v;
+    tmp.Normalize();
+
+    return tmp * (*this % tmp);
 }
 
 void GeoVector3D::Flatten(std::vector<float> &data) const

@@ -28,6 +28,7 @@ public:
   void Normalize();
   double Magnitude() const;
   double Magnitude2() const;
+  GeoVector2D ProjectTo(const GeoVector2D &v);
   void Flatten(std::vector<float> &data) const;
 
 public:
@@ -64,6 +65,7 @@ public:
   void Normalize();
   double Magnitude() const;
   double Magnitude2() const;
+  GeoVector3D ProjectTo(const GeoVector3D &v);
   void Flatten(std::vector<float> &data) const;
 
 public:
