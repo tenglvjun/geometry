@@ -156,6 +156,16 @@ void GeoVector2D::Flatten(std::vector<float> &data) const
     data.push_back((float)m_coord[1]);
 }
 
+void GeoVector2D::Dump() const
+{
+    std::cout.precision(5);
+    for (unsigned int i = 0; i < GeoVector2D::Size(); i++)
+    {
+        std::cout << m_coord[i] << "    ";
+    }
+    std::cout << std::endl;
+}
+
 unsigned int GeoVector2D::Size()
 {
     return 2;
@@ -337,6 +347,16 @@ void GeoVector3D::Flatten(std::vector<float> &data) const
     data.push_back((float)m_coord[2]);
 }
 
+void GeoVector3D::Dump() const
+{
+    std::cout.precision(5);
+    for (unsigned int i = 0; i < GeoVector3D::Size(); i++)
+    {
+        std::cout << m_coord[i] << "    ";
+    }
+    std::cout << std::endl;
+}
+
 unsigned int GeoVector3D::Size()
 {
     return 3;
@@ -513,6 +533,16 @@ void GeoVector4D::Flatten(std::vector<float> &data) const
     data.push_back((float)m_coord[1]);
     data.push_back((float)m_coord[2]);
     data.push_back((float)m_coord[3]);
+}
+
+void GeoVector4D::Dump() const
+{
+    std::cout.precision(5);
+    for (unsigned int i = 0; i < GeoVector4D::Size(); i++)
+    {
+        std::cout << m_coord[i] << "    ";
+    }
+    std::cout << std::endl;
 }
 
 unsigned int GeoVector4D::Size()
@@ -702,6 +732,16 @@ void GeoVector::Flatten(std::vector<float> &data) const
 unsigned int GeoVector::Dim() const
 {
     return m_dim;
+}
+
+void GeoVector::Dump() const
+{
+    std::cout.precision(5);
+    for (unsigned int i = 0; i < m_dim; i++)
+    {
+        std::cout << m_coord[i] << "    ";
+    }
+    std::cout << std::endl;
 }
 
 void GeoVector::Clear()

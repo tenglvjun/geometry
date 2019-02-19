@@ -27,6 +27,7 @@ public:
   double Green() const;
   double Blue() const;
   double Alpha() const;
+  void Dump() const;
 
 public:
   static unsigned int Size();

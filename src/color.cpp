@@ -1,6 +1,7 @@
 #include "color.h"
 #include <assert.h>
 #include "tools.h"
+#include <iostream>
 
 GeoColor::GeoColor()
 {
@@ -145,6 +146,12 @@ double GeoColor::Alpha() const
 {
     return m_rgba[3];
 }
+
+void GeoColor::Dump() const
+{
+    std::cout << "R: " << m_rgba[0] << " G: " << m_rgba[1] << " B: " << m_rgba[2] << " A: " << m_rgba[3] << std::endl;
+}
+
 
 unsigned int GeoColor::Size()
 {

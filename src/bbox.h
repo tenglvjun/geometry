@@ -19,6 +19,7 @@ class GeoBBox
     const GeoVector3D &GetMax() const;
     const GeoVector3D &GetMin() const;
     const GeoVector3D &GetCenter() const;
+    void Dump() const;
 
   protected:
     GeoVector3D m_center;

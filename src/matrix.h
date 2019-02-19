@@ -41,6 +41,9 @@ public:
   void SetVector(const unsigned int idx, const GeoVector &v, bool isRow);
   bool SolveLinearEquation(const GeoVector &b, GeoVector &x) const;
 
+public:
+  void Dump() const;
+
 protected:
   void Clear();
   void Init(const unsigned int row, const unsigned int col);

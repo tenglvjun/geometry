@@ -1,4 +1,5 @@
 #include "bbox.h"
+#include <iostream>
 
 GeoBBox::GeoBBox()
 {
@@ -73,4 +74,14 @@ const GeoVector3D &GeoBBox::GetMin() const
 const GeoVector3D &GeoBBox::GetCenter() const
 {
     return m_center;
+}
+
+void GeoBBox::Dump() const
+{
+    std::cout << "Center: ";
+    GetCenter().Dump();
+    std::cout << "Max: ";
+    GetMax().Dump();
+    std::cout << "Min: ";
+    GetMin().Dump();
 }

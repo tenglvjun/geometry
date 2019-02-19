@@ -431,6 +431,20 @@ bool GeoMatrix::SolveLinearEquation(const GeoVector &b, GeoVector &x) const
     return true;
 }
 
+void GeoMatrix::Dump() const
+{
+    std::cout.precision(5);
+    for (unsigned int i = 0; i < m_row; i++)
+    {
+        for (unsigned int j = 0; j < m_col; j++)
+        {
+            std::cout << m_data[i][j] << "  ";
+        }
+
+        std::cout << std::endl;
+    }
+}
+
 void GeoMatrix::Clear()
 {
     for (unsigned int row = 0; row < m_row; row++)

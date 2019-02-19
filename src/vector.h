@@ -30,6 +30,7 @@ public:
   double Magnitude2() const;
   GeoVector2D ProjectTo(const GeoVector2D &v);
   void Flatten(std::vector<float> &data) const;
+  void Dump() const;
 
 public:
   static unsigned int
@@ -67,6 +68,7 @@ public:
   double Magnitude2() const;
   GeoVector3D ProjectTo(const GeoVector3D &v);
   void Flatten(std::vector<float> &data) const;
+  void Dump() const;
 
 public:
   static unsigned int Size();
@@ -101,6 +103,7 @@ public:
   double Magnitude() const;
   double Magnitude2() const;
   void Flatten(std::vector<float> &data) const;
+  void Dump() const;
 
 public:
   static unsigned int Size();
@@ -134,6 +137,9 @@ public:
   double Magnitude2() const;
   void Flatten(std::vector<float> &data) const;
   unsigned int Dim() const;
+
+public:
+  void Dump() const;
 
 protected:
   void Clear();

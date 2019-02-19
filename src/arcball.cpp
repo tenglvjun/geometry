@@ -1,6 +1,5 @@
 #include "arcball.h"
 #include <cmath>
-#include "tools.h"
 #include "quaternion.h"
 
 GeoArcBall::GeoArcBall()
