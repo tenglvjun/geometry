@@ -1,9 +1,5 @@
 {
   "setting": {
-    "math": {
-      "pi": 3.141592653,
-      "epsilon": 1e-7
-    },
     "opengl": {
       "light": {
         "position": "0.0, 0.0, 2.0",

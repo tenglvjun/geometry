@@ -5,12 +5,6 @@
 #include "tools.h"
 #include <vector>
 
-MathConfig::MathConfig()
-{
-    m_pi = 0.0f;
-    m_epsilon = 0.0f;
-}
-
 PointLightAttenuation::PointLightAttenuation()
 {
     m_constant = 0.0f;
@@ -85,13 +79,11 @@ bool GeoSetting::Init(const std::string &filename)
             return false;
         }
 
-        Json::Value math, opengl, window;
+        Json::Value opengl, window;
 
-        math = setting["math"];
         opengl = setting["opengl"];
         window = setting["window"];
 
-        ParseMath(math);
         ParseOpenGL(opengl);
         ParseWindow(window);
     }
@@ -106,11 +98,6 @@ bool GeoSetting::Save(const std::string &filename)
     return true;
 }
 
-MathConfig &GeoSetting::MathConfig()
-{
-    return m_math;
-}
-
 OpenGLConfig &GeoSetting::OpenGLConfig()
 {
     return m_openGL;
@@ -119,14 +106,6 @@ OpenGLConfig &GeoSetting::OpenGLConfig()
 WindowConfig &GeoSetting::WindowConfig()
 {
     return m_window;
-}
-
-void GeoSetting::ParseMath(const Json::Value &math)
-{
-    Json::Value pi, epsilon;
-
-    m_math.m_pi = !math["pi"].isNull() ? 3.1415926 : math["pi"].asDouble();
-    m_math.m_epsilon = math["epsilon"].isNull() ? 1e-7 : math["epsilon"].asDouble();
 }
 
 void GeoSetting::ParseOpenGL(const Json::Value &openGL)

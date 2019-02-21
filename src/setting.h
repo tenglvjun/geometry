@@ -9,14 +9,6 @@
 #include "vector.h"
 #include "color.h"
 
-struct MathConfig
-{
-  MathConfig();
-
-  double m_pi;
-  double m_epsilon;
-};
-
 struct PointLightAttenuation
 {
   PointLightAttenuation();
@@ -67,7 +59,6 @@ public:
   bool Init(const std::string &filename);
   bool Save(const std::string &filename);
 
-  MathConfig &MathConfig();
   OpenGLConfig &OpenGLConfig();
   WindowConfig &WindowConfig();
 
@@ -75,7 +66,6 @@ public:
   SINGLETON_DECLARE(GeoSetting)
 
 protected:
-  void ParseMath(const Json::Value &math);
   void ParseOpenGL(const Json::Value &openGL);
   void ParseWindow(const Json::Value &window);
 
@@ -84,7 +74,6 @@ private:
   GeoSetting &operator=(const GeoSetting &setting);
 
 private:
-  struct MathConfig m_math;
   struct OpenGLConfig m_openGL;
   struct WindowConfig m_window;
 };

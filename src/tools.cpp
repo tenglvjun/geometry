@@ -5,6 +5,7 @@
 #include <sstream>
 #include "log.h"
 #include "setting.h"
+#include "math_def.h"
 
 SINGLETON_IMPLEMENT(Tools)
 
@@ -17,20 +18,12 @@ Tools::~Tools()
 
 double Tools::Radia2Degree(const double r)
 {
-    MathConfig &config = GeoSetting::GetInstance()->MathConfig();
-
-    double pi = config.m_pi;
-
-    return r * 180 / pi;
+    return r * 180 / PI;
 }
 
 double Tools::Degree2Radian(const double d)
 {
-    MathConfig &config = GeoSetting::GetInstance()->MathConfig();
-
-    double pi = config.m_pi;
-
-    return ((d * pi) / (double)180);
+    return ((d * PI) / (double)180);
 }
 
 std::string Tools::GetLocalTime()
@@ -45,9 +38,7 @@ std::string Tools::GetLocalTime()
 
 bool Tools::IsZero(const double v)
 {
-    MathConfig &config = GeoSetting::GetInstance()->MathConfig();
-
-    return (fabs(v) < config.m_epsilon) ? true : false;
+    return (fabs(v) < EPSILON) ? true : false;
 }
 
 double Tools::Maximum(const double a, const double b)
