@@ -608,7 +608,7 @@ void GeoWindow::WindowSizeChange()
     GeoRender::GetInstance()->SetViewPort(viewport);
 
     double x, y, minimum;
-    minimum = Tools::GetInstance()->Minimum(m_width, m_height);
+    minimum = Tools::Minimum(m_width, m_height);
     x = m_width / minimum;
     y = m_height / minimum;
     GeoFrustum frustum(-x, x, -y, y, 2.0f, 10.f);

@@ -46,5 +46,8 @@ add_subdirectory(${JSON_SRC_DIRS})
 add_subdirectory(assimp)
 include_directories(assimp/include)
 
+#math
+add_subdirectory(math)
+include_directories(math/include)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)

@@ -39,6 +39,12 @@ glfw
 # assimp
 assimp
 
+# math
+math
+
+# tools
+tools
+
 # build
 build
 

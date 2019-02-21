@@ -5,25 +5,13 @@
 #include <sstream>
 #include "log.h"
 #include "setting.h"
-#include "math_def.h"
-
-SINGLETON_IMPLEMENT(Tools)
 
 Tools::Tools()
 {
 }
+
 Tools::~Tools()
 {
-}
-
-double Tools::Radia2Degree(const double r)
-{
-    return r * 180 / PI;
-}
-
-double Tools::Degree2Radian(const double d)
-{
-    return ((d * PI) / (double)180);
 }
 
 std::string Tools::GetLocalTime()
@@ -34,11 +22,6 @@ std::string Tools::GetLocalTime()
     strftime(tmp, sizeof(tmp), "%Y-%m-%d %H:%M:%S", localtime(&timep));
 
     return tmp;
-}
-
-bool Tools::IsZero(const double v)
-{
-    return (fabs(v) < EPSILON) ? true : false;
 }
 
 double Tools::Maximum(const double a, const double b)

@@ -69,8 +69,8 @@ void GeoShaderCodeMgr::Init()
         fragment += ".fs";
 
         GeoShaderCode code;
-        code.m_vertex = Tools::GetInstance()->ReadFile(vertex);
-        code.m_fragment = Tools::GetInstance()->ReadFile(fragment);
+        code.m_vertex = Tools::ReadFile(vertex);
+        code.m_fragment = Tools::ReadFile(fragment);
 
         m_codes[(ShaderCodeType_e)i] = code;
     }

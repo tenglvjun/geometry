@@ -1,5 +1,3 @@
-#include "global_def.h"
-
 #if !defined(__TOOLS_HEAD_FILE__)
 #define __TOOLS_HEAD_FILE__
 
@@ -13,12 +11,7 @@ public:
   ~Tools();
 
 public:
-  SINGLETON_DECLARE(Tools)
-public:
-  static double Radia2Degree(const double r);
-  static double Degree2Radian(const double d);
   static std::string GetLocalTime();
-  static bool IsZero(const double v);
   static double Maximum(const double a, const double b);
   static double Minimum(const double a, const double b);
   static std::string ReadFile(const std::string &filePath);

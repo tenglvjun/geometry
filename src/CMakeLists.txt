@@ -8,6 +8,7 @@ target_link_libraries(${PROJECT_NAME} glfw)
 target_link_libraries(${PROJECT_NAME} glad)
 target_link_libraries(${PROJECT_NAME} json)
 target_link_libraries(${PROJECT_NAME} assimp)
+target_link_libraries(${PROJECT_NAME} math)
 
 if(MSVC)
     set(PROJECT_BIN_EXE ${PROJECT_NAME}.exe)

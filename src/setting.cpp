@@ -72,7 +72,7 @@ bool GeoSetting::Init(const std::string &filename)
         Json::Value setting;
         setting = root["setting"];
 
-        if (setting["math"].isNull() || setting["opengl"].isNull() || setting["window"].isNull())
+        if (setting["opengl"].isNull() || setting["window"].isNull())
         {
             Log::GetInstance()->OutputConsole("invailed setting files");
             is.close();
@@ -129,7 +129,7 @@ void GeoSetting::ParseOpenGL(const Json::Value &openGL)
         std::string pos = light["position"].asString();
         std::vector<std::string> ret;
 
-        Tools::GetInstance()->SplitString(pos, ret, ",", " ");
+        Tools::SplitString(pos, ret, ",", " ");
 
         assert(ret.size() == GeoVector3D::Size());
         
@@ -151,7 +151,7 @@ void GeoSetting::ParseOpenGL(const Json::Value &openGL)
         std::string color = light["color"].asString();
         std::vector<std::string> ret;
 
-        Tools::GetInstance()->SplitString(color, ret, ",", " ");
+        Tools::SplitString(color, ret, ",", " ");
 
         assert(ret.size() == GeoColor::Size());
         
@@ -173,7 +173,7 @@ void GeoSetting::ParseOpenGL(const Json::Value &openGL)
         std::string ambient = light["ambient"].asString();
         std::vector<std::string> ret;
 
-        Tools::GetInstance()->SplitString(ambient, ret, ",", " ");
+        Tools::SplitString(ambient, ret, ",", " ");
 
         assert(ret.size() == GeoVector3D::Size());
         
@@ -194,7 +194,7 @@ void GeoSetting::ParseOpenGL(const Json::Value &openGL)
         std::string specular = light["specular"].asString();
         std::vector<std::string> ret;
 
-        Tools::GetInstance()->SplitString(specular, ret, ",", " ");
+        Tools::SplitString(specular, ret, ",", " ");
 
         assert(ret.size() == GeoVector3D::Size());
         
@@ -215,7 +215,7 @@ void GeoSetting::ParseOpenGL(const Json::Value &openGL)
         std::string diffuse = light["diffuse"].asString();
         std::vector<std::string> ret;
 
-        Tools::GetInstance()->SplitString(diffuse, ret, ",", " ");
+        Tools::SplitString(diffuse, ret, ",", " ");
 
         assert(ret.size() == GeoVector3D::Size());
         
