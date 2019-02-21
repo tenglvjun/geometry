@@ -1,7 +1,7 @@
 #if !defined(__RENDER_HEAD_FILE__)
 #define __RENDER_HEAD_FILE__
 
-#include "global_def.h"
+#include "math_def.h"
 #include "camera.h"
 #include "light.h"
 #include "canvas.h"

@@ -1,10 +1,10 @@
 #if !defined(__SHADER_CODE_MANAGE_HEAD_FILE)
 #define __SHADER_CODE_MANAGE_HEAD_FILE
 
-#include "global_def.h"
 #include "global_enum.h"
 #include <string>
 #include <map>
+#include "math_def.h"
 
 struct GeoShaderCode
 {

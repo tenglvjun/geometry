@@ -1,5 +1,5 @@
 #include "mesh.h"
-#include "global_def.h"
+#include "math_def.h"
 #include <iostream>
 #include "camera.h"
 #include "light.h"

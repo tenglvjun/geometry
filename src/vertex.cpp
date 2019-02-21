@@ -1,7 +1,7 @@
 #include "vertex.h"
 #include <assert.h>
 #include <memory.h>
-#include "global_def.h"
+#include "math_def.h"
 
 GeoVertex::GeoVertex()
 {

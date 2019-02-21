@@ -3,7 +3,7 @@
 
 #include <string>
 #include <map>
-#include "global_def.h"
+#include "math_def.h"
 #include "global_enum.h"
 #include "json.h"
 #include "vector.h"

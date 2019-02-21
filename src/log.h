@@ -1,7 +1,7 @@
 #if !defined(__LOG_HEAD_FILE__)
 #define __LOG_HEAD_FILE__
 
-#include "global_def.h"
+#include "math_def.h"
 #include "global_enum.h"
 #include <string>
 #include <map>
